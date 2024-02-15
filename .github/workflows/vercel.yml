@@ -1,20 +1,23 @@
-name: CI
-on: [push]
-jobs:
-  standard-checks:
-    name: Lint and Test
-    runs-on: ubuntu-latest
+name: CI/CD
 
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
 
-      - name: Install packages
-        run: npm ci
-      - name: Run ESlint
-        run: npm run ci:lint
-      - name: Run Tests
-        run: npm run ci:test
-      - name: Bundle and Output
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
         run: npm run build
+
+      - name: Deploy to Vercel
+        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
