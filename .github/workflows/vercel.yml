@@ -21,4 +21,4 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
-          echo "Y" | npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+          echo "Y" | npx vercel --token ${{ secrets.VERCEL_TOKEN }} --scope ${{secrets.VERCEL_ORG_ID}} --prod 
