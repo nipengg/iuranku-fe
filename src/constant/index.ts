@@ -1,0 +1,12 @@
+export const API_URL: string = process.env.APP_LARAVEL_API_URL as string;
+export const LOCAL_STORAGE_KEY: string = process.env.APP_LOCAL_KEY as string;
+export const MAX_MOBILE_SCREEN_SIZE: string = "(max-width: 479px)";
+export const DEBOUNCE_TIME: number = 500;
+export const MANUAL_PAGINATION: boolean = true;
+export const PAGE_SIZE: number = 10;
+export const PAGE_VIEW: number[] = [10, 20, 30, 40, 50];
+export const TABLE_DEFAULT_SORT: string = "desc";
+export const ERROR_TYPE: string = "focus";
+export const PLEASE_FILL: string = "Please Fill In";
+export const MAX_ADD_OTHER: number = 3;
+export const PHONE_REGEX: RegExp = /\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g;
