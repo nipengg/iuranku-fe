@@ -10,3 +10,16 @@ export const menuTabs = [
         url: "/about",
     }
 ]
+
+export const menuGuestTabs = [
+    {
+        value: "Sign In",
+        label: "Sign In",
+        url: "/login",
+    },
+    {
+        value: "Sign Up",
+        label: "Sign Up",
+        url: "/register",
+    }
+];
