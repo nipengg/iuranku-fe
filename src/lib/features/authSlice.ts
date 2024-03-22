@@ -3,7 +3,7 @@ import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, LOCAL_STORAGE_KEY } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import { saveToken } from "@/utils/userSession";
+import { saveToken, saveTokenGoogle } from "../../utils/userSession";
 import { CredentialResponse } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
@@ -36,6 +36,9 @@ export const authGoogle = createAsyncThunk(
                     'Content-Type': 'application/json'
                 }
             });
+
+            if (credentialResponse.credential !== undefined)
+                saveTokenGoogle(credentialResponse.credential);
 
             return response.data;
         } catch (err: any) {

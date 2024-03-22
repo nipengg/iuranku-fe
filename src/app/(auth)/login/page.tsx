@@ -31,6 +31,7 @@ const Login = () => {
           onError={() => {
             toast.error('Login Failed')
           }}
+          ux_mode='popup'
         />
       </div>
 
