@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Navbar from "@/components/Navbar/Navbar";
 
 export default function ClientLayout({
@@ -12,7 +11,6 @@ export default function ClientLayout({
       <div className="container mx-auto py-3.5">
         {children}
       </div>
-
     </>
   )
 }

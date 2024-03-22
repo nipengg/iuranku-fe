@@ -1,5 +1,8 @@
-export const API_URL: string = process.env.APP_LARAVEL_API_URL as string;
-export const LOCAL_STORAGE_KEY: string = process.env.APP_LOCAL_KEY as string;
+export const API_URL: string = process.env.DATABASE_CONNECTION_STRING as string == 'prod' ? process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL as string : process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL_LOCAL as string;
+export const LOCAL_STORAGE_KEY: string = process.env.NEXT_PUBLIC_APP_LOCAL_KEY as string;
+export const LOCAL_STORAGE_KEY_GOOGLE: string = process.env.NEXT_PUBLIC_APP_LOCAL_KEY_GOOGLE as string
+export const GOOGLE_CLIENT_ID: string = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string;
+export const GOOGLE_CLIENT_SECRET: string = process.env.GOOGLE_CLIENT_SECRET as string;
 export const MAX_MOBILE_SCREEN_SIZE: string = "(max-width: 479px)";
 export const DEBOUNCE_TIME: number = 500;
 export const MANUAL_PAGINATION: boolean = true;
