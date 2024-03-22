@@ -1,9 +1,8 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react'
-import RegisterGoogle from './RegisterGoogle';
-import RegisterRegular from './RegisterRegular';
-import { Suspense } from 'react'
+import RegisterGoogle from '@/components/Register/RegisterGoogle';
+import RegisterRegular from '@/components/Register/RegisterRegular';
 
 const Register = () => {
   const searchParams = useSearchParams();
@@ -11,18 +10,16 @@ const Register = () => {
 
   return (
     <>
-      <Suspense>
-        {
-          registerGoogle ?
-            <>
-              <RegisterGoogle />
-            </>
-            :
-            <>
-              <RegisterRegular />
-            </>
-        }
-      </Suspense>
+      {
+        registerGoogle ?
+          <>
+            <RegisterGoogle />
+          </>
+          :
+          <>
+            <RegisterRegular />
+          </>
+      }
     </>
   )
 }
