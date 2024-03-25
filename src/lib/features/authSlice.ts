@@ -1,12 +1,10 @@
 import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
-import { API_URL, LOCAL_STORAGE_KEY } from "@/constant";
+import { API_URL, GOOGLE_USER_INFO_API } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { saveToken, saveTokenGoogle } from "../../utils/userSession";
-import { CredentialResponse } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "react-toastify";
+import { TokenResponse } from "@react-oauth/google";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
@@ -25,10 +23,15 @@ export const login = createAsyncThunk(
 
 export const authGoogle = createAsyncThunk(
     "auth/login/google",
-    async (credentialResponse: CredentialResponse, thunkAPI) => {
+    async (tokenResponse: TokenResponse, thunkAPI) => {
         try {
-            const decode: any = jwtDecode(JSON.stringify(credentialResponse.credential));
-            const reqObj: object = await MappingUserGoogleToRequestObject(decode.name, decode.email);
+            const userInfo: any = await axios.get(GOOGLE_USER_INFO_API, {
+                headers: {
+                    Authorization: `Bearer ${tokenResponse.access_token}`
+                }
+            });
+
+            const reqObj: object = await MappingUserGoogleToRequestObject(userInfo.data.name, userInfo.data.email);
 
             const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/googleOAuth`, {
                 ...reqObj,
@@ -37,8 +40,8 @@ export const authGoogle = createAsyncThunk(
                 }
             });
 
-            if (credentialResponse.credential !== undefined)
-                saveTokenGoogle(credentialResponse.credential);
+            if (tokenResponse !== undefined)
+                saveTokenGoogle(tokenResponse);
 
             return response.data;
         } catch (err: any) {
@@ -80,7 +83,6 @@ const authSlice = createSlice({
             state = { ...AuthStateInitial }
         },
         logout: (state) => {
-            localStorage.removeItem(LOCAL_STORAGE_KEY);
             return initialState;
         }
     },

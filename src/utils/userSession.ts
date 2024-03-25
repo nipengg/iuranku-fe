@@ -1,19 +1,20 @@
 'use server';
-import { LOCAL_STORAGE_KEY, LOCAL_STORAGE_KEY_GOOGLE } from "@/constant";
+import { ACCESS_TOKEN, TOKEN_GOOGLE } from "@/constant";
+import { TokenResponse } from "@react-oauth/google";
 import { cookies } from 'next/headers'
 
 export const getToken = (googleToken: boolean = false) => {
-    return cookies().get(googleToken ? LOCAL_STORAGE_KEY_GOOGLE : LOCAL_STORAGE_KEY);
+    return cookies().get(googleToken ? TOKEN_GOOGLE : ACCESS_TOKEN);
 };
 
 export const checkToken = (): boolean => {
-    return cookies().has(LOCAL_STORAGE_KEY) || cookies().has(LOCAL_STORAGE_KEY_GOOGLE);
+    return cookies().has(ACCESS_TOKEN);
 };
 
 export const saveToken = (token: string) => {
-    cookies().set(LOCAL_STORAGE_KEY, token)
+    cookies().set(ACCESS_TOKEN, token)
 }
 
-export const saveTokenGoogle = (token: string) => {
-    cookies().set(LOCAL_STORAGE_KEY_GOOGLE, token);
+export const saveTokenGoogle = (token: TokenResponse) => {
+    cookies().set(TOKEN_GOOGLE, JSON.stringify(token));
 }
