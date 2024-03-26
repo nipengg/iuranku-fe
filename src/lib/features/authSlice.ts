@@ -82,11 +82,12 @@ export const logout = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
         try {
-
-            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, {
-                headers : {
-                    Authorization: `Bearer ${await getToken()}`
-                }
+            const access_token: any = await getToken();
+            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, null, {
+                headers: {
+                    Authorization: `Bearer ${access_token.value}`,
+                    Accept: 'application/json',
+                },
             });
 
             return response.data;
