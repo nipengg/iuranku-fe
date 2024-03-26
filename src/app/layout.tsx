@@ -5,6 +5,8 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Providers } from "./provider";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GOOGLE_CLIENT_ID } from "@/constant";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +26,8 @@ export default function RootLayout({
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <AntdRegistry>
             <Providers>
-                {children}
+              <ToastContainer limit={3} autoClose={3000} />
+              {children}
             </Providers>
           </AntdRegistry>
         </GoogleOAuthProvider>

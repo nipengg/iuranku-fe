@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/navigation';
 import GoogleButton from 'react-google-button';
+import { STATUS_SIGNIN } from '@/constant';
 
 const Login = () => {
 
@@ -19,8 +20,13 @@ const Login = () => {
     onSuccess: async (tokenResponse) => {
       dispatch(authGoogle(tokenResponse)).then((res: any) => {
         if (res?.payload?.meta?.code == StatusCodes.OK) {
-          router.push('/register?google=true');
-          toast.success('Google Account Verified');
+          if (res.payload.meta.message == STATUS_SIGNIN.Authenticated) {
+            router.push('/dashboard');
+            toast.success('Sign In!');
+          } else {
+            router.push('/register?google=true');
+            toast.success('Google Account Verified');
+          }
         } else {
           toast.error('Login Failed')
         }

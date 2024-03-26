@@ -1,3 +1,4 @@
+// Constant
 export const API_URL: string = process.env.DATABASE_CONNECTION_STRING as string == 'prod' ? process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL as string : process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL_LOCAL as string;
 export const ACCESS_TOKEN: string = process.env.NEXT_PUBLIC_APP_COOKIES_TOKEN as string;
 export const TOKEN_GOOGLE: string = process.env.NEXT_PUBLIC_APP_COOKIES_TOKEN_GOOGLE as string
@@ -14,3 +15,9 @@ export const ERROR_TYPE: string = "focus";
 export const PLEASE_FILL: string = "Please Fill In";
 export const MAX_ADD_OTHER: number = 3;
 export const PHONE_REGEX: RegExp = /\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g;
+
+// Enum
+export enum STATUS_SIGNIN {
+    Authenticated = "Authenticated",
+    Register = "Register",
+}
