@@ -1,12 +1,10 @@
-import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
+import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserInitial, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
-import { API_URL, LOCAL_STORAGE_KEY } from "@/constant";
+import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import { saveToken, saveTokenGoogle } from "../../utils/userSession";
-import { CredentialResponse } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "react-toastify";
+import { getToken, saveToken, saveTokenGoogle } from "../../utils/userSession";
+import { TokenResponse } from "@react-oauth/google";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
@@ -25,10 +23,15 @@ export const login = createAsyncThunk(
 
 export const authGoogle = createAsyncThunk(
     "auth/login/google",
-    async (credentialResponse: CredentialResponse, thunkAPI) => {
+    async (tokenResponse: TokenResponse, thunkAPI) => {
         try {
-            const decode: any = jwtDecode(JSON.stringify(credentialResponse.credential));
-            const reqObj: object = await MappingUserGoogleToRequestObject(decode.name, decode.email);
+            const userInfo: any = await axios.get(GOOGLE_USER_INFO_API, {
+                headers: {
+                    Authorization: `Bearer ${tokenResponse.access_token}`
+                }
+            });
+
+            const reqObj: object = await MappingUserGoogleToRequestObject(userInfo.data.name, userInfo.data.email);
 
             const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/googleOAuth`, {
                 ...reqObj,
@@ -37,8 +40,11 @@ export const authGoogle = createAsyncThunk(
                 }
             });
 
-            if (credentialResponse.credential !== undefined)
-                saveTokenGoogle(credentialResponse.credential);
+            if (tokenResponse !== undefined)
+                saveTokenGoogle(tokenResponse);
+
+            if (response.data.meta.message == STATUS_SIGNIN.Authenticated)
+                await saveToken(response.data.result.access_token);
 
             return response.data;
         } catch (err: any) {
@@ -72,6 +78,27 @@ export const register = createAsyncThunk(
     }
 )
 
+export const logout = createAsyncThunk(
+    "auth/logout",
+    async (_, thunkAPI) => {
+        try {
+            const access_token: any = await getToken();
+            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, null, {
+                headers: {
+                    Authorization: `Bearer ${access_token.value}`,
+                    Accept: 'application/json',
+                },
+            });
+
+            return response.data;
+
+        } catch (err: any) {
+            if (!err.response) throw err;
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
+    }
+)
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: initialState,
@@ -79,10 +106,6 @@ const authSlice = createSlice({
         clearUserState: (state) => {
             state = { ...AuthStateInitial }
         },
-        logout: (state) => {
-            localStorage.removeItem(LOCAL_STORAGE_KEY);
-            return initialState;
-        }
     },
     extraReducers: (builder) => {
         // Login
@@ -93,7 +116,6 @@ const authSlice = createSlice({
             state.isLoading = false;
             const user: User = action.payload.data;
             state.user = user;
-            saveToken(action.payload.data.token)
         });
         builder.addCase(login.rejected, (state, action) => {
             state.isLoading = false;
@@ -106,8 +128,12 @@ const authSlice = createSlice({
         });
         builder.addCase(authGoogle.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.user.name = action.payload.result.user.name;
-            state.user.email = action.payload.result.user.email;
+            if (action.payload.meta.message == STATUS_SIGNIN.Authenticated) {
+                state.user = action.payload.result.user;
+            } else {
+                state.user.name = action.payload.result.user.name;
+                state.user.email = action.payload.result.user.email;
+            }
         });
         builder.addCase(authGoogle.rejected, (state, action) => {
             state.isLoading = false;
@@ -125,8 +151,21 @@ const authSlice = createSlice({
             state.isLoading = false;
             state.isError = true;
         });
+
+        // Logout
+        builder.addCase(logout.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(logout.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state = AuthStateInitial;
+        });
+        builder.addCase(logout.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
     }
 })
 
-export const { clearUserState, logout } = authSlice.actions;
+export const { clearUserState } = authSlice.actions;
 export default authSlice.reducer;
