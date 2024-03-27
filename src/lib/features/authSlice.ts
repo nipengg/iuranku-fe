@@ -3,8 +3,9 @@ import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import { getToken, saveToken, saveTokenGoogle } from "../../utils/userSession";
+import { getToken, removeToken, removeTokenGoogle, saveToken, saveTokenGoogle } from "../../utils/userSession";
 import { TokenResponse } from "@react-oauth/google";
+import { StatusCodes } from "http-status-codes";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
@@ -82,13 +83,20 @@ export const logout = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
         try {
+
             const access_token: any = await getToken();
+
             const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${access_token.value}`,
                     Accept: 'application/json',
                 },
             });
+
+            if (response.data.meta.code == StatusCodes.OK) {
+                await removeToken();
+                await removeTokenGoogle();
+            }
 
             return response.data;
 
@@ -130,7 +138,7 @@ const authSlice = createSlice({
             state.isLoading = false;
             if (action.payload.meta.message == STATUS_SIGNIN.Authenticated) {
                 state.user = action.payload.result.user;
-            } else {
+            } else if (action.payload.meta.message == STATUS_SIGNIN.Register) {
                 state.user.name = action.payload.result.user.name;
                 state.user.email = action.payload.result.user.email;
             }
@@ -158,7 +166,8 @@ const authSlice = createSlice({
         });
         builder.addCase(logout.fulfilled, (state, action) => {
             state.isLoading = false;
-            state = AuthStateInitial;
+            state.isError = false;
+            state.user = UserInitial;
         });
         builder.addCase(logout.rejected, (state, action) => {
             state.isLoading = false;

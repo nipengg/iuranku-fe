@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { authGoogle } from '@/lib/features/authSlice';
 import { AppDispatch, RootState } from '@/lib/store';
-import { CredentialResponse, GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/navigation';
@@ -15,9 +15,8 @@ const Login = () => {
   const router = useRouter();
   const auth = useSelector((state: RootState) => state.auth);
 
-
   const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
+    onSuccess: async (tokenResponse: TokenResponse) => {
       dispatch(authGoogle(tokenResponse)).then((res: any) => {
         if (res?.payload?.meta?.code == StatusCodes.OK) {
           if (res.payload.meta.message == STATUS_SIGNIN.Authenticated) {

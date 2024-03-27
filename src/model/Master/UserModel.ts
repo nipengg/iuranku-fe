@@ -1,7 +1,9 @@
 import { BaseResponse, MetaInitial } from "../Response/BaseResponse";
+import { BaseModel } from "./BaseModel";
+import { Group } from "./GroupModel";
 
 // Model
-export interface User {
+export interface User extends BaseModel {
     id: number | null;
     name: string;
     email: string;
@@ -9,9 +11,6 @@ export interface User {
     address: string | null;
     phone: string | null;
     role: string;
-    created_at: Date | null;
-    update_at: Date | null;
-    deleted_at: Date | null;
 }
 
 export interface UserRegister {
@@ -41,8 +40,8 @@ export const UserInitial: User = {
     phone: "",
     gender: "",
     created_at: null,
-    update_at: null,
-    deleted_at: null
+    updated_at: null,
+    deleted_at: null,
 }
 
 export const UserRegisterInitial: UserRegister = {
