@@ -12,11 +12,13 @@ export const checkToken = async () => {
 };
 
 export const saveToken = async (token: string) => {
-    cookies().set(ACCESS_TOKEN, token);
+    const expired = 60 * 60 * 1000;
+    cookies().set(ACCESS_TOKEN, token, { expires: Date.now() + expired });
 }
 
 export const saveTokenGoogle = (token: TokenResponse): void => {
-    cookies().set(TOKEN_GOOGLE, JSON.stringify(token));
+    const expired = 60 * 60 * 1000;
+    cookies().set(TOKEN_GOOGLE, JSON.stringify(token), { expires: Date.now() + expired });
 }
 
 export const removeToken = async () => {
