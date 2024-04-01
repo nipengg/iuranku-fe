@@ -1,4 +1,4 @@
-import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserInitial, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
+import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -11,9 +11,18 @@ const initialState: AuthState = { ...AuthStateInitial }
 
 export const login = createAsyncThunk(
     "auth/login",
-    async (data, thunkAPI) => {
+    async (data: UserLoginForm, thunkAPI) => {
         try {
-            const response = await axios.post(`${API_URL}/login`, { email: data });
+            const response = await axios.post(`${API_URL}/login`, data, {
+                headers: {
+                    Accept: 'application/json',
+                },
+            });
+            
+            const responseForm: UserResponseLogin = { ...response.data };
+
+            await saveToken(responseForm.result.access_token);
+
             return response.data;
         } catch (err: any) {
             if (!err.response) throw err;
@@ -122,8 +131,7 @@ const authSlice = createSlice({
         });
         builder.addCase(login.fulfilled, (state, action) => {
             state.isLoading = false;
-            const user: User = action.payload.data;
-            state.user = user;
+            state.user = action.payload.result.user;
         });
         builder.addCase(login.rejected, (state, action) => {
             state.isLoading = false;

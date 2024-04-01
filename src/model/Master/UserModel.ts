@@ -30,6 +30,12 @@ export interface UserResponseLogin extends BaseResponse {
     }
 }
 
+export interface UserLoginForm {
+    email: string;
+    password: string;
+    remember: boolean;
+}
+
 // Init
 export const UserInitial: User = {
     id: null,
@@ -62,6 +68,12 @@ export const UserResponseLoginInitial: UserResponseLogin = {
     }
 }
 
+export const UserLoginFormInitial: UserLoginForm = {
+    email: "",
+    password: "",
+    remember: false
+}
+
 // User Helper Mapping
 export const MappingUserToFormData = (data: UserRegister): FormData => {
     var formData = new FormData();
@@ -83,3 +95,4 @@ export const MappingUserGoogleToRequestObject = async (name: string, email: stri
 
     return reqObj;
 }
+
