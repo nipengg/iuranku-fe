@@ -6,7 +6,6 @@ import { AppDispatch, RootState } from '@/lib/store';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/lib/features/authSlice';
 import { toast } from 'react-toastify';
-import { checkToken, getToken } from '@/utils/userSession';
 
 const Navbar = () => {
 
@@ -32,16 +31,12 @@ const Navbar = () => {
                     {user.id ?
                         menuTabs.map((menu: any, index) => {
                             return (
-                                <>
-                                    <Link href={menu.url} className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">{menu.value}</Link>
-                                </>
+                                <Link key={index} href={menu.url} className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">{menu.value}</Link>
                             );
                         })
                         : menuGuestTabs.map((menu: any, index) => {
                             return (
-                                <>
-                                    <Link href={menu.url} className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">{menu.value}</Link>
-                                </>
+                                <Link key={index} href={menu.url} className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">{menu.value}</Link>
                             );
                         })}
                 </div>

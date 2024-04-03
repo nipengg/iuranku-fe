@@ -29,3 +29,25 @@ export const GroupInitial: Group = {
     updated_at: null,
     deleted_at: null
 }
+
+export const MemberTypeInitial: MemberType = {
+    id: null,
+    member_type_name: "",
+    created_at: null,
+    updated_at: null,
+    deleted_at: null
+}
+
+export const GroupMemberInitial: GroupMember = {
+    id: null,
+    group: GroupInitial,
+    member_type: MemberTypeInitial,
+    status: null,
+    join_date: null,
+    leave_date: null,
+    leave_type: null,
+    leave_note: null,
+    created_at: null,
+    updated_at: null,
+    deleted_at: null
+}

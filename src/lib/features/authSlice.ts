@@ -3,7 +3,7 @@ import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import { getToken, removeToken, removeTokenGoogle, saveToken, saveTokenGoogle } from "../../utils/userSession";
+import { getTokenAsync, removeToken, removeTokenGoogle, saveToken, saveTokenGoogle } from "../../utils/userSession";
 import { TokenResponse } from "@react-oauth/google";
 import { StatusCodes } from "http-status-codes";
 
@@ -93,7 +93,7 @@ export const logout = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
 
-            const access_token: any = await getToken();
+            const access_token: any = await getTokenAsync();
 
             const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, null, {
                 headers: {
@@ -121,7 +121,7 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         clearUserState: (state) => {
-            state = { ...AuthStateInitial }
+            return initialState;
         },
     },
     extraReducers: (builder) => {

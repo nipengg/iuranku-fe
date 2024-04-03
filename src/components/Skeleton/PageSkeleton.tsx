@@ -1,9 +1,16 @@
 import { Skeleton } from 'antd';
 
-const PageSkeleton = () => {
+interface IPageSkeletonProps {
+
+}
+
+const PageSkeleton: React.FunctionComponent<IPageSkeletonProps> = (props) => {
+
+    const { } = props;
+
     return (
         <>
-            {Array.from({ length: 3 }).map((_, index) => (
+            {Array.from({ length: 4 }).map((_, index) => (
                 <Skeleton active className='mt-2' key={index} />
             ))}
         </>

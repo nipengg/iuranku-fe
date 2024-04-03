@@ -43,7 +43,7 @@ const Login = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: TokenResponse) => {
       dispatch(authGoogle(tokenResponse)).then((res: any) => {
-        if (res.payload.meta.code == StatusCodes.OK) {
+        if (res.payload?.meta?.code == StatusCodes.OK || res.status == StatusCodes.OK) {
           if (res.payload.meta.message == STATUS_SIGNIN.Authenticated) {
             router.push('/dashboard');
             toast.success('Sign In!');

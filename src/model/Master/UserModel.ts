@@ -4,7 +4,7 @@ import { Group } from "./GroupModel";
 
 // Model
 export interface User extends BaseModel {
-    id: number | null;
+    id: number;
     name: string;
     email: string;
     gender: string | null;
@@ -38,7 +38,7 @@ export interface UserLoginForm {
 
 // Init
 export const UserInitial: User = {
-    id: null,
+    id: 0,
     name: "",
     email: "",
     role: "",
