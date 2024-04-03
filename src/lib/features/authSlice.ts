@@ -1,18 +1,28 @@
-import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserInitial, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
+import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import { getToken, saveToken, saveTokenGoogle } from "../../utils/userSession";
+import { getTokenAsync, removeToken, removeTokenGoogle, saveToken, saveTokenGoogle } from "../../utils/userSession";
 import { TokenResponse } from "@react-oauth/google";
+import { StatusCodes } from "http-status-codes";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
 export const login = createAsyncThunk(
     "auth/login",
-    async (data, thunkAPI) => {
+    async (data: UserLoginForm, thunkAPI) => {
         try {
-            const response = await axios.post(`${API_URL}/login`, { email: data });
+            const response = await axios.post(`${API_URL}/login`, data, {
+                headers: {
+                    Accept: 'application/json',
+                },
+            });
+            
+            const responseForm: UserResponseLogin = { ...response.data };
+
+            await saveToken(responseForm.result.access_token);
+
             return response.data;
         } catch (err: any) {
             if (!err.response) throw err;
@@ -82,13 +92,20 @@ export const logout = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
         try {
-            const access_token: any = await getToken();
+
+            const access_token: any = await getTokenAsync();
+
             const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${access_token.value}`,
                     Accept: 'application/json',
                 },
             });
+
+            if (response.data.meta.code == StatusCodes.OK) {
+                await removeToken();
+                await removeTokenGoogle();
+            }
 
             return response.data;
 
@@ -104,7 +121,7 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         clearUserState: (state) => {
-            state = { ...AuthStateInitial }
+            return initialState;
         },
     },
     extraReducers: (builder) => {
@@ -114,8 +131,7 @@ const authSlice = createSlice({
         });
         builder.addCase(login.fulfilled, (state, action) => {
             state.isLoading = false;
-            const user: User = action.payload.data;
-            state.user = user;
+            state.user = action.payload.result.user;
         });
         builder.addCase(login.rejected, (state, action) => {
             state.isLoading = false;
@@ -130,7 +146,7 @@ const authSlice = createSlice({
             state.isLoading = false;
             if (action.payload.meta.message == STATUS_SIGNIN.Authenticated) {
                 state.user = action.payload.result.user;
-            } else {
+            } else if (action.payload.meta.message == STATUS_SIGNIN.Register) {
                 state.user.name = action.payload.result.user.name;
                 state.user.email = action.payload.result.user.email;
             }
@@ -158,7 +174,8 @@ const authSlice = createSlice({
         });
         builder.addCase(logout.fulfilled, (state, action) => {
             state.isLoading = false;
-            state = AuthStateInitial;
+            state.isError = false;
+            state.user = UserInitial;
         });
         builder.addCase(logout.rejected, (state, action) => {
             state.isLoading = false;

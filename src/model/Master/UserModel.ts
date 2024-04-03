@@ -1,17 +1,16 @@
 import { BaseResponse, MetaInitial } from "../Response/BaseResponse";
+import { BaseModel } from "./BaseModel";
+import { Group } from "./GroupModel";
 
 // Model
-export interface User {
-    id: number | null;
+export interface User extends BaseModel {
+    id: number;
     name: string;
     email: string;
     gender: string | null;
     address: string | null;
     phone: string | null;
     role: string;
-    created_at: Date | null;
-    update_at: Date | null;
-    deleted_at: Date | null;
 }
 
 export interface UserRegister {
@@ -31,9 +30,15 @@ export interface UserResponseLogin extends BaseResponse {
     }
 }
 
+export interface UserLoginForm {
+    email: string;
+    password: string;
+    remember: boolean;
+}
+
 // Init
 export const UserInitial: User = {
-    id: null,
+    id: 0,
     name: "",
     email: "",
     role: "",
@@ -41,8 +46,8 @@ export const UserInitial: User = {
     phone: "",
     gender: "",
     created_at: null,
-    update_at: null,
-    deleted_at: null
+    updated_at: null,
+    deleted_at: null,
 }
 
 export const UserRegisterInitial: UserRegister = {
@@ -61,6 +66,12 @@ export const UserResponseLoginInitial: UserResponseLogin = {
         token_type: "",
         user: UserInitial
     }
+}
+
+export const UserLoginFormInitial: UserLoginForm = {
+    email: "",
+    password: "",
+    remember: false
 }
 
 // User Helper Mapping
@@ -84,3 +95,4 @@ export const MappingUserGoogleToRequestObject = async (name: string, email: stri
 
     return reqObj;
 }
+
