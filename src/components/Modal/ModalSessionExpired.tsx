@@ -1,6 +1,12 @@
-
 import { Modal } from 'antd';
+import { StatusCodes } from 'http-status-codes';
 import React, { useState } from 'react'
+
+export function redirectSessionExpired(errMsg: string): any {
+    if (errMsg.indexOf(StatusCodes.UNAUTHORIZED.toString())) {
+        window.location.href = '/login';
+    }
+}
 
 interface IModalSessionExpired {
     isModalOpenParam: boolean
