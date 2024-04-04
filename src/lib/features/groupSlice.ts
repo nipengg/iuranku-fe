@@ -1,3 +1,4 @@
+import { redirectSessionExpired } from "@/app/(pages)/layout";
 import { API_URL } from "@/constant";
 import { GroupState, GroupStateInitial } from "@/model/redux/Group";
 import { get } from "@/utils/request";
@@ -13,8 +14,9 @@ export const getGroupMember = createAsyncThunk(
             const response = await get(`${URL}/getGroup`, params);
             return response;
         } catch (err: any) {
+            redirectSessionExpired(err.message);
             if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err.response.data);
         }
     }
 )
