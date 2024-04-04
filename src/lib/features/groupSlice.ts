@@ -14,7 +14,6 @@ export const getGroupMember = createAsyncThunk(
             const response = await get(`${URL}/getGroup`, params);
             return response;
         } catch (err: any) {
-            redirectSessionExpired(err.message);
             if (!err.response) throw err;
             throw thunkAPI.rejectWithValue(err.response.data);
         }

@@ -48,8 +48,9 @@ async function request(url: string, { method, data, params }: RequestParams = {}
     } catch (error: any) {
         if (error.response.status === StatusCodes.UNAUTHORIZED) {
             cookies().delete(ACCESS_TOKEN);
+            redirect('/login');
         }
-        throw error;
+        return error.response.data;
     }
 }
 
@@ -59,15 +60,15 @@ export async function get(url: string, params?: any, options?: AxiosRequestConfi
 }
 
 export async function post(url: string, data?: any, options?: AxiosRequestConfig) {
-    return request(url, { method: "post", data }, options);
+    return await request(url, { method: "post", data }, options);
 }
 
 export async function put(url: string, data?: any, options?: AxiosRequestConfig) {
-    return request(url, { method: "put", data }, options);
+    return await request(url, { method: "put", data }, options);
 }
 
 export async function patch(url: string, data?: any, options?: AxiosRequestConfig) {
-    return request(url, { method: "patch", data }, options);
+    return await request(url, { method: "patch", data }, options);
 }
 
 export async function deleteRequest(url: string, data?: any, options?: AxiosRequestConfig) {

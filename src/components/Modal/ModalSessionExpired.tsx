@@ -1,10 +1,12 @@
 import { Modal } from 'antd';
 import { StatusCodes } from 'http-status-codes';
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 
 export function redirectSessionExpired(errMsg: string): any {
     if (errMsg.indexOf(StatusCodes.UNAUTHORIZED.toString())) {
-        window.location.href = '/login';
+        // window.location.href = '/login';
+        toast.error('Session Expired. Please Sign In.')
     }
 }
 

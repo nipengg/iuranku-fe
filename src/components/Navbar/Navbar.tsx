@@ -14,9 +14,9 @@ const Navbar = () => {
 
     const user = useSelector((state: RootState) => state.auth.user);
     
-    const handleLogout = () => {
-        dispatch(logout());
-        router.push('/');
+    const handleLogout = async () => {
+        await dispatch(logout());
+        router.push('/login');
         toast.success('Logout Success!');
     }
 

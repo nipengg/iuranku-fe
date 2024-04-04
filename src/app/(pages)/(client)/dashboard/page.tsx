@@ -13,7 +13,9 @@ import { toast } from "react-toastify";
 
 async function fetchGroupMember(dispatch: AppDispatch, userId: number): Promise<any> {
     const response = await dispatch(getGroupMember({ user_id: userId }));
-    return response.payload;
+
+    if (response != undefined)
+        return response.payload;
 }
 
 export default function Dashboard() {
@@ -24,11 +26,13 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchGroupMember(dispatch, userState.id).then((res) => {
-            if (res?.meta?.code == StatusCodes.OK) {
+            if (res.meta.code == StatusCodes.OK) {
                 setGroupMember(res.result.groups || []);
             } else {
-                toast.error(`Get Data Failed`);
+                toast.error(`Get Data Failed. ${res.result.message}`);
             }
+        }).catch(function (error) {
+            toast.error(`Session Expired. Please Sign In`);
         });
     }, []);
 
