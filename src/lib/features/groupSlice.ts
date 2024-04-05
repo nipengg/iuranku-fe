@@ -1,3 +1,4 @@
+import { redirectSessionExpired } from "@/components/Modal/ModalSessionExpired";
 import { API_URL } from "@/constant";
 import { GroupState, GroupStateInitial } from "@/model/redux/Group";
 import { get } from "@/utils/request";
@@ -14,7 +15,7 @@ export const getGroupMember = createAsyncThunk(
             return response;
         } catch (err: any) {
             if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err.response.data);
         }
     }
 )

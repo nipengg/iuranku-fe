@@ -6,12 +6,16 @@ import { AppDispatch, RootState } from "@/lib/store";
 import { GroupMember } from "@/model/Master/GroupModel";
 import { User } from "@/model/Master/UserModel";
 import { GroupState } from "@/model/redux/Group";
+import { StatusCodes } from "http-status-codes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 async function fetchGroupMember(dispatch: AppDispatch, userId: number): Promise<any> {
     const response = await dispatch(getGroupMember({ user_id: userId }));
-    return response.payload.result.groups;
+
+    if (response != undefined)
+        return response.payload;
 }
 
 export default function Dashboard() {
@@ -21,8 +25,14 @@ export default function Dashboard() {
     const [groupMember, setGroupMember] = useState<GroupMember[]>([]);
 
     useEffect(() => {
-        fetchGroupMember(dispatch, userState.id).then((groups) => {
-            setGroupMember(groups);
+        fetchGroupMember(dispatch, userState.id).then((res) => {
+            if (res.meta.code == StatusCodes.OK) {
+                setGroupMember(res.result.groups || []);
+            } else {
+                toast.error(`Get Data Failed. ${res.result.message}`);
+            }
+        }).catch(function (error) {
+            toast.error(`Session Expired. Please Sign In`);
         });
     }, []);
 

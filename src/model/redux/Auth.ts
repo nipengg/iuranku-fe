@@ -7,6 +7,7 @@ export interface AuthState {
     // State
     isLoading: boolean;
     isError: boolean;
+    isTokenExpire: boolean;
 }
 
 // Init
@@ -14,4 +15,5 @@ export const AuthStateInitial: AuthState = {
     user: { ...UserInitial },
     isLoading: false,
     isError: false,
+    isTokenExpire: false,
 }

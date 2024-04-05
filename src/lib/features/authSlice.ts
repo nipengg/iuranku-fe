@@ -123,6 +123,9 @@ const authSlice = createSlice({
         clearUserState: (state) => {
             return initialState;
         },
+        setTokenExpire: (state) => {
+            state.isTokenExpire = true;
+        }
     },
     extraReducers: (builder) => {
         // Login
@@ -184,5 +187,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { clearUserState } = authSlice.actions;
+export const { clearUserState, setTokenExpire } = authSlice.actions;
 export default authSlice.reducer;
