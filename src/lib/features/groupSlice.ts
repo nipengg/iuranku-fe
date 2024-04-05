@@ -1,4 +1,3 @@
-import { redirectSessionExpired } from "@/components/Modal/ModalSessionExpired";
 import { API_URL } from "@/constant";
 import { GroupState, GroupStateInitial } from "@/model/redux/Group";
 import { get } from "@/utils/request";

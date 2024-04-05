@@ -26,15 +26,17 @@ axios.interceptors.request.use(
 
 // Add a response interceptor
 axios.interceptors.response.use(
-    function (response) {
+    function (response: any) {
         if (response.status == StatusCodes.UNAUTHORIZED) {
-
+            cookies().delete(ACCESS_TOKEN);
+            redirect('/login');
         }
         return response;
     },
     function (error) {
         if (error.response.status == StatusCodes.UNAUTHORIZED) {
-
+            cookies().delete(ACCESS_TOKEN);
+            redirect('/login');
         }
         return Promise.reject(error);
     },

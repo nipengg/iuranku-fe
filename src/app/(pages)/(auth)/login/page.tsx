@@ -79,6 +79,7 @@ const Login = () => {
                   required
                   name='email'
                   onChange={handleChange}
+                  disabled={auth.isLoading ? true : false}
                 />
               </div>
               <div className='flex flex-col text-black py-2'>
@@ -90,6 +91,7 @@ const Login = () => {
                   required
                   name='password'
                   onChange={handleChange}
+                  disabled={auth.isLoading ? true : false}
                 />
               </div>
               <div className='flex justify-between text-sm text-black py-2'>
