@@ -6,6 +6,7 @@ import axios, { AxiosResponse } from "axios";
 import { getTokenAsync, removeToken, removeTokenGoogle, saveToken, saveTokenGoogle } from "../../utils/userSession";
 import { TokenResponse } from "@react-oauth/google";
 import { StatusCodes } from "http-status-codes";
+import { get, post } from "@/utils/request";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
@@ -13,20 +14,16 @@ export const login = createAsyncThunk(
     "auth/login",
     async (data: UserLoginForm, thunkAPI) => {
         try {
-            const response = await axios.post(`${API_URL}/login`, data, {
-                headers: {
-                    Accept: 'application/json',
-                },
-            });
-            
-            const responseForm: UserResponseLogin = { ...response.data };
+            const response = await post(`${API_URL}/login`, data);         
+
+            const responseForm: UserResponseLogin = { ...response };
 
             await saveToken(responseForm.result.access_token);
 
-            return response.data;
+            return response;
         } catch (err: any) {
             if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            return thunkAPI.rejectWithValue(err.response);
         }
     }
 ) as any;
@@ -43,23 +40,20 @@ export const authGoogle = createAsyncThunk(
 
             const reqObj: object = await MappingUserGoogleToRequestObject(userInfo.data.name, userInfo.data.email);
 
-            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/googleOAuth`, {
-                ...reqObj,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            const response = await post(`${API_URL}/googleOAuth`, {
+                ...reqObj, 
+            })
 
             if (tokenResponse !== undefined)
                 saveTokenGoogle(tokenResponse);
 
-            if (response.data.meta.message == STATUS_SIGNIN.Authenticated)
-                await saveToken(response.data.result.access_token);
+            if (response.meta.message == STATUS_SIGNIN.Authenticated)
+                await saveToken(response.result.access_token);
 
-            return response.data;
+            return response;
         } catch (err: any) {
             if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            return thunkAPI.rejectWithValue(err.response);
         }
     }
 )
@@ -95,23 +89,23 @@ export const logout = createAsyncThunk(
 
             const access_token: any = await getTokenAsync();
 
-            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, null, {
+            const response = await post(`${API_URL}/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${access_token.value}`,
                     Accept: 'application/json',
                 },
             });
 
-            if (response.data.meta.code == StatusCodes.OK) {
+            if (response.meta.code == StatusCodes.OK) {
                 await removeToken();
                 await removeTokenGoogle();
             }
 
-            return response.data;
+            return response;
 
         } catch (err: any) {
             if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            return thunkAPI.rejectWithValue(err.response);
         }
     }
 )

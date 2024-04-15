@@ -1,12 +1,7 @@
 export const menuTabs = [
     {
-        value: "User",
-        label: "User",
-        url: "/user",
-    },
-    {
-        value: "About",
-        label: "About",
+        value: "About Us",
+        label: "About Us",
         url: "/about",
     }
 ]
