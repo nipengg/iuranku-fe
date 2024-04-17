@@ -30,12 +30,15 @@ const Login = () => {
   const handleLogin = (e: any) => {
     e.preventDefault();
     dispatch(login(loginForm)).then((res: any) => {
+      if (res.error) 
+        throw res;
+      
       if (res.payload.meta.code == StatusCodes.OK) {
         router.push('/dashboard');
         toast.success(`Welcome Back ${res.payload.result.user.name}`);
-      } else {
-        toast.error(`${res.payload.meta.message}. ${res.payload.result.message}`)
       }
+    }).catch(function (err: any) {
+      toast.error(`Login Failed. ${err.payload.result.message}`);
     });
   }
 
@@ -43,6 +46,9 @@ const Login = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: TokenResponse) => {
       dispatch(authGoogle(tokenResponse)).then((res: any) => {
+        if (res.error) 
+          throw res;
+
         if (res.payload?.meta?.code == StatusCodes.OK || res.status == StatusCodes.OK) {
           if (res.payload.meta.message == STATUS_SIGNIN.Authenticated) {
             router.push('/dashboard');
@@ -51,10 +57,10 @@ const Login = () => {
             router.push('/register?google=true');
             toast.success('Google Account Verified');
           }
-        } else {
-          toast.error('Login Failed')
         }
-      })
+      }).catch(function (err: any) {
+        toast.error(`Login Failed. ${err.error.message}`);
+      });
     },
     onError: errorResponse => toast.error(`Login Failed, ${errorResponse}`),
   });

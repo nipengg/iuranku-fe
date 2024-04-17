@@ -12,10 +12,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 async function fetchGroupMember(dispatch: AppDispatch, userId: number): Promise<any> {
-    const response = await dispatch(getGroupMember({ user_id: userId }));
-
-    if (response != undefined)
+    try {
+        const response: any = await dispatch(getGroupMember({ user_id: userId }));
+        if (response.error) 
+            throw response;
+        
         return response.payload;
+    } catch (error) {
+        throw error;
+    }
 }
 
 export default function Dashboard() {
@@ -26,13 +31,15 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchGroupMember(dispatch, userState.id).then((res) => {
+            if (res.error) 
+                throw res;
+
             if (res.meta.code == StatusCodes.OK) {
                 setGroupMember(res.result.groups || []);
-            } else {
-                toast.error(`Get Data Failed. ${res.result.message}`);
             }
-        }).catch(function (error) {
-            toast.error(`Session Expired. Please Sign In`);
+        }).catch(function (err) {
+            console.log(err);
+            toast.error(`Get Data Failed. ${err.payload.result?.message}`);
         });
     }, []);
 

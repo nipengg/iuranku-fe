@@ -16,5 +16,5 @@ export const menuGuestTabs = [
         value: "Sign Up",
         label: "Sign Up",
         url: "/register",
-    }
+    },
 ];

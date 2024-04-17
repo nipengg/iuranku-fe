@@ -1,9 +1,13 @@
 'use client'
-import LabelTitle from "@/components/LabelTitle";
 import Navbar from "@/components/Navbar/Navbar";
-import { menuGuestTabs, menuTabs } from "@/mocks/Sidebar";
-import Link from "next/link";
-import { ToastContainer } from "react-toastify";
+import { clearUserState, fetch } from "@/lib/features/authSlice";
+import { AppDispatch } from "@/lib/store";
+import { checkToken } from "@/utils/userSession";
+import { StatusCodes } from "http-status-codes";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function Home() {
   return (

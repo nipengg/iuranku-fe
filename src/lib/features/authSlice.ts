@@ -7,6 +7,7 @@ import { getTokenAsync, removeToken, removeTokenGoogle, saveToken, saveTokenGoog
 import { TokenResponse } from "@react-oauth/google";
 import { StatusCodes } from "http-status-codes";
 import { get, post } from "@/utils/request";
+import { checkResponse } from "./sliceHelper";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
@@ -14,16 +15,23 @@ export const login = createAsyncThunk(
     "auth/login",
     async (data: UserLoginForm, thunkAPI) => {
         try {
-            const response = await post(`${API_URL}/login`, data);         
 
+            // Login to Laravel
+            const response = await post(`${API_URL}/login`, data);
+
+            // Check if Success
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
+
+            // Mapping to model
             const responseForm: UserResponseLogin = { ...response };
 
+            // Save token to Cookies
             await saveToken(responseForm.result.access_token);
 
             return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response);
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 ) as any;
@@ -41,8 +49,12 @@ export const authGoogle = createAsyncThunk(
             const reqObj: object = await MappingUserGoogleToRequestObject(userInfo.data.name, userInfo.data.email);
 
             const response = await post(`${API_URL}/googleOAuth`, {
-                ...reqObj, 
+                ...reqObj,
             })
+
+            // Check if Success
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
 
             if (tokenResponse !== undefined)
                 saveTokenGoogle(tokenResponse);
@@ -52,8 +64,7 @@ export const authGoogle = createAsyncThunk(
 
             return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response);
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 )
@@ -96,16 +107,27 @@ export const logout = createAsyncThunk(
                 },
             });
 
-            if (response.meta.code == StatusCodes.OK) {
-                await removeToken();
-                await removeTokenGoogle();
-            }
+            checkResponse(response);
+
+            await removeToken();
+            await removeTokenGoogle();
 
             return response;
-
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response);
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
+export const fetch = createAsyncThunk(
+    "auth/fetch",
+    async (_, thunkAPI) => {
+        try {
+            const response = await get(`${API_URL}/fetch`);
+            checkResponse(response);
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 )
@@ -175,6 +197,19 @@ const authSlice = createSlice({
             state.user = UserInitial;
         });
         builder.addCase(logout.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        // Fetch
+        builder.addCase(fetch.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(fetch.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+        });
+        builder.addCase(fetch.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });
