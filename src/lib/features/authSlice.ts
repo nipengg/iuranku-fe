@@ -40,7 +40,7 @@ export const authGoogle = createAsyncThunk(
     "auth/login/google",
     async (tokenResponse: TokenResponse, thunkAPI) => {
         try {
-            const userInfo: any = await axios.get(GOOGLE_USER_INFO_API, {
+            const userInfo: AxiosResponse<any, any> = await axios.get(GOOGLE_USER_INFO_API, {
                 headers: {
                     Authorization: `Bearer ${tokenResponse.access_token}`
                 }

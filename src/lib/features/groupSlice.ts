@@ -2,7 +2,6 @@ import { API_URL } from "@/constant";
 import { GroupState, GroupStateInitial } from "@/model/redux/Group";
 import { get } from "@/utils/request";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { StatusCodes } from "http-status-codes";
 import { checkResponse } from "./sliceHelper";
 
 const initialState: GroupState = { ...GroupStateInitial };
