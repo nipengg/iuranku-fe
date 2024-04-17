@@ -1,4 +1,3 @@
-import { sessionExpired } from "@/app/(pages)/layout";
 import { API_URL } from "@/constant";
 import { GroupState, GroupStateInitial } from "@/model/redux/Group";
 import { get } from "@/utils/request";

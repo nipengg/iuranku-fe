@@ -48,7 +48,7 @@ async function request(url: string, { method, data, params }: RequestParams = {}
         const res = await axios({ url, method, data, params, ...options });
         return res.data;
     } catch (error: any) {
-        if (error.response.data) error.response.data;
+        if (error.response.data) return error.response.data;
         else throw error;
     }
 }

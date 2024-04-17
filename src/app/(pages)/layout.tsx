@@ -7,11 +7,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export function sessionExpired(res: any): void {
-    if (res.meta.code == StatusCodes.UNAUTHORIZED)
-        window.location.replace('/login');
-}
-
 async function checkAuth(): Promise<any> {
     const cookies = await checkToken();
     return cookies;
