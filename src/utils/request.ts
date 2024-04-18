@@ -1,10 +1,8 @@
 'use server';
 import axios, { AxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
-import { ACCESS_TOKEN, PUBLIC_BASE_URL_LOCAL } from '@/constant';
-import { redirect } from 'next/navigation'
+import { ACCESS_TOKEN } from '@/constant';
 import { StatusCodes } from 'http-status-codes';
-import { NextRequest, NextResponse } from "next/server";
 
 interface RequestParams {
     method?: string;

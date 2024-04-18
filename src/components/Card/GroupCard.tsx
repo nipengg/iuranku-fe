@@ -8,7 +8,7 @@ interface IGroupCardProps {
 
 const GroupCard: React.FunctionComponent<IGroupCardProps> = (props) => {
     const router = useRouter();
-    const { groupMember } = props
+    const { groupMember } = props;
 
     return (
         <>

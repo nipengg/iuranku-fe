@@ -24,7 +24,7 @@ const groupSlice = createSlice({
     name: 'auth',
     initialState: initialState,
     reducers: {
-
+        
     },
     extraReducers: (builder) => {
         // Get Group Member

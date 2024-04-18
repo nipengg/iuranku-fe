@@ -14,9 +14,9 @@ import { toast } from "react-toastify";
 async function fetchGroupMember(dispatch: AppDispatch, userId: number): Promise<any> {
     try {
         const response: any = await dispatch(getGroupMember({ user_id: userId }));
-        if (response.error) 
+        if (response.error)
             throw response;
-        
+
         return response.payload;
     } catch (error) {
         throw error;
@@ -31,33 +31,42 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchGroupMember(dispatch, userState.id).then((res) => {
-            if (res.error) 
+            if (res.error)
                 throw res;
 
             if (res.meta.code == StatusCodes.OK) {
                 setGroupMember(res.result.groups || []);
             }
         }).catch(function (err) {
-            console.log(err);
             toast.error(`Get Data Failed. ${err.payload.result?.message}`);
         });
     }, []);
 
     return (
         <>
-            <h1 className="font-bold text-2xl mb-5">Dashboard Page</h1>
+            <h1 className="font-bold text-2xl mb-5">Your Groups</h1>
             {
                 groupState.isLoading ? <PageSkeleton /> :
                     <>
-                        <div className="grid grid-cols-3 gap-4">
-                            {groupMember.map((item: GroupMember, index) => {
-                                return (
-                                    <div className="col-span-1" key={index}>
-                                        <GroupCard groupMember={item} />
+                        {
+                            groupMember.length !== 0
+                                ?
+                                <>
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {groupMember.map((item: GroupMember, index) => {
+                                            return (
+                                                <div className="col-span-1" key={index}>
+                                                    <GroupCard groupMember={item} />
+                                                </div>
+                                            );
+                                        })}
                                     </div>
-                                );
-                            })}
-                        </div>
+                                </>
+                                :
+                                <>
+                                    <p>You&apos;re not joined to any group right now...</p>
+                                </>
+                        }
                     </>
             }
         </>

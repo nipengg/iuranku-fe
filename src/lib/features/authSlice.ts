@@ -1,4 +1,4 @@
-import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
+import { MappingUserGoogleToRequestObject, MappingUserToFormData, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -15,7 +15,6 @@ export const login = createAsyncThunk(
     "auth/login",
     async (data: UserLoginForm, thunkAPI) => {
         try {
-
             // Login to Laravel
             const response = await post(`${API_URL}/login`, data);
 
@@ -73,7 +72,6 @@ export const register = createAsyncThunk(
     "auth/register",
     async (data: UserRegister, thunkAPI) => {
         try {
-
             const formData: FormData = MappingUserToFormData(data);
 
             const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/register`, {
@@ -97,7 +95,6 @@ export const logout = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
         try {
-
             const access_token: any = await getTokenAsync();
 
             const response = await post(`${API_URL}/logout`, null, {
