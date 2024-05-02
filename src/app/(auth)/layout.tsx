@@ -8,10 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <Suspense>
-        {children}
-      </Suspense>
-
+      {children}
     </>
   )
 }
