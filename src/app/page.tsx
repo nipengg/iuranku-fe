@@ -1,20 +1,12 @@
 'use client'
 import Navbar from "@/components/Navbar/Navbar";
-import { clearUserState, fetch } from "@/lib/features/authSlice";
-import { AppDispatch } from "@/lib/store";
-import { checkToken } from "@/utils/userSession";
-import { StatusCodes } from "http-status-codes";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="relative isolate px-6 pt-14 lg:px-8 bg-custom-green-primary">
+      <div className="relative isolate min-h-screen px-6 pt-14 lg:px-8 bg-custom-green-primary">
         <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
           <div className="relative bg-custom-green-primary" ></div>
         </div>
