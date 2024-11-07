@@ -143,7 +143,7 @@ const Login = () => {
                 label={auth.isLoading ? 'Loading...' : 'Sign in with Google'}
               />
               <div className="text-sm mt-6 text-center">
-                Do not have an account? <a href='#' className='text-blue-500 underline hover:text-blue-800 hover:underline'>Register Here</a>
+                Do not have an account? <a href='/register' className='text-blue-500 underline hover:text-blue-800 hover:underline'>Register Here</a>
               </div>
             </div>
           </form>
