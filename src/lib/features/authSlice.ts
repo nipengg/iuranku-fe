@@ -72,18 +72,19 @@ export const register = createAsyncThunk(
     "auth/register",
     async (data: UserRegister, thunkAPI) => {
         try {
-            const formData: FormData = MappingUserToFormData(data);
+            
+            const response = await post(`${API_URL}/register`, data);
 
-            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/register`, {
-                data: formData,
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            });
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
 
-            const userResponse: UserResponseLogin = response.data;
+            // Mapping to model
+            const responseForm: UserResponseLogin = { ...response };
 
-            return userResponse;
+            // Save token to Cookies
+            await saveToken(responseForm.result.access_token);
+
+            return response;
         } catch (err: any) {
             if (!err.response) throw err;
             return thunkAPI.rejectWithValue(err.response.data);
@@ -178,6 +179,7 @@ const authSlice = createSlice({
         });
         builder.addCase(register.fulfilled, (state, action) => {
             state.isLoading = false;
+            state.user = action.payload.result.user;
         });
         builder.addCase(register.rejected, (state, action) => {
             state.isLoading = false;

@@ -30,9 +30,9 @@ const Login = () => {
   const handleLogin = (e: any) => {
     e.preventDefault();
     dispatch(login(loginForm)).then((res: any) => {
-      if (res.error) 
+      if (res.error)
         throw res;
-      
+
       if (res.payload.meta.code == StatusCodes.OK) {
         router.push('/dashboard');
         toast.success(`Welcome Back ${res.payload.result.user.name}`);
@@ -46,7 +46,7 @@ const Login = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: TokenResponse) => {
       dispatch(authGoogle(tokenResponse)).then((res: any) => {
-        if (res.error) 
+        if (res.error)
           throw res;
 
         if (res.payload?.meta?.code == StatusCodes.OK || res.status == StatusCodes.OK) {

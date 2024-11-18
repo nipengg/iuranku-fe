@@ -21,4 +21,5 @@ export const PHONE_REGEX: RegExp = /\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g;
 export enum STATUS_SIGNIN {
     Authenticated = "Authenticated",
     Register = "Register",
+    UserRegister = "User Registered"
 }
