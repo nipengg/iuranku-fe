@@ -86,8 +86,7 @@ export const register = createAsyncThunk(
 
             return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 )

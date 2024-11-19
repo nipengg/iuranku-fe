@@ -4,7 +4,6 @@ import { UserRegister, UserRegisterInitial } from '@/model/Master/UserModel';
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import 'react-phone-input-2/lib/style.css'
 import { register } from '@/lib/features/authSlice';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
@@ -36,6 +35,7 @@ const RegisterGoogle = () => {
                 toast.success(`Welcome Back ${res.payload.result.user.name}`);
             }
         }).catch(function (err: any) {
+            console.log(err);
             if (err.payload !== undefined) {
                 toast.error(`Register Failed. ${err.payload.result.message}`);
             } else {
