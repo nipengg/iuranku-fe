@@ -7,10 +7,7 @@ import Link from "next/link";
 export default function Home() {
     return (
         <>
-            <div
-                className="relative isolate min-h-screen px-10 pt-4 lg:px-8 bg-custom-green-primary text-amber-100"
-                pb-8
-            >
+            <div className="relative isolate min-h-screen px-10 pt-2 lg:px-8 bg-custom-green-primary text-amber-100">
                 <Navbar />
                 {/* <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
           <div className="relative bg-custom-green-primary" ></div>
@@ -43,7 +40,7 @@ export default function Home() {
                 </div>
             </div> */}
                 {/* Flex container for text and image */}
-                <div className="flex flex-col md:flex-row">
+                <div className="flex flex-col md:flex-row mb-8">
                     {/* Text section */}
                     <div className="md:w-1/2 md:pr-8">
                         <h1 className="font-bold text-4xl md:text-6xl pt-10 md:pt-20">
@@ -63,42 +60,44 @@ export default function Home() {
                     {/* Image section */}
                     <div className="md:w-1/2 pt-10 md:pt-20">
                         <Image
-                            src="/path/to/your-image.jpg"
+                            src="/arcane1.jpg"
                             alt="Service Image"
-                            height={500}
-                            width={500}
+                            height={350}
+                            width={900}
+                            className="border"
                         />
                     </div>
                 </div>
-                <div className="bg-amber-100 text-black mx-5">
-                    <div className="flex flex-col md:flex-row w-full">
+                <div className="bg-amber-100 text-black pb-6 rounded-lg">
+                    <div className="flex flex-col md:flex-row w-full ">
                         {/* Meet Our Founders Section */}
-                        <div className="w-full flex flex-col items-center text-center mb-6">
+                        <div className="w-full flex flex-col items-center text-center mb-6 mt-12">
                             {/* Title */}
-                            <h1 className="text-lg md:text-xl mb-6">
+                            <h1 className="text-2lg md:text-xl font-bold mb-4 border-b-2 border-custom-green-primary px-3 pb-1">
                                 Meet Our Founders!
+                                {/* <div className="divider m-0" /> */}
                             </h1>
                             {/* Founders */}
                             <div className="flex justify-center space-x-8">
                                 {/* Founder 1 */}
                                 <div className="flex flex-col items-center">
                                     <Image
-                                        src="/path/to/image1.jpg"
+                                        src="/cait2.jpeg"
                                         alt="Nevil"
-                                        width={175}
-                                        height={175}
-                                        className="rounded-full"
+                                        width={225}
+                                        height={400}
+                                        className="rounded-md border reverse"
                                     />
-                                    <p className="mt-2">Nevil</p>
+                                    <p className="mt-2">Nevile</p>
                                 </div>
                                 {/* Founder 2 */}
                                 <div className="flex flex-col items-center">
                                     <Image
-                                        src="/path/to/image2.jpg"
+                                        src="/cait2.jpeg"
                                         alt="Damar"
-                                        width={175}
-                                        height={175}
-                                        className="rounded-full"
+                                        width={225}
+                                        height={400}
+                                        className="rounded-md border"
                                     />
                                     <p className="mt-2">Damar</p>
                                 </div>
@@ -106,11 +105,12 @@ export default function Home() {
                         </div>
 
                         {/* Apa itu IuranKu Section */}
-                        <div className="w-full flex flex-col items-center px-4 text-center">
-                            <h1 className="text-lg md:text-xl font-bold mb-4">
+                        <div className="w-full flex flex-col items-center px-4 text-center mt-12">
+                            <h1 className="text-lg md:text-xl font-bold mb-4 border-b-2 border-custom-green-primary px-3 pb-1">
                                 Apa itu IuranKu?
+                                {/* <div className="divider m-0" /> */}
                             </h1>
-                            <p className="mt-4 max-w-3xl">
+                            <p className="max-w-3xl">
                                 IuranKu adalah platform pembayaran Iuran yang
                                 dibuat untuk membantu para warga-warga yang
                                 memiliki hak penuh terhadap kepemilikan
@@ -125,6 +125,7 @@ export default function Home() {
                             </p>
                         </div>
                     </div>
+                    <div className="divider fill-black mx-12" />
                     <div className="flex flex-col items-center mt-7">
                         {/* Title and Text Section */}
                         <div className="text-center max-w-6xl mb-10 px-4">
@@ -208,6 +209,7 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+                <div className="pb-10" />
             </div>
             <Footer />
         </>
