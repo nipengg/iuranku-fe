@@ -1,17 +1,19 @@
-'use client';
+"use client";
+import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 
 export default function ClientLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode;
 }) {
-  return (
-    <>
-      <Navbar />
-      <div className="container mx-auto py-3.5">
-        {children}
-      </div>
-    </>
-  )
+    return (
+        <>
+            <Navbar />
+            <div className="container mx-auto py-3.5">
+                {children}
+                <Footer />
+            </div>
+        </>
+    );
 }
