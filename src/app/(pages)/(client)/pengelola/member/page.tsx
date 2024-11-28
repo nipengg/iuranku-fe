@@ -1,4 +1,4 @@
-import SectionHeadingWithTabs from "@/app/components/SectionHeadingWithTabs";
+import SectionHeadingWithTabs from "@/components/SectionHeadingWithTabs";
 
 export default function memberPage() {
     return (

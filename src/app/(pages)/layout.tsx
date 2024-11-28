@@ -1,5 +1,6 @@
 "use client";
 import Footer from "@/components/Footer/Footer";
+import Sidebar from "@/components/Sidebar/Sidebar";
 import { clearUserState } from "@/lib/features/authSlice";
 import { AppDispatch } from "@/lib/store";
 import { checkToken } from "@/utils/userSession";
@@ -31,10 +32,5 @@ export default function ClientLayout({
         });
     }, [dispatch]);
 
-    return (
-        <>
-            {children}
-            <Footer />
-        </>
-    );
+    return <>{children}</>;
 }

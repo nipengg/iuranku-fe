@@ -20,7 +20,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="flex items-center justify-between flex-wrap bg-custom-green-primary border-b-2 border-amber-100">
+        <nav className="flex items-center justify-between flex-wrap bg-custom-green-primary border-b-2 border-amber-100 px-4 pl-6">
             {/* Left Section */}
             <div className="flex items-center flex-shrink-0 text-custom-yellow-primary">
                 <Link href="/dashboard">
