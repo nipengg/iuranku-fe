@@ -216,3 +216,5 @@ const RegisterRegular = () => {
         </div>
     )
 }
+
+export default RegisterRegular;
