@@ -16,10 +16,10 @@ export interface User extends BaseModel {
 export interface UserRegister {
     name: string;
     email: string;
-    gender: string | null;
-    address: string | null;
-    phone: string | null;
-    password: string | null;
+    gender: string;
+    address: string;
+    phone: string;
+    password: string;
 }
 
 export interface UserResponseLogin extends BaseResponse {

@@ -2,7 +2,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
 import { ACCESS_TOKEN } from '@/constant';
-import { redirect } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes';
 
 interface RequestParams {
@@ -17,6 +16,7 @@ axios.interceptors.request.use(
         const accessToken = cookies().get(ACCESS_TOKEN);
         const AUTH_TOKEN = "Bearer " + accessToken?.value;
         config.headers.Authorization = AUTH_TOKEN;
+        config.headers.Accept = 'application/json';
         return config;
     },
     function (error) {
@@ -26,15 +26,15 @@ axios.interceptors.request.use(
 
 // Add a response interceptor
 axios.interceptors.response.use(
-    function (response) {
+    function (response: any) {
         if (response.status == StatusCodes.UNAUTHORIZED) {
-
+            cookies().delete(ACCESS_TOKEN);
         }
         return response;
     },
     function (error) {
         if (error.response.status == StatusCodes.UNAUTHORIZED) {
-
+            cookies().delete(ACCESS_TOKEN);
         }
         return Promise.reject(error);
     },
@@ -46,16 +46,14 @@ async function request(url: string, { method, data, params }: RequestParams = {}
         const res = await axios({ url, method, data, params, ...options });
         return res.data;
     } catch (error: any) {
-        if (error.response.status === StatusCodes.UNAUTHORIZED) {
-            cookies().delete(ACCESS_TOKEN);
-            redirect('/login');
-        }
-        return error.response.data;
+        console.log(error.response.data);
+        if (error.response.data) return error.response.data;
+        else throw error;
     }
 }
 
 // Inherit request
-export async function get(url: string, params?: any, options?: AxiosRequestConfig) {    
+export async function get(url: string, params?: any, options?: AxiosRequestConfig) {
     return await request(url, { method: "get", params }, options);
 }
 

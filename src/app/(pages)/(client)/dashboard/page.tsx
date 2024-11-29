@@ -1,6 +1,9 @@
-'use client';
+"use client";
 import GroupCard from "@/components/Card/GroupCard";
 import PageSkeleton from "@/components/Skeleton/PageSkeleton";
+import TabBerita from "@/components/TabBerita/TabBerita";
+import TabPengunguman from "@/components/TabPengunguman/TabPengunguman";
+import compCaSlide from "@/components/CompCaSlide/CompCaSlide";
 import { getGroupMember } from "@/lib/features/groupSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { GroupMember } from "@/model/Master/GroupModel";
@@ -10,49 +13,90 @@ import { StatusCodes } from "http-status-codes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import CompCaSlide from "@/components/CompCaSlide/CompCaSlide";
 
-async function fetchGroupMember(dispatch: AppDispatch, userId: number): Promise<any> {
-    const response = await dispatch(getGroupMember({ user_id: userId }));
+async function fetchGroupMember(
+    dispatch: AppDispatch,
+    userId: number
+): Promise<any> {
+    try {
+        const response: any = await dispatch(
+            getGroupMember({ user_id: userId })
+        );
+        if (response.error) throw response;
 
-    if (response != undefined)
         return response.payload;
+    } catch (error) {
+        throw error;
+    }
 }
 
 export default function Dashboard() {
     const dispatch = useDispatch<AppDispatch>();
     const userState: User = useSelector((state: RootState) => state.auth.user);
-    const groupState: GroupState = useSelector((state: RootState) => state.group);
+    const groupState: GroupState = useSelector(
+        (state: RootState) => state.group
+    );
     const [groupMember, setGroupMember] = useState<GroupMember[]>([]);
 
     useEffect(() => {
-        fetchGroupMember(dispatch, userState.id).then((res) => {
-            if (res.meta.code == StatusCodes.OK) {
-                setGroupMember(res.result.groups || []);
-            } else {
-                toast.error(`Get Data Failed. ${res.result.message}`);
-            }
-        }).catch(function (error) {
-            toast.error(`Session Expired. Please Sign In`);
-        });
+        fetchGroupMember(dispatch, userState.id)
+            .then((res) => {
+                if (res.error) throw res;
+
+                if (res.meta.code == StatusCodes.OK) {
+                    setGroupMember(res.result.groups || []);
+                }
+            })
+            .catch(function (err) {
+                toast.error(`Get Data Failed. ${err.payload.result?.message}`);
+            });
     }, []);
 
     return (
         <>
-            <h1 className="font-bold text-2xl mb-5">Dashboard Page</h1>
-            {
-                groupState.isLoading ? <PageSkeleton /> :
-                    <>
-                        <div className="grid grid-cols-3 gap-4">
-                            {groupMember.map((item: GroupMember, index) => {
-                                return (
-                                    <div className="col-span-1" key={index}>
-                                        <GroupCard groupMember={item} />
-                                    </div>
-                                );
-                            })}
+            <h1 className="font-bold text-2xl mb-5">Your Groups</h1>
+            {groupState.isLoading ? (
+                <PageSkeleton />
+            ) : (
+                <>
+                    {groupMember.length !== 0 ? (
+                        <>
+                            <div className="grid grid-cols-3 gap-4">
+                                {groupMember.map((item: GroupMember, index) => {
+                                    return (
+                                        <div className="col-span-1" key={index}>
+                                            <GroupCard groupMember={item} />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <p>
+                                You&apos;re not joined to any group right now...
+                            </p>
+                        </>
+                    )}
+                    <div className="text-black">
+                        <div className="text-center mb-5">
+                            <h1 className="text-3xl font-bold">
+                                Welcome Back, User!
+                            </h1>
                         </div>
-                    </>
-            }
+                        <div className="divider" />
+                        <CompCaSlide />
+                        {/* Tab */}
+                        <div className="space-y-8">
+                            <div className="flex space-x-8">
+                                <TabPengunguman />
+                                <TabBerita />
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </>
-    )
+    );
 }

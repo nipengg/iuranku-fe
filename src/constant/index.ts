@@ -1,7 +1,8 @@
 // Constant
 export const API_URL: string = process.env.DATABASE_CONNECTION_STRING as string == 'prod' ? process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL as string : process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL_LOCAL as string;
 export const ACCESS_TOKEN: string = process.env.NEXT_PUBLIC_APP_COOKIES_TOKEN as string;
-export const TOKEN_GOOGLE: string = process.env.NEXT_PUBLIC_APP_COOKIES_TOKEN_GOOGLE as string
+export const TOKEN_GOOGLE: string = process.env.NEXT_PUBLIC_APP_COOKIES_TOKEN_GOOGLE as string;
+export const PUBLIC_BASE_URL_LOCAL: string = process.env.NEXT_PUBLIC_BASE_URL_LOCAL as string;
 export const GOOGLE_USER_INFO_API: string = 'https://www.googleapis.com/oauth2/v3/userinfo';
 export const GOOGLE_CLIENT_ID: string = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string;
 export const GOOGLE_CLIENT_SECRET: string = process.env.GOOGLE_CLIENT_SECRET as string;
@@ -20,4 +21,5 @@ export const PHONE_REGEX: RegExp = /\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g;
 export enum STATUS_SIGNIN {
     Authenticated = "Authenticated",
     Register = "Register",
+    UserRegister = "User Registered"
 }

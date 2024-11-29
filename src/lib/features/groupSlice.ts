@@ -1,8 +1,8 @@
-import { redirectSessionExpired } from "@/components/Modal/ModalSessionExpired";
 import { API_URL } from "@/constant";
 import { GroupState, GroupStateInitial } from "@/model/redux/Group";
 import { get } from "@/utils/request";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { checkResponse } from "./sliceHelper";
 
 const initialState: GroupState = { ...GroupStateInitial };
 const URL = `${API_URL}/group`;
@@ -12,10 +12,10 @@ export const getGroupMember = createAsyncThunk(
     async (params: object, thunkAPI) => {
         try {
             const response = await get(`${URL}/getGroup`, params);
+            checkResponse(response);
             return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            throw thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 )
@@ -24,7 +24,7 @@ const groupSlice = createSlice({
     name: 'auth',
     initialState: initialState,
     reducers: {
-
+        
     },
     extraReducers: (builder) => {
         // Get Group Member

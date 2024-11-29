@@ -1,4 +1,4 @@
-import { MappingUserGoogleToRequestObject, MappingUserToFormData, User, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
+import { MappingUserGoogleToRequestObject, MappingUserToFormData, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -6,6 +6,8 @@ import axios, { AxiosResponse } from "axios";
 import { getTokenAsync, removeToken, removeTokenGoogle, saveToken, saveTokenGoogle } from "../../utils/userSession";
 import { TokenResponse } from "@react-oauth/google";
 import { StatusCodes } from "http-status-codes";
+import { get, post } from "@/utils/request";
+import { checkResponse } from "./sliceHelper";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
@@ -13,20 +15,22 @@ export const login = createAsyncThunk(
     "auth/login",
     async (data: UserLoginForm, thunkAPI) => {
         try {
-            const response = await axios.post(`${API_URL}/login`, data, {
-                headers: {
-                    Accept: 'application/json',
-                },
-            });
-            
-            const responseForm: UserResponseLogin = { ...response.data };
+            // Login to Laravel
+            const response = await post(`${API_URL}/login`, data);
 
+            // Check if Success
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
+
+            // Mapping to model
+            const responseForm: UserResponseLogin = { ...response };
+
+            // Save token to Cookies
             await saveToken(responseForm.result.access_token);
 
-            return response.data;
+            return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 ) as any;
@@ -35,7 +39,7 @@ export const authGoogle = createAsyncThunk(
     "auth/login/google",
     async (tokenResponse: TokenResponse, thunkAPI) => {
         try {
-            const userInfo: any = await axios.get(GOOGLE_USER_INFO_API, {
+            const userInfo: AxiosResponse<any, any> = await axios.get(GOOGLE_USER_INFO_API, {
                 headers: {
                     Authorization: `Bearer ${tokenResponse.access_token}`
                 }
@@ -43,23 +47,23 @@ export const authGoogle = createAsyncThunk(
 
             const reqObj: object = await MappingUserGoogleToRequestObject(userInfo.data.name, userInfo.data.email);
 
-            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/googleOAuth`, {
+            const response = await post(`${API_URL}/googleOAuth`, {
                 ...reqObj,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            })
+
+            // Check if Success
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
 
             if (tokenResponse !== undefined)
                 saveTokenGoogle(tokenResponse);
 
-            if (response.data.meta.message == STATUS_SIGNIN.Authenticated)
-                await saveToken(response.data.result.access_token);
+            if (response.meta.message == STATUS_SIGNIN.Authenticated)
+                await saveToken(response.result.access_token);
 
-            return response.data;
+            return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 )
@@ -68,22 +72,21 @@ export const register = createAsyncThunk(
     "auth/register",
     async (data: UserRegister, thunkAPI) => {
         try {
+            
+            const response = await post(`${API_URL}/register`, data);
 
-            const formData: FormData = MappingUserToFormData(data);
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
 
-            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/register`, {
-                data: formData,
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            });
+            // Mapping to model
+            const responseForm: UserResponseLogin = { ...response };
 
-            const userResponse: UserResponseLogin = response.data;
+            // Save token to Cookies
+            await saveToken(responseForm.result.access_token);
 
-            return userResponse;
+            return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 )
@@ -92,26 +95,36 @@ export const logout = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
         try {
-
             const access_token: any = await getTokenAsync();
 
-            const response: AxiosResponse<any, any> = await axios.post(`${API_URL}/logout`, null, {
+            const response = await post(`${API_URL}/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${access_token.value}`,
                     Accept: 'application/json',
                 },
             });
 
-            if (response.data.meta.code == StatusCodes.OK) {
-                await removeToken();
-                await removeTokenGoogle();
-            }
+            checkResponse(response);
 
-            return response.data;
+            await removeToken();
+            await removeTokenGoogle();
 
+            return response;
         } catch (err: any) {
-            if (!err.response) throw err;
-            return thunkAPI.rejectWithValue(err.response.data);
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
+export const fetch = createAsyncThunk(
+    "auth/fetch",
+    async (_, thunkAPI) => {
+        try {
+            const response = await get(`${API_URL}/fetch`);
+            checkResponse(response);
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
         }
     }
 )
@@ -165,6 +178,7 @@ const authSlice = createSlice({
         });
         builder.addCase(register.fulfilled, (state, action) => {
             state.isLoading = false;
+            state.user = action.payload.result.user;
         });
         builder.addCase(register.rejected, (state, action) => {
             state.isLoading = false;
@@ -181,6 +195,19 @@ const authSlice = createSlice({
             state.user = UserInitial;
         });
         builder.addCase(logout.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        // Fetch
+        builder.addCase(fetch.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(fetch.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+        });
+        builder.addCase(fetch.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });
