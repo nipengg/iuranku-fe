@@ -1,4 +1,6 @@
-'use client';
+"use client";
+import Footer from "@/components/Footer/Footer";
+import Sidebar from "@/components/Sidebar/Sidebar";
 import { clearUserState } from "@/lib/features/authSlice";
 import { AppDispatch } from "@/lib/store";
 import { checkToken } from "@/utils/userSession";
@@ -16,7 +18,7 @@ async function checkAuth(): Promise<any> {
 export default function ClientLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 }) {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
@@ -25,14 +27,10 @@ export default function ClientLayout({
         checkAuth().then((res: boolean) => {
             if (!res) {
                 dispatch(clearUserState());
-                router.push('/login');
+                router.push("/login");
             }
         });
     }, [dispatch]);
 
-    return (
-        <>
-            {children}
-        </>
-    )
+    return <>{children}</>;
 }
