@@ -117,6 +117,7 @@ const RegisterRegular = () => {
                         {/* Gender */}
                         <div className="mb-4">
                             <label className="block  text-sm font-bold mb-2">
+                            <label className="block  text-sm font-bold mb-2">
                                 Gender
                             </label>
                             <div className="flex flex-row">
@@ -134,6 +135,7 @@ const RegisterRegular = () => {
                                     />
                                     Male
                                 </label>
+                                <label className=" mr-4">
                                 <label className=" mr-4">
                                     <input
                                         type="radio"
@@ -154,6 +156,7 @@ const RegisterRegular = () => {
                             <div className="w-full md:w-1/2 pr-0 md:pr-2 mb-4 md:mb-0">
                                 <label
                                     className="block  text-sm font-bold mb-2"
+                                    className="block  text-sm font-bold mb-2"
                                     htmlFor="password"
                                 >
                                     Password
@@ -172,6 +175,7 @@ const RegisterRegular = () => {
                             <div className="w-full md:w-1/2 pl-0 md:pl-2">
                                 <label
                                     className="block  text-sm font-bold mb-2"
+                                    className="block  text-sm font-bold mb-2"
                                     htmlFor="confirmPassword"
                                 >
                                     Confirm Password
@@ -187,6 +191,7 @@ const RegisterRegular = () => {
                             </div>
                         </div>
                         <div className="mb-4">
+                            <label className="block  text-sm font-bold mb-2">
                             <label className="block  text-sm font-bold mb-2">
                                 Address
                             </label>
