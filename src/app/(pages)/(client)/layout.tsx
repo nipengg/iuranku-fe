@@ -20,7 +20,7 @@ export default function ClientLayout({
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 container mx-auto py-3.5">
+                <main className="flex-1 container ml-6 mr-auto py-3.5">
                     {children}
                 </main>
             </div>

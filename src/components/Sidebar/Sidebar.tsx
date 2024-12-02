@@ -15,6 +15,7 @@ const Sidebar = () => {
     return (
         <aside className="h-full min-h-screen w-64 bg-white text-gray-800 border-r">
             <nav className="p-4">
+                <h1 className="text-xs mb-2">Role: XXXX</h1>
                 <span className="text-xs font-bold">Main</span>
                 <ul className="space-y-4 mt-4">
                     {sidebarLinks.map((link, index) => (
