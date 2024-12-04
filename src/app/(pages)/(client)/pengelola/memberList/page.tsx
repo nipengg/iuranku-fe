@@ -1,6 +1,6 @@
 import SectionHeadingWithTabs from "@/components/SectionHeadingWithTabs";
 
-export default function memberPage() {
+export default function memberList() {
     return (
         <div>
             <SectionHeadingWithTabs />
