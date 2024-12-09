@@ -1,7 +1,11 @@
 import Link from "next/link";
 
-const Sidebar = () => {
-    const sidebarLinks = [
+interface SidebarProps {
+    links: { href: string; label: string }[];
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ links }) => {
+    const sidebarOldLinks = [
         { href: "/about", label: "About" },
         { href: "/profile", label: "Profile" },
         { href: "/housing", label: "Housing" },
@@ -18,7 +22,7 @@ const Sidebar = () => {
                 <h1 className="text-xs mb-2">Role: XXXX</h1>
                 <span className="text-xs font-bold">Main</span>
                 <ul className="space-y-4 mt-4">
-                    {sidebarLinks.map((link, index) => (
+                    {links.map((link, index) => (
                         <li key={index}>
                             <Link
                                 href={link.href}

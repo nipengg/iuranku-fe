@@ -19,13 +19,6 @@ const Editor: React.FC = () => {
                 theme="snow"
                 className="h-64"
             />
-            <div className="mt-16">
-                <h3 className="text-lg font-semibold">Preview:</h3>
-                <div
-                    className="border p-4 mt-2"
-                    dangerouslySetInnerHTML={{ __html: content }}
-                ></div>
-            </div>
         </div>
     );
 };

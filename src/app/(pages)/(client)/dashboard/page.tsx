@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CompCaSlide from "@/components/CompCaSlide/CompCaSlide";
+import Navbar from "@/components/Navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
 
 async function fetchGroupMember(
     dispatch: AppDispatch,
@@ -55,6 +57,7 @@ export default function Dashboard() {
 
     return (
         <>
+
             <h1 className="font-bold text-2xl mb-5">Your Groups</h1>
             {groupState.isLoading ? (
                 <PageSkeleton />
@@ -79,24 +82,9 @@ export default function Dashboard() {
                             </p>
                         </>
                     )}
-                    <div className="text-black">
-                        <div className="text-center mb-5">
-                            <h1 className="text-3xl font-bold">
-                                Welcome Back, User!
-                            </h1>
-                        </div>
-                        <div className="divider" />
-                        <CompCaSlide />
-                        {/* Tab */}
-                        <div className="space-y-8">
-                            <div className="flex space-x-8">
-                                <TabPengunguman />
-                                <TabBerita />
-                            </div>
-                        </div>
-                    </div>
                 </>
             )}
+
         </>
     );
 }
