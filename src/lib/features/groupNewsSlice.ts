@@ -1,17 +1,17 @@
 import { API_URL } from "@/constant";
-import { GroupState, GroupStateInitial } from "@/model/redux/Group";
+import { GroupNewsState, GroupNewsStateInitial } from "@/model/redux/GroupNews";
 import { get } from "@/utils/request";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { checkResponse } from "./sliceHelper";
 
-const initialState: GroupState = { ...GroupStateInitial };
-const URL = `${API_URL}/group`;
+const initialState: GroupNewsState = { ...GroupNewsStateInitial };
+const URL = `${API_URL}/group/news`;
 
-export const getGroupMember = createAsyncThunk(
-    "group/getGroup",
+export const getGroupNews = createAsyncThunk(
+"group/getGroupNews",
     async (params: object, thunkAPI) => {
         try {
-            const response = await get(`${URL}/getGroup`, params);
+            const response = await get(`${URL}`, params);
             checkResponse(response);
             return response;
         } catch (err: any) {
@@ -20,26 +20,23 @@ export const getGroupMember = createAsyncThunk(
     }
 )
 
-const groupSlice = createSlice({
-    name: 'group',
+const groupNewsSlice = createSlice({
+    name: 'groupNews',
     initialState: initialState,
     reducers: {
         
     },
     extraReducers: (builder) => {
         // Get Group Member
-        builder.addCase(getGroupMember.pending, (state, action) => {
+        builder.addCase(getGroupNews.pending, (state, action) => {
             state.isLoading = true;
         });
-        builder.addCase(getGroupMember.fulfilled, (state, action) => {
+        builder.addCase(getGroupNews.fulfilled, (state, action) => {
             state.isLoading = false;
         });
-        builder.addCase(getGroupMember.rejected, (state, action) => {
+        builder.addCase(getGroupNews.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });
     }
 })
-
-export const { } = groupSlice.actions;
-export default groupSlice.reducer;
