@@ -11,23 +11,6 @@ export default function SectionHeadingWithTabs() {
 
     return (
         <div className="container mx-auto pb-8">
-            {/* Heading and Actions */}
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-3xl font-bold mb-4">Member List</h1>
-                <div className="flex space-x-4">
-                    {actions.map((action, index) => (
-                        <button
-                            key={index}
-                            onClick={action.action}
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition"
-                        >
-                            {action.label}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Tabs */}
             <div className="border-b border-gray-300">
                 <nav className="flex space-x-4">
                     {tabs.map((tab) => (
@@ -46,7 +29,6 @@ export default function SectionHeadingWithTabs() {
                 </nav>
             </div>
 
-            {/* Tab Content */}
             <div className="mt-6">
                 {activeTab === "Joined Members" && <MemberTable />}
                 {activeTab === "Invited Members" && <MemberTable />}
