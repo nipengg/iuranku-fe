@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import MemberTable from "./MemberTable";
 
 export default function SectionHeadingWithTabs() {
     const [activeTab, setActiveTab] = useState("Overview");
@@ -12,7 +13,7 @@ export default function SectionHeadingWithTabs() {
         <div className="container mx-auto pb-8">
             {/* Heading and Actions */}
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold">Member</h2>
+                <h1 className="text-3xl font-bold mb-4">Member List</h1>
                 <div className="flex space-x-4">
                     {actions.map((action, index) => (
                         <button
@@ -47,15 +48,9 @@ export default function SectionHeadingWithTabs() {
 
             {/* Tab Content */}
             <div className="mt-6">
-                {activeTab === "Joined Members" && (
-                    <p>This is the Joined Members content.</p>
-                )}
-                {activeTab === "Invited Members" && (
-                    <p>This is the Invited Members content.</p>
-                )}
-                {activeTab === "Leave Members" && (
-                    <p>This is the Leave Members content.</p>
-                )}
+                {activeTab === "Joined Members" && <MemberTable />}
+                {activeTab === "Invited Members" && <MemberTable />}
+                {activeTab === "Leave Members" && <MemberTable />}
             </div>
         </div>
     );

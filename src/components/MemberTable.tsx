@@ -1,4 +1,4 @@
-export default function PaymentTable() {
+export default function MemberTable() {
     return (
         <div className="overflow-x-auto text-black">
             <table className="table table-zebra">
@@ -6,12 +6,10 @@ export default function PaymentTable() {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>User</th>
-                        <th>Invoice</th>
+                        <th>Full Name</th>
                         <th>Address</th>
-                        <th>Payment Date</th>
-                        <th>Invoice Detail</th>
-                        <th>Action</th>
+                        <th>Joined Date</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
