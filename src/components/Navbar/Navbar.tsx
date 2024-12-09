@@ -35,27 +35,32 @@ const Navbar = () => {
                 <div className="text-sm lg:flex lg:items-center lg:ml-auto">
                     {user.id
                         ? menuTabs.map((menu: any, index) => {
-                              return (
-                                  <Link
-                                      key={index}
-                                      href={menu.url}
-                                      className="block mt-4 lg:inline-block lg:mt-0 text-custom-yellow-primary hover:text-white mr-4"
-                                  >
-                                      {menu.value}
-                                  </Link>
-                              );
-                          })
+                            return (
+                                <Link
+                                    key={index}
+                                    href={menu.url}
+                                    className="block mt-4 lg:inline-block lg:mt-0 text-custom-yellow-primary hover:text-white mr-4"
+                                >
+                                    {menu.value}
+                                </Link>
+                            );
+                        })
                         : menuGuestTabs.map((menu: any, index) => {
-                              return (
-                                  <Link
-                                      key={index}
-                                      href={menu.url}
-                                      className="block mt-4 lg:inline-block lg:mt-0 text-custom-yellow-primary hover:text-white mr-4"
-                                  >
-                                      {menu.value}
-                                  </Link>
-                              );
-                          })}
+                            return (
+                                <Link
+                                    key={index}
+                                    href={menu.url}
+                                    className="block mt-4 lg:inline-block lg:mt-0 text-custom-yellow-primary hover:text-white mr-4"
+                                >
+                                    {menu.value}
+                                </Link>
+                            );
+                    })}
+                    {
+                        user.id ?
+                            <button onClick={() => handleLogout()} className="block mt-4 lg:inline-block lg:mt-0 text-custom-yellow-primary hover:text-white mr-4s">Logout</button>
+                            : ''
+                    }
                 </div>
             </div>
         </nav>
