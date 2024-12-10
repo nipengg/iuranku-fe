@@ -1,4 +1,4 @@
-import SectionHeadingWithTabs from "@/components/SectionHeadingWithTabs";
+import SectionHeadingWithTabs from "@/components/no longer in use/SectionHeadingWithTabs";
 
 export default function memberList() {
     return (

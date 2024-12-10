@@ -43,7 +43,6 @@ const HousingPage: React.FC = () => {
     return (
         <div>
             <h1 className="text-2xl font-bold mb-6">Your Group</h1>
-            {/* Card Flexbox */}
             <div className="flex flex-wrap gap-6">
                 {housingData.map((house) => (
                     <HousingCard
