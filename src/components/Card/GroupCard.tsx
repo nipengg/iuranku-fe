@@ -37,9 +37,7 @@ const GroupCard: React.FunctionComponent<IGroupCardProps> = (props) => {
                     <div className="card-actions justify-end mb-3">
                         <button
                             onClick={() =>
-                                router.push(
-                                    `/group/${encryptData(String(groupMember.group?.id))}`
-                                )
+                                router.push(`/group/${encodeURIComponent(encryptData(String(groupMember.group?.id)))}`)
                             }
                             className="btn btn-primary"
                         >
