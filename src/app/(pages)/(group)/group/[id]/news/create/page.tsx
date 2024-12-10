@@ -1,7 +1,6 @@
 import Editor from "@/components/Editor";
 
 export default function CreateNews({ params }: { params: { id: string } }) {
-
     return (
         <>
             <div className="text-black p-6 bg-white">
@@ -14,7 +13,9 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                     {/* Title Input */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text text-xl font-bold">Judul Berita</span>
+                            <span className="label-text text-xl font-bold">
+                                Judul Berita
+                            </span>
                         </label>
                         <input
                             type="text"
@@ -26,7 +27,9 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                     {/* Image Input */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text text-xl font-bold">Gambar Berita</span>
+                            <span className="label-text text-xl font-bold">
+                                Gambar Berita
+                            </span>
                         </label>
                         <input
                             type="file"
@@ -37,14 +40,18 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                     {/* Text Editor */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text text-xl font-bold">Konten Berita</span>
+                            <span className="label-text text-xl font-bold">
+                                Konten Berita
+                            </span>
                         </label>
                         <Editor />
                     </div>
 
                     {/* Submit Button */}
                     <div className="form-control">
-                        <button className="btn btn-primary w-full text-lg mt-10">Submit</button>
+                        <button className="btn bg-custom-green-primary w-full text-lg mt-10 text-white hover:text-black">
+                            Submit
+                        </button>
                     </div>
                 </form>
             </div>
