@@ -1,4 +1,8 @@
-import SectionHeadingWithTabs from "@/components/Member/SectionHeadingWithTabs";
+"use client";
+
+import MemberTable from "@/components/MemberTable";
+import Tabs from "@/components/Member/Tabs";
+import { useState } from "react";
 
 export default function GroupMember({ params }: { params: { id: string } }) {
     
