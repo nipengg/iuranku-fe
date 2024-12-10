@@ -1,9 +1,11 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import authSlice from './features/authSlice'
-import { persistStore, persistReducer } from 'redux-persist'
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import authSlice from './features/authSlice';
+import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import groupSlice from './features/groupSlice';
-import groupNewsSlice from './features/groupNewsSlice'
+import groupNewsSlice from './features/groupNewsSlice';
+import groupMembersSlice from './features/groupMemberSlice';
+import groupApplicationSlice from './features/groupApplicationSlice';
 
 const persistConfig = {
     key: 'root',
@@ -13,7 +15,9 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authSlice,
     group: groupSlice,
-    groupNews: groupNewsSlice
+    groupNews: groupNewsSlice,
+    groupMember: groupMembersSlice,
+    groupApplication: groupApplicationSlice
 });
 
 export const store = configureStore({

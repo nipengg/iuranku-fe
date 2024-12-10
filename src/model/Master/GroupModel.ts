@@ -1,4 +1,5 @@
 import { BaseModel } from "./BaseModel";
+import { User, UserInitial } from "./UserModel";
 
 export interface Group extends BaseModel {
     group_name: string;
@@ -12,11 +13,11 @@ export interface MemberType extends BaseModel {
 
 export interface GroupMember extends BaseModel {
     group: Group | null;
+    user: User | null;
     member_type: MemberType | null;
     status: "Active" | "Not Active" | null;
     join_date: Date | null;
     leave_date: Date | null;
-    leave_type: Date | null;
     leave_note: string | null;
 }
 
@@ -41,11 +42,11 @@ export const MemberTypeInitial: MemberType = {
 export const GroupMemberInitial: GroupMember = {
     id: null,
     group: GroupInitial,
+    user: UserInitial,
     member_type: MemberTypeInitial,
     status: null,
     join_date: null,
     leave_date: null,
-    leave_type: null,
     leave_note: null,
     created_at: null,
     updated_at: null,

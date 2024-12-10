@@ -1,10 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import MemberTable from "./MemberTable";
+import JoinedMember from "./JoinedMember";
+import InvitedMember from "./InvitedMember";
+import LeaveMember from "./LeaveMember";
 
-export default function SectionHeadingWithTabs() {
-    const [activeTab, setActiveTab] = useState("Overview");
+interface Props {
+    id: string
+}
+
+const SectionHeadingWithTabs: React.FunctionComponent<Props> = ({ id }) => {
+    const [activeTab, setActiveTab] = useState("Joined Members");
 
     const tabs = ["Joined Members", "Invited Members", "Leave Members"];
     const actions = [{ label: "Invite", action: () => console.log("Invite") }];
@@ -30,10 +36,12 @@ export default function SectionHeadingWithTabs() {
             </div>
 
             <div className="mt-6">
-                {activeTab === "Joined Members" && <MemberTable />}
-                {activeTab === "Invited Members" && <MemberTable />}
-                {activeTab === "Leave Members" && <MemberTable />}
+                {activeTab === "Joined Members" && <JoinedMember id={id} />}
+                {activeTab === "Invited Members" && <InvitedMember id={id} />}
+                {activeTab === "Leave Members" && <LeaveMember id={id} />}
             </div>
         </div>
     );
 }
+
+export default SectionHeadingWithTabs;
