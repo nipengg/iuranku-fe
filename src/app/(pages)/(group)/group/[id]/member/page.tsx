@@ -1,14 +1,9 @@
-"use client";
-
-import MemberTable from "@/components/MemberTable";
-import Tabs from "@/components/Member/Tabs";
-import { useState } from "react";
+import SectionHeadingWithTabs from "@/components/Member/SectionHeadingWithTabs";
 
 export default function GroupMember({ params }: { params: { id: string } }) {
     
     const baseUrl = `/group/${params.id}/member`;
     const actions = [{ label: "Invite", action: () => console.log("Invite") }];
-
     return (
         <>
             <div className="text-black">

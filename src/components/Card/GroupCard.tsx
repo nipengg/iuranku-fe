@@ -1,8 +1,6 @@
 import { GroupMember } from "@/model/Master/GroupModel";
 import { useRouter } from "next/navigation";
-import crypt from "crypto-js";
 import React from "react";
-import { SECRET_KEY } from "@/constant";
 import { encryptData } from "@/utils/crypt";
 
 interface IGroupCardProps {
