@@ -3,31 +3,27 @@
 import { useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import Link from "next/link";
+import { GroupNews } from "@/model/Master/GroupNews";
 
 interface Props {
-  groupId: string,
-  newsId: string
+  groupId: string;
+  groupNews: GroupNews;
+  onDelete: (id: string, title: string) => void;  // Update onDelete prop to accept both id and title
 }
 
-const CardGroupNews: React.FC<Props> = ({ groupId, newsId }) => {
+const CardGroupNews: React.FC<Props> = ({ groupId, groupNews, onDelete }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
     <div>
-      <h2 className="font-bold text-2xl mb-2">News 1.2</h2>
       <div className="flex justify-between items-start">
-        {/* Wrap the news content with a Link to navigate to the detail page */}
-        <Link href={`/group/${groupId}/news/${newsId}`}>
-          <p className="mr-20 text-justify cursor-pointer hover:text-blue-600">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-            ad voluptas earum quidem quibusdam laboriosam, illo similique, quae
-            asperiores ipsam, veniam id! Voluptatibus delectus accusamus
-            corrupti labore pariatur architecto quasi.
-          </p>
-        </Link>
-
+        <h2 className="font-bold text-2xl mb-2">
+          <Link href={`/group/${groupId}/news/${groupNews.id}`}>
+            {groupNews.news_title}
+          </Link>
+        </h2>
         {/* Three-Dot Dropdown */}
         <div className="relative">
           <button
@@ -41,12 +37,15 @@ const CardGroupNews: React.FC<Props> = ({ groupId, newsId }) => {
             <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-md border">
               <ul className="space-y-2">
                 <li>
-                  <button className="block w-full text-left p-2 text-sm hover:bg-gray-200">
+                  <Link className="block w-full text-left p-2 text-sm hover:bg-gray-200" href={`/group/${groupId}/news/edit/${groupNews.id}`}>
                     Edit
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button className="block w-full text-left p-2 text-sm hover:bg-gray-200">
+                  <button
+                    className="block w-full text-left p-2 text-sm hover:bg-gray-200"
+                    onClick={() => onDelete(String(groupNews.id), groupNews.news_title)}
+                  >
                     Delete
                   </button>
                 </li>
@@ -58,6 +57,6 @@ const CardGroupNews: React.FC<Props> = ({ groupId, newsId }) => {
       <div className="divider" />
     </div>
   );
-}
+};
 
-export default CardGroupNews
+export default CardGroupNews;

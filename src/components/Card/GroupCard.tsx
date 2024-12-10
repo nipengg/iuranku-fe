@@ -1,7 +1,9 @@
 import { GroupMember } from "@/model/Master/GroupModel";
 import { useRouter } from "next/navigation";
-import sha256 from "crypto-js/sha256";
+import crypt from "crypto-js";
 import React from "react";
+import { SECRET_KEY } from "@/constant";
+import { encryptData } from "@/utils/crypt";
 
 interface IGroupCardProps {
     groupMember: GroupMember;
@@ -36,9 +38,7 @@ const GroupCard: React.FunctionComponent<IGroupCardProps> = (props) => {
                         <button
                             onClick={() =>
                                 router.push(
-                                    `/group/${sha256(
-                                        String(groupMember.group?.id)
-                                    )}`
+                                    `/group/${encryptData(String(groupMember.group?.id))}`
                                 )
                             }
                             className="btn btn-primary"

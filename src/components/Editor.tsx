@@ -1,23 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const Editor: React.FC = () => {
-    const [content, setContent] = useState<string>("");
+interface EditorProps {
+    value: string;
+    readOnly: boolean;
+    onChange: (value: string) => void;
+}
 
-    const handleChange = (value: string) => {
-        setContent(value);
-    };
-
+const Editor: React.FC<EditorProps> = ({ value, readOnly, onChange }) => {
     return (
         <div className="container mx-auto">
             <ReactQuill
-                value={content}
-                onChange={handleChange}
+                value={value}
+                onChange={onChange}
                 theme="snow"
                 className="h-64"
+                readOnly={readOnly}
             />
         </div>
     );

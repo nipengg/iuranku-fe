@@ -1,80 +1,109 @@
-"use client"
+"use client";
 
 import Editor from "@/components/Editor";
-import { insertGroupNews } from "@/lib/features/groupNewsSlice";
+import { getGroupNewsDetail, updateGroupNews } from "@/lib/features/groupNewsSlice";
 import { AppDispatch, RootState } from "@/lib/store";
-import { InsertGroupNewsForm, InsertGroupNewsFormInitial } from "@/model/Master/GroupNews";
+import { UpdateGroupNewsForm } from "@/model/Master/GroupNews";
 import { GroupNewsState } from "@/model/redux/GroupNews";
-import { decryptData } from "@/utils/crypt";
 import { StatusCodes } from "http-status-codes";
-import { useRouter } from 'next/navigation'
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function CreateNews({ params }: { params: { id: string } }) {
-
+export default function EditNews({ params }: { params: { id: string; newsId: string } }) {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const [form, setForm] = useState<InsertGroupNewsForm>({ ...InsertGroupNewsFormInitial });
-    const user = useSelector((state: RootState) => state.auth.user);
+    const [form, setForm] = useState<UpdateGroupNewsForm | null>(null);
     const groupNewsState: GroupNewsState = useSelector(
         (state: RootState) => state.groupNews
     );
 
+    useEffect(() => {
+        dispatch(getGroupNewsDetail({ group_news_id: params.newsId }))
+            .then((res: any) => {
+                if (res.payload.meta.code === StatusCodes.OK) {
+                    setForm(res.payload.result.data);
+                } else {
+                    toast.error("Failed to load news data.");
+                }
+            })
+            .catch((err: any) => {
+                console.error(err);
+                toast.error("Error fetching news.");
+            });
+    }, [dispatch, params.newsId]);
+
     const handleChange = (e: any) => {
         if (e.target.name === "image") {
-            setForm((prevState) => ({
-                ...prevState,
-                image: e.target.files ? e.target.files[0] : null,
-            }));
+            setForm((prevState) =>
+                prevState
+                    ? {
+                        ...prevState,
+                        image: e.target.files ? e.target.files[0] : null,
+                    }
+                    : null
+            );
         } else {
-            setForm((prevState) => ({
-                ...prevState,
-                [e.target.name]: e.target.value,
-            }));
+            setForm((prevState) =>
+                prevState
+                    ? {
+                        ...prevState,
+                        [e.target.name]: e.target.value,
+                    }
+                    : null
+            );
         }
+
+        console.log(form);
     };
 
-    // Handle content change from the Editor
     const handleEditorChange = (value: string) => {
-        setForm((prevState) => ({
-            ...prevState,
-            content: value
-        }));
+        setForm((prevState) =>
+            prevState
+                ? {
+                    ...prevState,
+                    content: value,
+                }
+                : null
+        );
     };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-    
-        const updatedForm: InsertGroupNewsForm = {
-            ...form,
-            author_id: user.id,
-            group_id: Number.parseInt(decryptData(decodeURIComponent(params.id)))
-        };
-    
-        dispatch(insertGroupNews(updatedForm)).then((res: any) => {    
-            if (res.payload.meta.code == StatusCodes.OK) {
-                toast.success(`News Saved`);
-                router.push(`/group/${params.id}/news/${res.payload.result.data.id}`);
-            }
-        }).catch(function (err: any) {
-            console.log(err);
-            if (err.payload !== undefined) {
-                toast.error(`Insert Failed. ${err.payload.result.error}`);
-            } else {
-                toast.error(`Something went wrong...`);
-            }
-        });
-    };
-    
 
+        if (!form) {
+            toast.error("Form data is missing.");
+            return;
+        }
+
+        const updatedForm: UpdateGroupNewsForm = {
+            ...form,
+            group_news_id: Number.parseInt(params.newsId),
+        };
+
+        dispatch(updateGroupNews(updatedForm))
+            .then((res: any) => {
+                if (res.payload.meta.code === StatusCodes.OK) {
+                    toast.success("News updated successfully!");
+                    router.push(`/group/${params.id}/news/${params.newsId}`);
+                }
+            })
+            .catch((err: any) => {
+                console.error(err);
+                toast.error("Failed to update news.");
+            });
+    };
+
+    if (!form) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
             <div className="text-black p-6 bg-white">
                 <div className="flex mb-6">
-                    <h1 className="text-4xl font-bold">Create Group News</h1>
+                    <h1 className="text-4xl font-bold">Edit Group News</h1>
                 </div>
                 <div className="divider m-0" />
 
@@ -89,6 +118,7 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                         <input
                             type="text"
                             name="news_title"
+                            value={form.news_title}
                             placeholder="Type here"
                             className="input input-bordered input-md w-full"
                             onChange={handleChange}
@@ -119,16 +149,21 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                                 Konten Berita
                             </span>
                         </label>
-                        <Editor value={form.content} readOnly={groupNewsState.isLoading} onChange={handleEditorChange} />
+                        <Editor
+                            value={form.content}
+                            readOnly={groupNewsState.isLoading}
+                            onChange={handleEditorChange}
+                        />
                     </div>
 
                     {/* Submit Button */}
                     <div className="form-control">
-                        <button 
+                        <button
                             className="btn bg-custom-green-primary w-full text-lg mt-10 text-white hover:text-black"
                             onClick={handleSubmit}
-                            disabled={groupNewsState.isLoading ? true : false}>
-                            Submit
+                            disabled={groupNewsState.isLoading ? true : false}
+                        >
+                            Update
                         </button>
                     </div>
                 </form>
