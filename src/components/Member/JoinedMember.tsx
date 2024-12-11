@@ -1,7 +1,7 @@
 "use client"
 import { getGroupMembers } from "@/lib/features/groupMemberSlice";
 import { AppDispatch, RootState } from "@/lib/store";
-import { GroupMember } from "@/model/Master/GroupModel";
+import { GroupMember, GroupMemberInitial } from "@/model/Master/GroupModel";
 import { GroupMemberState } from "@/model/redux/GroupMember";
 import { decryptData } from "@/utils/crypt";
 import { StatusCodes } from "http-status-codes";
@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import SpinnerCircle from "../Spinner/SpinnerCircle";
 import moment from "moment";
 import { FaEllipsisV } from "react-icons/fa";
+import KickModal from "./KickModal";
 
 interface Props {
     id: string;
@@ -39,6 +40,9 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 5;
+    
+    const [isKickModalOpen, setIsKickModalOpen] = useState(false);
+    const [memberKick, setMemberKick] = useState<GroupMember>({ ...GroupMemberInitial });
 
     const dispatch = useDispatch<AppDispatch>();
     const groupMembersState: GroupMemberState = useSelector(
@@ -75,6 +79,16 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
         }
     };
 
+    const handleKickModal = (groupMember: GroupMember) => {
+        setMemberKick(groupMember);
+        setIsKickModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsKickModalOpen(false);
+        setMemberKick({ ...GroupMemberInitial });
+    };
+
     if (groupMembersState.isLoading) return <SpinnerCircle size="large" />;
 
     return (
@@ -108,7 +122,7 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                                         </button>
                                         <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
                                             <li>
-                                                <button>
+                                                <button onClick={() => handleKickModal(member ?? 0)}>
                                                     Kick
                                                 </button>
                                             </li>
@@ -147,6 +161,13 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                     »
                 </button>
             </div>
+
+            <KickModal 
+                isOpen={isKickModalOpen}
+                onClose={closeModal}
+                groupMember={memberKick}
+                refreshTable={() => fetchData(currentPage)}
+            />
         </div>
     );
 };

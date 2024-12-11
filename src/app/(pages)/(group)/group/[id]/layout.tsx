@@ -19,7 +19,7 @@ export default function GroupLayout({
         { href: `${baseUrl}/news`, label: "News" },
         { href: `${baseUrl}/tuition`, label: "Tuition" },
         { href: `${baseUrl}/tuition-request`, label: "Tuition Request" },
-        { href: `${baseUrl}/setting`, label: "Group Setting" },
+        { href: `${baseUrl}/setting`, label: "Group Settings" },
     ];
 
     return (

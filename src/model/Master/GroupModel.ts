@@ -4,6 +4,7 @@ import { User, UserInitial } from "./UserModel";
 export interface Group extends BaseModel {
     group_name: string;
     group_description: string;
+    group_address: string;
     user_in: number | null;
 }
 
@@ -21,10 +22,16 @@ export interface GroupMember extends BaseModel {
     leave_note: string | null;
 }
 
+export interface LeaveGroupMember {
+    group_member_id: number;
+    leave_note: string;
+}
+
 export const GroupInitial: Group = {
     id: null,
     group_name: "",
     group_description: "",
+    group_address: "",
     user_in: null,
     created_at: null,
     updated_at: null,

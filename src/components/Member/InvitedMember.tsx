@@ -76,6 +76,11 @@ const InvitedMember: FunctionComponent<Props> = ({ id }) => {
         setIsModalOpen(true);
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setApplicationToCancel(0);
+    };
+
     const handleCancelMember = (selectedApplicationId: number) => {
         const cancelForm: GroupApplicationHandle = {
             status: "Canceled",
@@ -95,11 +100,6 @@ const InvitedMember: FunctionComponent<Props> = ({ id }) => {
                 toast.error(`Something went wrong...`);
             }
         });
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setApplicationToCancel(0);
     };
 
     if (groupApplicationState.isLoading) return <SpinnerCircle size="large" />;
