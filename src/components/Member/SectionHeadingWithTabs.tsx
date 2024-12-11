@@ -13,7 +13,6 @@ const SectionHeadingWithTabs: React.FunctionComponent<Props> = ({ id }) => {
     const [activeTab, setActiveTab] = useState("Joined Members");
 
     const tabs = ["Joined Members", "Invited Members", "Leave Members"];
-    const actions = [{ label: "Invite", action: () => console.log("Invite") }];
 
     return (
         <div className="container mx-auto pb-8">

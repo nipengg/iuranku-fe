@@ -8,6 +8,16 @@ export interface GroupApplication extends BaseModel {
     status: "Pending" | "Accepted" | "Rejected" | "Canceled" | null;
 }
 
+export interface GroupApplicationInvite {
+    group_id: number;
+    user_id: number;
+}
+
+export interface GroupApplicationHandle {
+    group_application_id: number;
+    status: string;
+}
+
 export const GroupApplicationInitial: GroupApplication = {
     id: null,
     group: GroupInitial,

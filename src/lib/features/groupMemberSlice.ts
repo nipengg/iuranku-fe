@@ -20,6 +20,19 @@ export const getGroupMembers = createAsyncThunk(
     }
 )
 
+export const findMembers = createAsyncThunk(
+    "group/findMembers",
+    async (params: object, thunkAPI) => {
+        try {
+            const response = await get(`${URL}/find-member`, params);
+            checkResponse(response);
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
 const groupMemberSlice = createSlice({
     name: 'groupMember',
     initialState: initialState,
@@ -35,6 +48,17 @@ const groupMemberSlice = createSlice({
             state.isLoading = false;
         });
         builder.addCase(getGroupMembers.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        builder.addCase(findMembers.pending, (state, action) => {
+            state.isLoading = false;
+        });
+        builder.addCase(findMembers.fulfilled, (state, action) => {
+            state.isLoading = false;
+        });
+        builder.addCase(findMembers.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });

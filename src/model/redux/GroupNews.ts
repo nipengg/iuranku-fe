@@ -1,7 +1,7 @@
+import { BaseState } from "./BaseState";
+
 // State Interfaces
-export interface GroupNewsState {
-    isLoading: boolean;
-    isError: boolean;
+export interface GroupNewsState extends BaseState {
 }
 
 // Init

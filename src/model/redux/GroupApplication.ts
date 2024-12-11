@@ -1,7 +1,7 @@
+import { BaseState } from "./BaseState";
+
 // State Interfaces
-export interface GroupApplicationState {
-    isLoading: boolean;
-    isError: boolean;
+export interface GroupApplicationState extends BaseState {
 }
 
 // Init

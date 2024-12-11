@@ -25,3 +25,19 @@ export enum STATUS_SIGNIN {
     Register = "Register",
     UserRegister = "User Registered"
 }
+
+export const TUITION_TYPE = {
+    Kebersihan: {
+        tuitionId: 1,
+        tuitionName: "Kebersihan",
+    },
+    Keamanan: {
+        tuitionId: 2,
+        tuitionName: "Keamanan",
+    },
+    Kematian: {
+        tuitionId: 3,
+        tuitionName: "Kematian",
+    },
+} as const;
+export type TuitionTypeKey = keyof typeof TUITION_TYPE;

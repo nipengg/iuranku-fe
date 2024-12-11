@@ -86,18 +86,30 @@ const LeaveMember: React.FunctionComponent<Props> = ({ id }) => {
                         <th>Address</th>
                         <th>Member Type</th>
                         <th>Joined Date</th>
+                        <th>Leave Date</th>
+                        <th>Leave Note</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {groupMembers.map((member, index) => (
-                        <tr key={member.id}>
-                            <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                            <td>{member.user?.name}</td>
-                            <td>{member.user?.address}</td>
-                            <td>{member.member_type?.member_type_name}</td>
-                            <td>{moment(member.join_date?.toString()).format("MMMM Do YYYY, h:mm:ss")}</td>
+                    {groupMembers.length > 0 ? (
+                        groupMembers.map((member, index) => (
+                            <tr key={member.id}>
+                                <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
+                                <td>{member.user?.name}</td>
+                                <td>{member.user?.address}</td>
+                                <td>{member.member_type?.member_type_name}</td>
+                                <td>{moment(member.join_date?.toString()).format("MMMM Do YYYY, h:mm:ss")}</td>
+                                <td>{moment(member.leave_date?.toString()).format("MMMM Do YYYY, h:mm:ss")}</td>
+                                <td>{member.leave_note}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={7} className="text-center py-4 text-gray-500">
+                                No data available.
+                            </td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
 

@@ -1,7 +1,7 @@
+import { BaseState } from "./BaseState";
+
 // State Interfaces
-export interface GroupMemberState {
-    isLoading: boolean;
-    isError: boolean;
+export interface GroupMemberState extends BaseState {
 }
 
 // Init

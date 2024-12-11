@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import SpinnerCircle from "../Spinner/SpinnerCircle";
 import moment from "moment";
+import { FaEllipsisV } from "react-icons/fa";
 
 interface Props {
     id: string;
@@ -83,21 +84,46 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                     <tr>
                         <th>#</th>
                         <th>Full Name</th>
+                        <th>Email</th>
                         <th>Address</th>
                         <th>Member Type</th>
                         <th>Joined Date</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {groupMembers.map((member, index) => (
-                        <tr key={member.id}>
-                            <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                            <td>{member.user?.name}</td>
-                            <td>{member.user?.address}</td>
-                            <td>{member.member_type?.member_type_name}</td>
-                            <td>{moment(member.join_date?.toString()).format("MMMM Do YYYY, h:mm:ss")}</td>
+                    {groupMembers.length > 0 ? (
+                        groupMembers.map((member, index) => (
+                            <tr key={member.id}>
+                                <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
+                                <td>{member.user?.name}</td>
+                                <td>{member.user?.email}</td>
+                                <td>{member.user?.address}</td>
+                                <td>{member.member_type?.member_type_name}</td>
+                                <td>{moment(member.join_date?.toString()).format("MMMM Do YYYY, h:mm:ss")}</td>
+                                <td>
+                                    <div className="dropdown dropdown-left">
+                                        <button className="btn btn-ghost btn-sm">
+                                            <span className="material-icons"><FaEllipsisV className="text-lg" /></span>
+                                        </button>
+                                        <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
+                                            <li>
+                                                <button>
+                                                    Kick
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={6} className="text-center py-4 text-gray-500">
+                                No data available.
+                            </td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
 

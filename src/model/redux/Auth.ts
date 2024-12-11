@@ -1,12 +1,10 @@
 import { User, UserInitial } from "../Master/UserModel";
+import { BaseState } from "./BaseState";
 
 // State Interfaces
-export interface AuthState {
+export interface AuthState extends BaseState {
     // Profile
     user: User;
-    // State
-    isLoading: boolean;
-    isError: boolean;
     isTokenExpire: boolean;
 }
 

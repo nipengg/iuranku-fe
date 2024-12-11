@@ -6,6 +6,7 @@ import groupSlice from './features/groupSlice';
 import groupNewsSlice from './features/groupNewsSlice';
 import groupMembersSlice from './features/groupMemberSlice';
 import groupApplicationSlice from './features/groupApplicationSlice';
+import groupTuitionSettingSlice from './features/groupTuitionSettingSlice';
 
 const persistConfig = {
     key: 'root',
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     group: groupSlice,
     groupNews: groupNewsSlice,
     groupMember: groupMembersSlice,
-    groupApplication: groupApplicationSlice
+    groupApplication: groupApplicationSlice,
+    groupTuitionSetting: groupTuitionSettingSlice,
 });
 
 export const store = configureStore({

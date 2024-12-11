@@ -1,10 +1,9 @@
 "use client";
 
-import GeneralSettings from "@/components/GeneralSettings";
-import KeamananSettings from "@/components/KeamananSettings";
-import KebersihanSettings from "@/components/KebersihanSettings";
-import KematianSettings from "@/components/KematianSettings";
+import GeneralSettings from "@/components/Settings/GeneralSettings";
+import TuitionSettings from "@/components/Settings/TuitionSettings";
 import Tabs from "@/components/Tabs";
+import { TUITION_TYPE } from "@/constant";
 import { useState } from "react";
 
 export default function GroupSetting({ params }: { params: { id: string } }) {
@@ -31,18 +30,13 @@ export default function GroupSetting({ params }: { params: { id: string } }) {
                         onTabChange={(tab) => setActiveTab(tab)}
                     />
                     <div className="mt-6">
-                        {activeTab === "General Settings" && (
-                            <GeneralSettings />
-                        )}
-                        {activeTab === "Iuran Keamanan" && <KeamananSettings />}
-                        {activeTab === "Iuran Kebersihan" && (
-                            <KebersihanSettings />
-                        )}
-                        {activeTab === "Iuran Kematian" && <KematianSettings />}
+                        {activeTab === "General Settings" && (<GeneralSettings />)}
+                        {Object.entries(TUITION_TYPE).map(([key, value]) => (
+                            activeTab === `Iuran ${value.tuitionName}` && (
+                                <TuitionSettings key={key} tuitionTypeKey={value.tuitionName} groupId={params.id} />
+                            )
+                        ))}
                     </div>
-                    <button className="btn btn-success btn-sm mt-12 btn-wide">
-                        Save
-                    </button>
                 </div>
             </div>
         </>
