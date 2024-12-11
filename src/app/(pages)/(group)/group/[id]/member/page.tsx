@@ -22,15 +22,9 @@ export default function GroupMember({ params }: { params: { id: string } }) {
                         onTabChange={(tab) => setActiveTab(tab)}
                     />
                     <div className="mt-4">
-                        {activeTab === "Iuran Keamanan" && (
-                            <MemberTable type="Iuran Keamanan" />
-                        )}
-                        {activeTab === "Iuran Kebersihan" && (
-                            <MemberTable type="Iuran Kebersihan" />
-                        )}
-                        {activeTab === "Iuran Kematian" && (
-                            <MemberTable type="Iuran Kematian" />
-                        )}
+                        {activeTab === "Iuran Keamanan" && <MemberTable />}
+                        {activeTab === "Iuran Kebersihan" && <MemberTable />}
+                        {activeTab === "Iuran Kematian" && <MemberTable />}
                     </div>
                 </div>
             </div>
