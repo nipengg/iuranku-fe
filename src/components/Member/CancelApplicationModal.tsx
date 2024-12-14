@@ -1,13 +1,13 @@
 import React from "react";
 
-interface CancelModalProps {
+interface CancelApplicationModalProps {
     isModalOpen: boolean;
     onClose: () => void;
     onConfirmCancel: (selectedApplicationId: number) => void;
     applicationId: number;
 }
 
-const CancelModal: React.FC<CancelModalProps> = ({
+const CancelApplicationModal: React.FC<CancelApplicationModalProps> = ({
     isModalOpen,
     onClose,
     onConfirmCancel,
@@ -43,4 +43,4 @@ const CancelModal: React.FC<CancelModalProps> = ({
     );
 };
 
-export default CancelModal;
+export default CancelApplicationModal;

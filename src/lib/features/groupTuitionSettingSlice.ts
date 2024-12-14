@@ -52,6 +52,17 @@ const groupTuitionSettingSlice = createSlice({
             state.isError = true;
         });
 
+        builder.addCase(insertUpdateGroupTuitionSetting.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(insertUpdateGroupTuitionSetting.fulfilled, (state, action) => {
+            state.isLoading = false;
+        });
+        builder.addCase(insertUpdateGroupTuitionSetting.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
     }
 });
 

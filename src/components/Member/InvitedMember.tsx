@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import SpinnerCircle from "../Spinner/SpinnerCircle";
 import moment from "moment";
 import { FaEllipsisV } from "react-icons/fa";
-import CancelModal from "./CancelInviteModal";
+import CancelApplicationModal from "./CancelApplicationModal";
 
 interface Props {
     id: string
@@ -171,7 +171,7 @@ const InvitedMember: FunctionComponent<Props> = ({ id }) => {
                 </button>
             </div>
 
-            <CancelModal
+            <CancelApplicationModal
                 isModalOpen={isModalOpen}
                 onClose={closeModal}
                 onConfirmCancel={handleCancelMember}

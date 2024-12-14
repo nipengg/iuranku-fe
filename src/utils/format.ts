@@ -4,3 +4,11 @@ export function truncateString(str: string, maxLength: number, ending = "...") {
     }
     return str;
 }
+
+export function formatRupiah(amount: number ) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0,
+      }).format(amount);
+  }
