@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { AppDispatch, RootState } from "@/lib/store";
 import { getTuitionRequest } from "@/lib/features/tuitionRequestSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,6 @@ import { FaEllipsisV } from "react-icons/fa";
 import FilePreviewModal from "../Modal/FilePreviewModal";
 import { RequestTuitionState } from "@/model/redux/RequestTuition";
 import SpinnerCircle from "../Spinner/SpinnerCircle";
-import HandleRequestTuitionModal from "./HandleRequestTuitionModal";
 
 interface Props {
     groupId: string;
@@ -30,7 +29,7 @@ async function fetchTuitionRequest(
 ): Promise<any> {
     try {
         const response: any = await dispatch(
-            getTuitionRequest({ group_id: groupId, period: year, status: "Waiting Approval", page, take })
+            getTuitionRequest({ group_id: groupId, period: year, status: "Fully Approved", page, take })
         );
         if (response.error) throw response;
 
@@ -40,7 +39,9 @@ async function fetchTuitionRequest(
     }
 }
 
-const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
+const ManageTuitionModal = lazy(() => import("./ManageTuitionModal"));
+
+const RequestManagement: React.FC<Props> = ({ groupId, period }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const [requestTuition, setRequestTuition] = useState<RequestTuition[]>([]);
@@ -55,17 +56,16 @@ const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
     // Handled Modal
     const [isModalHandleOpen, setIsModalHandleOpen] = useState(false);
     const [handleId, setHandleId] = useState<number>(0);
-    const [handleType, setHandleType] = useState<string>("")
 
-    const openHandleModal = (id: number, type: string) => {
+    const openHandleModal = (id: number) => {
         setHandleId(id);
-        setHandleType(type);
         setIsModalHandleOpen(true);
     };
 
     const closeHandleModal = () => {
         setIsModalHandleOpen(false);
     };
+
 
     const tuitionRequestState: RequestTuitionState = useSelector(
         (state: RootState) => state.tuitionRequest
@@ -129,6 +129,7 @@ const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
                                                 <th>Remark</th>
                                                 <th>Status</th>
                                                 <td>Requested Date</td>
+                                                <td>Approve Date</td>
                                                 <th>File</th>
                                                 <th></th>
                                             </tr>
@@ -143,6 +144,7 @@ const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
                                                         <td>{requestTuition.remark}</td>
                                                         <td>{requestTuition.status}</td>
                                                         <td>{moment(requestTuition.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</td>
+                                                        <td>{moment(requestTuition.updated_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</td>
                                                         <td>
                                                             {requestTuition.file && (
                                                                 <button
@@ -160,13 +162,8 @@ const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
                                                                 </button>
                                                                 <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
                                                                     <li>
-                                                                        <button onClick={() => openHandleModal(requestTuition.id ?? 0, "Fully Approved")}>
-                                                                            Approve
-                                                                        </button>
-                                                                    </li>
-                                                                    <li>
-                                                                        <button onClick={() => openHandleModal(requestTuition.id ?? 0, "Rejected")}>
-                                                                            Reject
+                                                                        <button  onClick={() => openHandleModal(requestTuition.id ?? 0)}>
+                                                                            Manage
                                                                         </button>
                                                                     </li>
                                                                 </ul>
@@ -183,7 +180,6 @@ const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
                                             )}
                                         </tbody>
                                     </table>
-                                    
                                     {/* Pagination Controls */}
                                     <div className="join mt-4 flex justify-center">
                                         <button
@@ -206,17 +202,21 @@ const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
                                     </div>
                                 </>
                         }
-
                     </div>
 
-                    <HandleRequestTuitionModal
-                        isModalOpen={isModalHandleOpen}
-                        onClose={closeHandleModal}
-                        requestId={handleId}
-                        status={handleType}
-                        refreshTable={() => fetchData(currentPage)}
-                    />
-
+                    {/* Lazy-loaded Manage Tuition Modal */}
+                    {isModalHandleOpen && (
+                        <Suspense fallback={<SpinnerCircle size="large" />}>
+                            <ManageTuitionModal
+                                isModalOpen={isModalHandleOpen}
+                                onClose={closeHandleModal}
+                                requestId={handleId}
+                                period={period}
+                                groupId={groupId}
+                                refreshTable={() => fetchData(currentPage)}
+                            />
+                        </Suspense>
+                    )}
 
                     <FilePreviewModal
                         isModalOpen={isModalFileOpen}
@@ -229,4 +229,4 @@ const ApprovalRequestTuition: React.FC<Props> = ({ groupId, period }) => {
     );
 }
 
-export default ApprovalRequestTuition;
+export default RequestManagement;

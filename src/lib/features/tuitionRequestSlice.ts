@@ -25,6 +25,22 @@ export const getTuitionRequest = createAsyncThunk(
     }
 )
 
+export const getTuitionRequestById = createAsyncThunk(
+    "group/getTuitionRequestById",
+    async (params: object, thunkAPI) => {
+        try {
+            const response = await get(`${URL}/id`, params);
+            checkResponse(response);
+            if (response.meta.code !== StatusCodes.OK) {
+                throw response;
+            }
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
 export const insertRequestTuition = createAsyncThunk(
     "group/insertRequestTuition",
     async (data: InsertRequestTuitionForm, thunkAPI) => {
@@ -85,6 +101,17 @@ const tuitionRequestSlice = createSlice({
             state.isLoading = false;
         });
         builder.addCase(getTuitionRequest.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        builder.addCase(getTuitionRequestById.pending, (state, action) => {
+
+        });
+        builder.addCase(getTuitionRequestById.fulfilled, (state, action) => {
+            state.isLoading = false;
+        });
+        builder.addCase(getTuitionRequestById.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });

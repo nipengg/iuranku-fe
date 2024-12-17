@@ -1,6 +1,7 @@
 "use client";
 
 import ApprovalRequestTuition from "@/components/RequestTuitionManagement/ApprovalRequestTuition";
+import RequestManagement from "@/components/RequestTuitionManagement/RequestManagement";
 import { useState } from "react";
 
 export default function TuitionRequestApproval({
@@ -56,7 +57,7 @@ export default function TuitionRequestApproval({
 
                 <div className="mt-6">
                     {activeTab === "Approval" && <ApprovalRequestTuition groupId={params.id} period={selectedYear} />}
-                    {activeTab === "Request Management" && <></>}
+                    {activeTab === "Request Management" && <RequestManagement groupId={params.id} period={selectedYear} />}
                 </div>
             </div>
         </>
