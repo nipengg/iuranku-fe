@@ -1,13 +1,13 @@
 "use client";
 
-import MemberPaymentTable from "@/components/MemberPaymentTable";
 import Tabs from "@/components/Tabs";
+import MemberPaymentTable from "@/components/Tuition/MemberPaymentTable";
 import { useState } from "react";
 
 export default function GroupTuition({ params }: { params: { id: string } }) {
     const baseUrl = `/group/${params.id}/setting`;
-    const [activeTab, setActiveTab] = useState("Iuran Keamanan");
-    const tabs = ["Iuran Keamanan", "Iuran Kebersihan", "Iuran Kematian"];
+    const [activeTab, setActiveTab] = useState("Keamanan");
+    const tabs = ["Keamanan", "Kebersihan", "Kematian"];
     return (
         <>
             <div className="text-black">
@@ -24,15 +24,7 @@ export default function GroupTuition({ params }: { params: { id: string } }) {
 
                     {/* Render Table Based on Active Tab */}
                     <div className="mt-6">
-                        {activeTab === "Iuran Keamanan" && (
-                            <MemberPaymentTable />
-                        )}
-                        {activeTab === "Iuran Kebersihan" && (
-                            <MemberPaymentTable />
-                        )}
-                        {activeTab === "Iuran Kematian" && (
-                            <MemberPaymentTable />
-                        )}
+                        <MemberPaymentTable key={activeTab} groupId={params.id} typeTuition={activeTab} />
                     </div>
                 </div>
             </div>

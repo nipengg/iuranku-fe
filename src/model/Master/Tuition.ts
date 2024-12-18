@@ -19,6 +19,16 @@ export interface InsertTuitionForm {
     period: string;
 }
 
+export interface TuitionMember {
+    member: GroupMember;
+    monthlyStatus: Record<number, boolean>; 
+}
+
+export interface TuitionMemberDetail {
+    year: number;
+    monthlyStatus: Record<number, boolean>; 
+}
+
 export const TuitionInitial: Tuition = {
     id: null,
     requestTuition: RequestTuitionInitial,

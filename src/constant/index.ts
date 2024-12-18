@@ -41,3 +41,18 @@ export const TUITION_TYPE = {
     },
 } as const;
 export type TuitionTypeKey = keyof typeof TUITION_TYPE;
+
+export const MONTHS_CONSTAN = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];

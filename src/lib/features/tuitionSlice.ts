@@ -25,6 +25,38 @@ export const getTuitionByMemberId = createAsyncThunk(
     }
 )
 
+export const getTuitionMemberDetail = createAsyncThunk(
+    "group/getTuitionMemberDetail",
+    async (params: object, thunkAPI) => {
+        try {
+            const response = await get(`${URL}/member/detail`, params);
+            checkResponse(response);
+            if (response.meta.code !== StatusCodes.OK) {
+                throw response;
+            }
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
+export const getTuitionMember = createAsyncThunk(
+    "group/getTuitionMember",
+    async (params: object, thunkAPI) => {
+        try {
+            const response = await get(`${URL}/member/status`, params);
+            checkResponse(response);
+            if (response.meta.code !== StatusCodes.OK) {
+                throw response;
+            }
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
 export const insertTuition = createAsyncThunk(
     "group/insertTuition",
     async (data: InsertTuitionForm[], thunkAPI) => {
@@ -53,6 +85,28 @@ const tuitionSlice = createSlice({
         });
         builder.addCase(getTuitionByMemberId.rejected, (state, action) => {
             state.isLoading = false;
+            state.isError = true;
+        });
+
+        builder.addCase(getTuitionMember.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getTuitionMember.fulfilled, (state, action) => {
+            state.isLoading = false;
+        });
+        builder.addCase(getTuitionMember.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        builder.addCase(getTuitionMemberDetail.pending, (state, action) => {
+            state.isLoadingMemberDetail = true;
+        });
+        builder.addCase(getTuitionMemberDetail.fulfilled, (state, action) => {
+            state.isLoadingMemberDetail = false;
+        });
+        builder.addCase(getTuitionMemberDetail.rejected, (state, action) => {
+            state.isLoadingMemberDetail = false;
             state.isError = true;
         });
 

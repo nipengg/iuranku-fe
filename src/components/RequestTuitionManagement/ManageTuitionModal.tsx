@@ -268,14 +268,12 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
 
                         const monthIndex = new Date(tuition.period).getMonth();
 
-                        const paidToMonth = fetchedTuitionAmounts[tab] - tuition.nominal;
-
                         // Mark the month as paid
-                        updatedUnpaidAmounts[monthIndex] = paidToMonth;
-                        updatedTuitionAmountMonth[monthIndex] = paidToMonth;
+                        updatedUnpaidAmounts[monthIndex] -= tuition.nominal;
+                        updatedTuitionAmountMonth[monthIndex] -= tuition.nominal;
 
                         // If Fully Paid
-                        if (paidToMonth <= 0) {
+                        if (updatedTuitionAmountMonth[monthIndex] <= 0 && updatedUnpaidAmounts[monthIndex] <= 0) {
                             updatedCheckedMonths[monthIndex] = true; // Mark as checked
                         }
                     });
@@ -288,7 +286,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
             }
 
             // Set the fetched tuition amounts and unpaid amounts
-            setRemainingBalance(requestTuition.nominal - paidAmount || 1);
+            setRemainingBalance(requestTuition.nominal - paidAmount);
             setTuitionAmounts(fetchedTuitionAmounts);
             setTuitionAmountMonth(fetchedTuitionAmountMonth);
             setUnpaidAmounts(fetchedUnpaidAmounts);
