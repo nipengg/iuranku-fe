@@ -1,4 +1,4 @@
-import PaymentTable from "@/components/PaymentTabl";
+import PaymentTable from "@/components/PaymentTable";
 
 export default function paymentList() {
     return (

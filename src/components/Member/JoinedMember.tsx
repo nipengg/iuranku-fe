@@ -12,6 +12,7 @@ import SpinnerCircle from "../Spinner/SpinnerCircle";
 import moment from "moment";
 import { FaEllipsisV } from "react-icons/fa";
 import KickModal from "./KickModal";
+import { User } from "@/model/Master/UserModel";
 
 interface Props {
     id: string;
@@ -40,7 +41,7 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 5;
-    
+
     const [isKickModalOpen, setIsKickModalOpen] = useState(false);
     const [memberKick, setMemberKick] = useState<GroupMember>({ ...GroupMemberInitial });
 
@@ -48,6 +49,7 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
     const groupMembersState: GroupMemberState = useSelector(
         (state: RootState) => state.groupMember
     );
+    const userState: User = useSelector((state: RootState) => state.auth.user);
 
     const fetchData = async (page: number) => {
         try {
@@ -121,11 +123,20 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                                             <span className="material-icons"><FaEllipsisV className="text-lg" /></span>
                                         </button>
                                         <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
-                                            <li>
-                                                <button onClick={() => handleKickModal(member ?? 0)}>
-                                                    Kick
-                                                </button>
-                                            </li>
+                                            {member.user?.id == userState.id ?
+                                                <li>
+                                                    <button onClick={() => handleKickModal(member ?? 0)}>
+                                                        Leave
+                                                    </button>
+                                                </li>
+                                                :
+                                                <li>
+                                                    <button onClick={() => handleKickModal(member ?? 0)}>
+                                                        Kick
+                                                    </button>
+                                                </li>
+                                            }
+
                                         </ul>
                                     </div>
                                 </td>
@@ -162,7 +173,7 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                 </button>
             </div>
 
-            <KickModal 
+            <KickModal
                 isOpen={isKickModalOpen}
                 onClose={closeModal}
                 groupMember={memberKick}
