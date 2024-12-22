@@ -37,24 +37,16 @@ async function fetchTuitionMemberRequest(
 interface TuitionMemberProps {
     groupId: string;
     typeTuition: string;
+    year: number;
 }
 
 const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
     groupId,
     typeTuition,
+    year,
 }) => {
 
     const dispatch = useDispatch<AppDispatch>();
-
-    const currentYear = new Date().getFullYear();
-    const startYear = 2023;
-    const futureYears = 1;
-    const [selectedYear, setSelectedYear] = useState(currentYear);
-    const years = Array.from({ length: currentYear + futureYears - startYear + 1 }, (_, index) => startYear + index);
-
-    const handleChangePeriod = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedYear(Number(e.target.value));
-    };
 
     const tuitionState: TuitionState = useSelector(
         (state: RootState) => state.tuition
@@ -88,7 +80,7 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
             const res = await fetchTuitionMemberRequest(
                 dispatch,
                 decryptData(decodeURIComponent(groupId)),
-                selectedYear,
+                year,
                 typeTuition,
                 page,
                 itemsPerPage
@@ -107,19 +99,10 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
 
     useEffect(() => {
         fetchData(currentPage);
-    }, [currentPage, selectedYear]);
+    }, [currentPage, year]);
 
     return (
         <div className="overflow-x-auto p-6">
-            <div className="flex justify-between items-center mb-4">
-                <select className="select select-bordered w-28 mr-3" name="tuition_period" value={selectedYear} onChange={handleChangePeriod}>
-                    {years.map((yr) => (
-                        <option key={yr} value={yr}>
-                            {yr}
-                        </option>
-                    ))}
-                </select>
-            </div>
 
             {tuitionState.isLoading ? <SpinnerCircle size="large" /> :
                 <>

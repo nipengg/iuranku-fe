@@ -4,7 +4,7 @@ import { TypeTuition, TypeTuitionInitial } from "./GroupTuitionSetting";
 import { RequestTuition, RequestTuitionInitial } from "./RequestTuition";
 
 export interface Tuition extends BaseModel {
-    requestTuition: RequestTuition;
+    request_tuition: RequestTuition;
     member: GroupMember;
     typeTuition: TypeTuition;
     nominal: number;
@@ -24,6 +24,19 @@ export interface TuitionMember {
     monthlyStatus: Record<number, boolean>; 
 }
 
+export interface MonthlyStatus {
+    month: number;
+    status: boolean;
+    tuitionAmount: number;
+    paidAmount: number;
+    tuition: Tuition[];
+}
+
+export interface TuitionMemberPayment {
+    member: GroupMember;
+    monthlyStatus: MonthlyStatus[]; 
+}
+
 export interface TuitionMemberDetail {
     year: number;
     monthlyStatus: Record<number, boolean>; 
@@ -31,7 +44,7 @@ export interface TuitionMemberDetail {
 
 export const TuitionInitial: Tuition = {
     id: null,
-    requestTuition: RequestTuitionInitial,
+    request_tuition: RequestTuitionInitial,
     member: GroupMemberInitial,
     typeTuition: TypeTuitionInitial,
     nominal: 0,

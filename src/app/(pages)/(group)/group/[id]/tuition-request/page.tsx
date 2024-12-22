@@ -16,17 +16,19 @@ import FilePreviewModal from "@/components/Modal/FilePreviewModal";
 import moment from "moment";
 import RequestTuitionModal from "@/components/RequestTuition/RequestTuitionModal";
 import CancelRequestTuitionModal from "@/components/RequestTuition/CancelRequestTuitionModal";
+import { decryptData } from "@/utils/crypt";
 
 async function fetchTuitionRequest(
     dispatch: AppDispatch,
     userId: number,
+    groupId: string,
     year: number,
     page: number,
     take: number
 ): Promise<any> {
     try {
         const response: any = await dispatch(
-            getTuitionRequest({ user_id: userId, period: year, page, take })
+            getTuitionRequest({ user_id: userId, group_id: groupId, period: year, page, take })
         );
         if (response.error) throw response;
 
@@ -76,6 +78,7 @@ export default function GroupTuitionRequest({
             const res = await fetchTuitionRequest(
                 dispatch,
                 user.id,
+                decryptData(decodeURIComponent(params.id)),
                 selectedYear,
                 page,
                 itemsPerPage

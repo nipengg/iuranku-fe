@@ -2,10 +2,11 @@
 
 import Tabs from "@/components/Tabs";
 import MemberPaymentTable from "@/components/Tuition/MemberPaymentTable";
+import TuitionPayment from "@/components/TutionPayment/TuitionPayment";
 import { useState } from "react";
 
 export default function GroupTuition({ params }: { params: { id: string } }) {
-    const baseUrl = `/group/${params.id}/setting`;
+    const baseUrl = `/group/${params.id}/tuition-payment`;
     const [activeTab, setActiveTab] = useState("Keamanan");
     const tabs = ["Keamanan", "Kebersihan", "Kematian"];
 
@@ -23,7 +24,7 @@ export default function GroupTuition({ params }: { params: { id: string } }) {
         <>
             <div className="text-black">
                 <div className="flex justify-between mb-4">
-                    <h1 className="text-4xl font-bold">Group Tuition</h1>
+                    <h1 className="text-4xl font-bold">Payment</h1>
                     <div>
                         <select className="select select-bordered w-28 mr-3" name="tuition_period" value={selectedYear} onChange={handleChangePeriod}>
                             {years.map((yr) => (
@@ -44,7 +45,7 @@ export default function GroupTuition({ params }: { params: { id: string } }) {
 
                     {/* Render Table Based on Active Tab */}
                     <div className="mt-6">
-                        <MemberPaymentTable key={activeTab} groupId={params.id} typeTuition={activeTab} year={selectedYear} />
+                       <TuitionPayment key={activeTab} groupId={params.id} typeTuition={activeTab} year={selectedYear} />
                     </div>
                 </div>
             </div>

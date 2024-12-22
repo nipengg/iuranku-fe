@@ -57,6 +57,22 @@ export const getTuitionMember = createAsyncThunk(
     }
 )
 
+export const getTuitionMemberPayment = createAsyncThunk(
+    "group/getTuitionMemberPayment",
+    async (params: object, thunkAPI) => {
+        try {
+            const response = await get(`${URL}/member/payment`, params);
+            checkResponse(response);
+            if (response.meta.code !== StatusCodes.OK) {
+                throw response;
+            }
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
 export const insertTuition = createAsyncThunk(
     "group/insertTuition",
     async (data: InsertTuitionForm[], thunkAPI) => {
@@ -107,6 +123,17 @@ const tuitionSlice = createSlice({
         });
         builder.addCase(getTuitionMemberDetail.rejected, (state, action) => {
             state.isLoadingMemberDetail = false;
+            state.isError = true;
+        });
+
+        builder.addCase(getTuitionMemberPayment.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getTuitionMemberPayment.fulfilled, (state, action) => {
+            state.isLoading = false;
+        });
+        builder.addCase(getTuitionMemberPayment.rejected, (state, action) => {
+            state.isLoading = false;
             state.isError = true;
         });
 
