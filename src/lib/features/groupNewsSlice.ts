@@ -43,9 +43,12 @@ export const insertGroupNews = createAsyncThunk(
 
             formData.append("news_title", data.news_title);
             formData.append("content", data.content);
-            formData.append("image", data.image as Blob);
             formData.append("author_id", data.author_id.toString());
             formData.append("group_id", data.group_id.toString());
+
+            if (data.image) {
+                formData.append("image", data.image as Blob);
+            }
 
             const response = await post(`${URL}/store`, formData, {
                 headers: {

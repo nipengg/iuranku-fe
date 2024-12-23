@@ -89,19 +89,18 @@ export default function DetailNews({ params }: { params: { id: string, newsId: s
             <div className="w-full">
                 <h1 className="text-sm">News Page</h1>
                 <h1 className="font-bold text-3xl">{groupNews.news_title}</h1>
+                <h2>
+                    by <strong>{groupNews.author.name}</strong> on{" "}
+                    <strong>{moment(groupNews.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</strong>
+                </h2>
                 <div className="divider m-2" />
             </div>
             <div className="w-full flex items-start">
                 <div className="flex flex-col text-xs space-y-4">
-                    <div className="flex space-x-4">
-                        <h2>
-                            by <strong>{groupNews.author.name}</strong> on{" "}
-                            <strong>{moment(groupNews.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</strong>
-                        </h2>
-                    </div>
-                    <p className="text-sm">
-                        <div dangerouslySetInnerHTML={{ __html: groupNews.content }} />
-                    </p>
+                    <div
+                        className="prose"
+                        dangerouslySetInnerHTML={{ __html: groupNews.content }}
+                    />
                 </div>
                 <img
                     src={BACKEND_STORAGE + groupNews.image}

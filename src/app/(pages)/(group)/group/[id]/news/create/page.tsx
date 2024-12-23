@@ -46,28 +46,25 @@ export default function CreateNews({ params }: { params: { id: string } }) {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-    
+
         const updatedForm: InsertGroupNewsForm = {
             ...form,
             author_id: user.id,
             group_id: Number.parseInt(decryptData(decodeURIComponent(params.id)))
         };
-    
-        dispatch(insertGroupNews(updatedForm)).then((res: any) => {    
+
+        dispatch(insertGroupNews(updatedForm)).then((res: any) => {
             if (res.payload.meta.code == StatusCodes.OK) {
                 toast.success(`News Saved`);
-                router.push(`/group/${params.id}/news/${res.payload.result.data.id}`);
+                router.push(`/group/${params.id}/news`);
+            } else {
+                throw new Error(res.payload.result.message);
             }
         }).catch(function (err: any) {
-            console.log(err);
-            if (err.payload !== undefined) {
-                toast.error(`Insert Failed. ${err.payload.result.error}`);
-            } else {
-                toast.error(`Something went wrong...`);
-            }
+            toast.error(`Get Data Failed. ${err.payload?.result?.message || err.message}`);
         });
     };
-    
+
 
 
     return (
@@ -124,7 +121,7 @@ export default function CreateNews({ params }: { params: { id: string } }) {
 
                     {/* Submit Button */}
                     <div className="form-control">
-                        <button 
+                        <button
                             className="btn bg-custom-green-primary w-full text-lg mt-10 text-white hover:text-black"
                             onClick={handleSubmit}
                             disabled={groupNewsState.isLoading ? true : false}>

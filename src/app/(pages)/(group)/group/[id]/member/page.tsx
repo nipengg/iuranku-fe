@@ -36,7 +36,6 @@ export default function GroupMember({ params }: { params: { id: string } }) {
                 setInviteSuccess(true);
             }
         }).catch(function (err: any) {
-            console.log(err);
             if (err.payload !== undefined) {
                 toast.error(`Invite Failed. ${err.payload.result.error}`);
             } else {
