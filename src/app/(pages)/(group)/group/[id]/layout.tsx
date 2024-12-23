@@ -2,6 +2,10 @@
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import { RootState } from "@/lib/store";
+import { User } from "@/model/Master/UserModel";
+import { AuthState } from "@/model/redux/Auth";
+import { useSelector } from "react-redux";
 
 export default function GroupLayout({
     children,
@@ -13,16 +17,36 @@ export default function GroupLayout({
 
     const baseUrl = `/group/${params.id}`;
 
+    const authState: AuthState = useSelector((state: RootState) => state.auth);
+
+    const roleAccess: Record<string, string[]> = {
+        "Group Leader": [
+            `${baseUrl}`,
+            `${baseUrl}/member`,
+            `${baseUrl}/news`,
+            `${baseUrl}/tuition`,
+            `${baseUrl}/tuition-payment`,
+            `${baseUrl}/tuition-request`,
+            `${baseUrl}/tuition-request-management`,
+            `${baseUrl}/setting`,
+        ],
+        "Group Member": [
+            `${baseUrl}`,
+            `${baseUrl}/tuition-payment`,
+            `${baseUrl}/tuition-request`,
+        ],
+    };
+
     const sidebarLinks = [
         { href: `${baseUrl}`, label: "Group Dashboard" },
         { href: `${baseUrl}/member`, label: "Members" },
         { href: `${baseUrl}/news`, label: "News" },
         { href: `${baseUrl}/tuition`, label: "Tuition" },
         { href: `${baseUrl}/tuition-payment`, label: "My Payment" },
-        { href: `${baseUrl}/tuition-request`, label: " My Tuition Request" },
+        { href: `${baseUrl}/tuition-request`, label: "My Tuition Request" },
         { href: `${baseUrl}/tuition-request-management`, label: "Tuition Request Management" },
         { href: `${baseUrl}/setting`, label: "Group Settings" },
-    ];
+    ].filter(link => roleAccess[authState.groupMemberActive.member_type?.member_type_name || ""]?.includes(link.href));
 
     return (
         

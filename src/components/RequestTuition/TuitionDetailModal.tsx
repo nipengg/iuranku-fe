@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import Tabs from "../Tabs";
-import { GroupMember } from "@/model/Master/GroupModel";
 import { Tuition } from "@/model/Master/Tuition";
 import { formatRupiah } from "@/utils/format";
 import moment from "moment";
 
-interface TuitionPaymentDetailModalProps {
+interface TuitionDetailModalProps {
     isModalOpen: boolean;
     onClose: () => void;
     tuitions: Tuition[];
 }
 
-const TuitionPaymentDetailModal: React.FC<TuitionPaymentDetailModalProps> = ({
+const TuitionDetailModal: React.FC<TuitionDetailModalProps> = ({
     isModalOpen,
     onClose,
     tuitions
@@ -27,10 +25,10 @@ const TuitionPaymentDetailModal: React.FC<TuitionPaymentDetailModalProps> = ({
                         <thead>
                             <tr>
                                 <th className="text-left">ID Tuition</th>
-                                <th className="text-left">Amount</th>
+                                <th className="text-left">Periode</th>
+                                <th className="text-left">Type Tuition</th>
                                 <th className="text-left">Payment Date</th>
-                                <th className="text-left">Request Tuition Date</th>
-                                <th className="text-left">Request Description</th>
+                                <th className="text-left">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,15 +40,21 @@ const TuitionPaymentDetailModal: React.FC<TuitionPaymentDetailModalProps> = ({
                                     return (
                                         <tr key={index}>
                                             <td>#{item.id}</td>
-                                            <td>{formatRupiah(item.nominal)}</td>
+                                            <td>{moment(item.period).format("MMM YYYY")}</td>
+                                            <td>{item.type_tuition.tuition_name}</td>
                                             <td>{moment(item.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</td>
-                                            <td>{moment(item.request_tuition.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</td>
-                                            <td>{item.request_tuition.remark}</td>
+                                            <td>{formatRupiah(item.nominal)}</td>
                                         </tr>
                                     );
                                 })
                             }
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colSpan={4}>Total</td>
+                                <td><strong>{formatRupiah(Object.values(tuitions).reduce((a, b) => a + b.nominal, 0))}</strong></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <div className="modal-action">
@@ -63,4 +67,4 @@ const TuitionPaymentDetailModal: React.FC<TuitionPaymentDetailModalProps> = ({
     );
 };
 
-export default TuitionPaymentDetailModal;
+export default TuitionDetailModal;

@@ -1,5 +1,6 @@
 import { BaseModel } from "./BaseModel";
 import { GroupMember, GroupMemberInitial } from "./GroupModel";
+import { Tuition } from "./Tuition";
 
 export interface RequestTuition extends BaseModel {
     nominal: number;
@@ -7,12 +8,14 @@ export interface RequestTuition extends BaseModel {
     member: GroupMember;
     remark: string;
     status: string;
+    tuition: Tuition[];
 }
 
 export const RequestTuitionInitial: RequestTuition = {
     id: null,
     nominal: 0,
     member: GroupMemberInitial,
+    tuition: [],
     file: "",
     remark: "",
     status: "",

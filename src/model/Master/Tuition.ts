@@ -6,7 +6,7 @@ import { RequestTuition, RequestTuitionInitial } from "./RequestTuition";
 export interface Tuition extends BaseModel {
     request_tuition: RequestTuition;
     member: GroupMember;
-    typeTuition: TypeTuition;
+    type_tuition: TypeTuition;
     nominal: number;
     period: Date | null;
 }
@@ -46,7 +46,7 @@ export const TuitionInitial: Tuition = {
     id: null,
     request_tuition: RequestTuitionInitial,
     member: GroupMemberInitial,
-    typeTuition: TypeTuitionInitial,
+    type_tuition: TypeTuitionInitial,
     nominal: 0,
     period: null,
     created_at: null,

@@ -7,14 +7,14 @@ import { StatusCodes } from "http-status-codes";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
-interface KickModalProps {
+interface HandleLeaveProps {
     isOpen: boolean;
     onClose: () => void;
     groupMember: GroupMember;
     refreshTable: () => void;
 }
 
-const KickModal: React.FC<KickModalProps> = ({ isOpen, onClose, groupMember, refreshTable }) => {
+const HandleLeave: React.FC<HandleLeaveProps> = ({ isOpen, onClose, groupMember, refreshTable }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const [form, setForm] = useState({ 
@@ -57,7 +57,7 @@ const KickModal: React.FC<KickModalProps> = ({ isOpen, onClose, groupMember, ref
     return (
         <div className="modal modal-open">
             <div className="modal-box w-[600px] max-w-none overflow-visible">
-                <h2 className="text-xl font-bold mb-4">Kick Member {groupMember.user?.name}</h2>
+                <h2 className="text-xl font-bold mb-4">Leave Member {groupMember.user?.name}</h2>
                 <div className="mb-4">
                     <form className="space-y-6">
                         <div className="form-control">
@@ -78,7 +78,7 @@ const KickModal: React.FC<KickModalProps> = ({ isOpen, onClose, groupMember, ref
                     <button onClick={() => handleKick(groupMember, form.leave_note)}
                         className="btn bg-custom-green-primary text-white"
                     >
-                        Kick
+                        Finalized Leave
                     </button>
                 </div>
             </div>
@@ -86,4 +86,4 @@ const KickModal: React.FC<KickModalProps> = ({ isOpen, onClose, groupMember, ref
     );
 };
 
-export default KickModal;
+export default HandleLeave;

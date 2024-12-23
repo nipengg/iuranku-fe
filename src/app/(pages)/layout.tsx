@@ -1,8 +1,9 @@
 "use client";
 import Footer from "@/components/Footer/Footer";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import { clearUserState } from "@/lib/features/authSlice";
+import { clearUserState, setGroupMemberActive } from "@/lib/features/authSlice";
 import { AppDispatch } from "@/lib/store";
+import { GroupMemberInitial } from "@/model/Master/GroupModel";
 import { checkToken } from "@/utils/userSession";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";

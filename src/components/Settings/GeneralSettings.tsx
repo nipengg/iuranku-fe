@@ -7,7 +7,7 @@ const GeneralSettings: React.FC = () => {
                 Group Description
             </label>
             <div className="pb-4">
-                <Editor />
+                {/* <Editor /> */}
             </div>
         </div>
     );

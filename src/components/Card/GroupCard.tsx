@@ -2,6 +2,9 @@ import { GroupMember } from "@/model/Master/GroupModel";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { encryptData } from "@/utils/crypt";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { setGroupMemberActive } from "@/lib/features/authSlice";
 
 interface IGroupCardProps {
     groupMember: GroupMember;
@@ -9,7 +12,13 @@ interface IGroupCardProps {
 
 const GroupCard: React.FunctionComponent<IGroupCardProps> = (props) => {
     const router = useRouter();
+    const dispatch = useDispatch();
     const { groupMember } = props;
+
+    const handleClick = () => {
+        dispatch(setGroupMemberActive(groupMember));
+        router.push(`/group/${encodeURIComponent(encryptData(String(groupMember.group?.id)))}`)
+    }
 
     return (
         <>
@@ -34,9 +43,7 @@ const GroupCard: React.FunctionComponent<IGroupCardProps> = (props) => {
                     </p>
                     <div className="card-actions justify-end mb-3">
                         <button
-                            onClick={() =>
-                                router.push(`/group/${encodeURIComponent(encryptData(String(groupMember.group?.id)))}`)
-                            }
+                            onClick={() => handleClick()}
                             className="btn btn-primary"
                         >
                             View Group

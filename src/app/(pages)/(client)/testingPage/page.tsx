@@ -4,7 +4,7 @@ import PopUp from "@/components/PopUp";
 import Tabs from "@/components/Tabs";
 import { useState } from "react";
 
-const testingPage: React.FC = () => {
+const TestingPage: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false); // Set default to false
     const [activeTab, setActiveTab] = useState("Iuran Keamanan");
 
@@ -166,4 +166,4 @@ const testingPage: React.FC = () => {
     );
 };
 
-export default testingPage;
+export default TestingPage;

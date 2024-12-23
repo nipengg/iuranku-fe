@@ -17,6 +17,8 @@ import moment from "moment";
 import RequestTuitionModal from "@/components/RequestTuition/RequestTuitionModal";
 import CancelRequestTuitionModal from "@/components/RequestTuition/CancelRequestTuitionModal";
 import { decryptData } from "@/utils/crypt";
+import { Tuition } from "@/model/Master/Tuition";
+import TuitionDetailModal from "@/components/RequestTuition/TuitionDetailModal";
 
 async function fetchTuitionRequest(
     dispatch: AppDispatch,
@@ -72,6 +74,10 @@ export default function GroupTuitionRequest({
     // Cancel Modal
     const [isModalCancelOpen, setIsModalCancelOpen] = useState(false);
     const [cancelId, setCancelId] = useState<number>(0)
+
+    // Tuition Detail Modal
+    const [isModalTuitionDetailOpen, setIsModalTuitionDetail] = useState(false);
+    const [modalTuitionDetail, setModalTuitionDetail] = useState<Tuition[]>([]);
 
     const fetchData = async (page: number) => {
         try {
@@ -136,6 +142,14 @@ export default function GroupTuitionRequest({
         setIsModalCancelOpen(false);
     };
 
+    const openModalTuitionDetail = (tuition: Tuition[]) => {
+        setModalTuitionDetail(tuition);
+        setIsModalTuitionDetail(true);
+    };
+
+    const closeModalTuitionDetail = () => {
+        setIsModalTuitionDetail(false);
+    };
 
     return (
         <>
@@ -183,7 +197,6 @@ export default function GroupTuitionRequest({
                                             <th>Remark</th>
                                             <th>Status</th>
                                             <td>Requested Date</td>
-                                            <th>File</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -197,26 +210,32 @@ export default function GroupTuitionRequest({
                                                     <td>{requestTuition.status}</td>
                                                     <td>{moment(requestTuition.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</td>
                                                     <td>
-                                                        {requestTuition.file && (
-                                                            <button
-                                                                onClick={() => openImagePreview(requestTuition.file)}
-                                                                className="btn bg-custom-green-primary text-white"
-                                                            >
-                                                                Preview
-                                                            </button>
-                                                        )}
-                                                    </td>
-                                                    <td>
+
                                                         <div className="dropdown dropdown-left">
                                                             <button className="btn btn-ghost btn-sm">
                                                                 <span className="material-icons"><FaEllipsisV className="text-lg" /></span>
                                                             </button>
                                                             <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
                                                                 <li>
-                                                                    <button onClick={() => openCancelModal(requestTuition.id ?? 0)}>
-                                                                        Cancel
+                                                                    <button onClick={() => openImagePreview(requestTuition.file)}>
+                                                                        File Preview
                                                                     </button>
                                                                 </li>
+                                                                {requestTuition.status == "Fully Approved" &&
+                                                                    <li>
+                                                                        <button onClick={() => openModalTuitionDetail(requestTuition.tuition)}>
+                                                                            Detail
+                                                                        </button>
+                                                                    </li>
+                                                                }
+
+                                                                {requestTuition.status == "Waiting Approval" &&
+                                                                    <li>
+                                                                        <button onClick={() => openCancelModal(requestTuition.id ?? 0)}>
+                                                                            Cancel
+                                                                        </button>
+                                                                    </li>
+                                                                }
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -267,6 +286,8 @@ export default function GroupTuitionRequest({
                                 onClose={closeImagePreviewModal}
                                 url={imagePreviewUrl}
                             />
+
+                            <TuitionDetailModal isModalOpen={isModalTuitionDetailOpen} onClose={closeModalTuitionDetail} tuitions={modalTuitionDetail} />
                         </div>
                     </>
                 }

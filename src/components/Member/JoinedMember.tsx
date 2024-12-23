@@ -11,8 +11,8 @@ import { toast } from "react-toastify";
 import SpinnerCircle from "../Spinner/SpinnerCircle";
 import moment from "moment";
 import { FaEllipsisV } from "react-icons/fa";
-import KickModal from "./KickModal";
 import { User } from "@/model/Master/UserModel";
+import HandleLeave from "./HandleLeaveModal";
 
 interface Props {
     id: string;
@@ -42,8 +42,8 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
     const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 5;
 
-    const [isKickModalOpen, setIsKickModalOpen] = useState(false);
-    const [memberKick, setMemberKick] = useState<GroupMember>({ ...GroupMemberInitial });
+    const [isHandleLeaveModalOpen, setIsHandleLeaveModalOpen] = useState(false);
+    const [memberLeave, setMemberLeave] = useState<GroupMember>({ ...GroupMemberInitial });
 
     const dispatch = useDispatch<AppDispatch>();
     const groupMembersState: GroupMemberState = useSelector(
@@ -81,14 +81,14 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
         }
     };
 
-    const handleKickModal = (groupMember: GroupMember) => {
-        setMemberKick(groupMember);
-        setIsKickModalOpen(true);
+    const handleHandleLeaveModal = (groupMember: GroupMember) => {
+        setMemberLeave(groupMember);
+        setIsHandleLeaveModalOpen(true);
     };
 
     const closeModal = () => {
-        setIsKickModalOpen(false);
-        setMemberKick({ ...GroupMemberInitial });
+        setIsHandleLeaveModalOpen(false);
+        setMemberLeave({ ...GroupMemberInitial });
     };
 
     if (groupMembersState.isLoading) return <SpinnerCircle size="large" />;
@@ -125,13 +125,13 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                                         <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
                                             {member.user?.id == userState.id ?
                                                 <li>
-                                                    <button onClick={() => handleKickModal(member ?? 0)}>
+                                                    <button onClick={() => handleHandleLeaveModal(member ?? 0)}>
                                                         Leave
                                                     </button>
                                                 </li>
                                                 :
                                                 <li>
-                                                    <button onClick={() => handleKickModal(member ?? 0)}>
+                                                    <button onClick={() => handleHandleLeaveModal(member ?? 0)}>
                                                         Kick
                                                     </button>
                                                 </li>
@@ -173,10 +173,10 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                 </button>
             </div>
 
-            <KickModal
-                isOpen={isKickModalOpen}
+            <HandleLeave
+                isOpen={isHandleLeaveModalOpen}
                 onClose={closeModal}
-                groupMember={memberKick}
+                groupMember={memberLeave}
                 refreshTable={() => fetchData(currentPage)}
             />
         </div>

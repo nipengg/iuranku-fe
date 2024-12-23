@@ -113,7 +113,7 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
                         <tbody>
                             {tuitionPayment?.monthlyStatus.map((item: MonthlyStatus, index) => {
                                 return (
-                                    <tr className={(item.paidAmount >= item.tuitionAmount) && item.tuitionAmount != 0 ? "bg-green-100" : "bg-yellow-50"}>
+                                    <tr key={index} className={(item.paidAmount >= item.tuitionAmount) && item.tuitionAmount != 0 ? "bg-green-100" : "bg-yellow-50"}>
                                         <td>{MONTHS_CONSTAN[item.month - 1]}</td>
                                         <td>{formatRupiah(item.tuitionAmount)}</td>
                                         <td>{formatRupiah(item.paidAmount)}</td>
@@ -136,6 +136,29 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
                                 );
                             })}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    {
+                                        tuitionPayment !== undefined ?
+                                            formatRupiah(Object.values(tuitionPayment?.monthlyStatus).reduce((a, b) => a + b.tuitionAmount, 0)) : 0
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        tuitionPayment !== undefined ?
+                                            formatRupiah(Object.values(tuitionPayment?.monthlyStatus).reduce((a, b) => a + b.paidAmount, 0)) : 0
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        tuitionPayment !== undefined ?
+                                            Object.values(tuitionPayment?.monthlyStatus).reduce((a, b) => a + b.tuition.length, 0) + " Transaction" : 0 + "Transaction"
+                                    }
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
 
                     <TuitionPaymentDetailModal isModalOpen={isModalPaymentDetailOpen} onClose={closeModalPaymentDetail} tuitions={modalPaymentDetail} />
