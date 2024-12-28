@@ -1,5 +1,5 @@
 // Constant
-export const API_URL: string = process.env.DATABASE_CONNECTION_STRING as string == 'prod' ? process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL as string : process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL_LOCAL as string;
+export const API_URL: string = process.env.NEXT_PUBLIC_APP_DATABASE_CONNECTION_STRING as string == 'prod' ? process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL as string : process.env.NEXT_PUBLIC_APP_LARAVEL_API_URL_LOCAL as string;
 export const ACCESS_TOKEN: string = process.env.NEXT_PUBLIC_APP_COOKIES_TOKEN as string;
 export const TOKEN_GOOGLE: string = process.env.NEXT_PUBLIC_APP_COOKIES_TOKEN_GOOGLE as string;
 export const PUBLIC_BASE_URL_LOCAL: string = process.env.NEXT_PUBLIC_BASE_URL_LOCAL as string;
