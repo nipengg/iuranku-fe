@@ -1,13 +1,14 @@
 import { MappingUserGoogleToRequestObject, MappingUserToFormData, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { getTokenAsync, removeToken, removeTokenGoogle, saveToken, saveTokenGoogle } from "../../utils/userSession";
 import { TokenResponse } from "@react-oauth/google";
 import { StatusCodes } from "http-status-codes";
 import { get, post } from "@/utils/request";
 import { checkResponse } from "./sliceHelper";
+import { GroupMember } from "@/model/Master/GroupModel";
 
 const initialState: AuthState = { ...AuthStateInitial }
 
@@ -138,6 +139,9 @@ const authSlice = createSlice({
         },
         setTokenExpire: (state) => {
             state.isTokenExpire = true;
+        },
+        setGroupMemberActive: (state, action: PayloadAction<GroupMember>) => {
+            state.groupMemberActive = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -214,5 +218,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { clearUserState, setTokenExpire } = authSlice.actions;
+export const { clearUserState, setTokenExpire, setGroupMemberActive } = authSlice.actions;
 export default authSlice.reducer;

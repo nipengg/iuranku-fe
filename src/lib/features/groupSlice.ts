@@ -21,7 +21,7 @@ export const getGroupMember = createAsyncThunk(
 )
 
 const groupSlice = createSlice({
-    name: 'auth',
+    name: 'group',
     initialState: initialState,
     reducers: {
         

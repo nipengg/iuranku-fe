@@ -1,18 +1,19 @@
+import { GroupMember, GroupMemberInitial } from "../Master/GroupModel";
 import { User, UserInitial } from "../Master/UserModel";
+import { BaseState } from "./BaseState";
 
 // State Interfaces
-export interface AuthState {
+export interface AuthState extends BaseState {
     // Profile
     user: User;
-    // State
-    isLoading: boolean;
-    isError: boolean;
+    groupMemberActive: GroupMember;
     isTokenExpire: boolean;
 }
 
 // Init
 export const AuthStateInitial: AuthState = {
     user: { ...UserInitial },
+    groupMemberActive: { ...GroupMemberInitial },
     isLoading: false,
     isError: false,
     isTokenExpire: false,

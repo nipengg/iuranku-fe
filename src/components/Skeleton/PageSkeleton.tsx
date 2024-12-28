@@ -1,20 +1,17 @@
-import { Skeleton } from 'antd';
+import { Skeleton } from "antd";
 
-interface IPageSkeletonProps {
-
-}
+interface IPageSkeletonProps {}
 
 const PageSkeleton: React.FunctionComponent<IPageSkeletonProps> = (props) => {
-
-    const { } = props;
+    const {} = props;
 
     return (
         <>
             {Array.from({ length: 4 }).map((_, index) => (
-                <Skeleton active className='mt-2' key={index} />
+                <Skeleton active className="mt-2" key={index} />
             ))}
         </>
-    )
-}
+    );
+};
 
-export default PageSkeleton
+export default PageSkeleton;

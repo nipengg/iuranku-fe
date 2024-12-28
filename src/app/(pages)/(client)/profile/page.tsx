@@ -1,8 +1,19 @@
+import ProfileCard from "@/components/ProfileCard";
+
 export default function profilePage() {
     return (
         <div className="text-black">
             <h1>Profile</h1>
-            {/* Foto Profile */}
+            <ProfileCard
+                name="Nama User"
+                id="ID User"
+                email="email@domain.com"
+                phone="123-456-789"
+                gender="Laki-laki"
+                address="Alamat Jalan 123, Kota"
+                imageUrl="/profile-image.jpg"
+            />
+
             <div>
                 <h1>Nama User</h1>
                 <h5>ID User</h5>

@@ -39,7 +39,7 @@ const RegisterRegular = () => {
             } else {
                 toast.error(`Something went wrong...`);
             }
-            
+
         });
     }
 
@@ -84,7 +84,7 @@ const RegisterRegular = () => {
                                     Email
                                 </label>
                                 <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-white leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="email"
                                     type="email"
                                     name="email"
@@ -102,7 +102,7 @@ const RegisterRegular = () => {
                                     Phone Number
                                 </label>
                                 <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-white leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="phone"
                                     type="number"
                                     name="phone"
@@ -117,11 +117,9 @@ const RegisterRegular = () => {
                         {/* Gender */}
                         <div className="mb-4">
                             <label className="block  text-sm font-bold mb-2">
-                            <label className="block  text-sm font-bold mb-2">
                                 Gender
                             </label>
                             <div className="flex flex-row">
-                                <label className=" mr-4">
                                 <label className=" mr-4">
                                     <input
                                         type="radio"
@@ -135,7 +133,6 @@ const RegisterRegular = () => {
                                     />
                                     Male
                                 </label>
-                                <label className=" mr-4">
                                 <label className=" mr-4">
                                     <input
                                         type="radio"
@@ -156,13 +153,12 @@ const RegisterRegular = () => {
                             <div className="w-full md:w-1/2 pr-0 md:pr-2 mb-4 md:mb-0">
                                 <label
                                     className="block  text-sm font-bold mb-2"
-                                    className="block  text-sm font-bold mb-2"
                                     htmlFor="password"
                                 >
                                     Password
                                 </label>
                                 <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-white leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="password"
                                     type="password"
                                     name="password"
@@ -175,13 +171,12 @@ const RegisterRegular = () => {
                             <div className="w-full md:w-1/2 pl-0 md:pl-2">
                                 <label
                                     className="block  text-sm font-bold mb-2"
-                                    className="block  text-sm font-bold mb-2"
                                     htmlFor="confirmPassword"
                                 >
                                     Confirm Password
                                 </label>
                                 <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-white leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="confirmPassword"
                                     type="password"
                                     placeholder="Confirm your password"
@@ -192,12 +187,11 @@ const RegisterRegular = () => {
                         </div>
                         <div className="mb-4">
                             <label className="block  text-sm font-bold mb-2">
-                            <label className="block  text-sm font-bold mb-2">
                                 Address
                             </label>
                             <div className="mb-4">
                                 <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-white leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     type="text"
                                     placeholder="Address"
                                     name="address"
@@ -209,7 +203,7 @@ const RegisterRegular = () => {
                         </div>
 
                         <button
-                            className="bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 self-start text-white"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 self-start"
                             type="submit"
                             onClick={handleRegister}
                             disabled={auth.isLoading ? true : false}
@@ -223,4 +217,4 @@ const RegisterRegular = () => {
     )
 }
 
-export default RegisterRegular
+export default RegisterRegular;

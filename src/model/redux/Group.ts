@@ -1,11 +1,9 @@
 import { GroupMember, GroupMemberInitial } from "../Master/GroupModel";
+import { BaseState } from "./BaseState";
 
 // State Interfaces
-export interface GroupState {
+export interface GroupState extends BaseState {
     groupActive: GroupMember;
-    // State
-    isLoading: boolean;
-    isError: boolean;
 }
 
 // Init
