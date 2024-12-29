@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import SpinnerCircle from "@/components/Spinner/SpinnerCircle";
 
 async function fetchGroupNewsDetail(
     dispatch: AppDispatch,
@@ -54,9 +55,7 @@ export default function DetailNews({ params }: { params: { id: string, newsId: s
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <span>Loading...</span> {/* You can add a spinner here */}
-            </div>
+            <SpinnerCircle size="large" />
         );
     }
 
@@ -89,7 +88,7 @@ export default function DetailNews({ params }: { params: { id: string, newsId: s
             <div className="w-full">
                 <h1 className="text-sm">News Page</h1>
                 <h1 className="font-bold text-3xl">{groupNews.news_title}</h1>
-                <h2>
+                <h2 className="text-sm">
                     by <strong>{groupNews.author.name}</strong> on{" "}
                     <strong>{moment(groupNews.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</strong>
                 </h2>

@@ -1,13 +1,13 @@
 export const menuTabs = [
     {
-        value: "About Us",
-        label: "About Us",
-        url: "/about",
-    },
-    {
         value: "Group Invitation",
         label: "Group Invitation",
         url: "/invitation",
+    },
+    {
+        value: "Announcement",
+        label: "Announcement",
+        url: "/announcement",
     }
 ]
 
