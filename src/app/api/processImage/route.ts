@@ -1,5 +1,5 @@
+import { API_FLASK_URL } from '@/constant';
 import { NextResponse } from 'next/server';
-import { PythonShell } from 'python-shell';
 
 export async function POST(req: Request) {
     const formData = await req.formData();
@@ -9,26 +9,30 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'No image file uploaded' }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await imageFile.arrayBuffer());
-
-    const base64Image = buffer.toString('base64');
-
-    const options = {
-        args: [base64Image],
-        scriptPath: './src/python',
-    };
+    const form = new FormData();
+    form.append('image', imageFile, imageFile.name);
 
     try {
-        const results = await new Promise<string[]>((resolve, reject) => {
-            const pythonProcess = PythonShell.run('process_image.py', options);
-            pythonProcess.then(resolve).catch(reject);
+        const response = await fetch(`${API_FLASK_URL}/process-image`, {
+            method: 'POST',
+            body: form,
         });
 
-        const output = results && results.length > 0 ? JSON.parse(results[0]) : null;
+        if (!response.ok) {
+            const errorDetails = await response.json();
+            return NextResponse.json(
+                { error: 'Error from Flask API', details: errorDetails },
+                { status: response.status }
+            );
+        }
 
-        return NextResponse.json(output);
+        const data = await response.json();
+        return NextResponse.json(data);
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        return NextResponse.json({ error: 'Error executing Python script', details: errorMessage }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Error communicating with Flask API', details: errorMessage },
+            { status: 500 }
+        );
     }
 }
