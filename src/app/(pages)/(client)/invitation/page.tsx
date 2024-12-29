@@ -118,8 +118,6 @@ const Invitation: React.FC = () => {
         closeModal();
     };
 
-    if (groupApplicationState.isLoading) return <SpinnerCircle size="large" />;
-
     return (
         <>
             <div className="text-black">
@@ -128,87 +126,89 @@ const Invitation: React.FC = () => {
                 </div>
                 <div className="divider" />
 
-                <div className="overflow-x-auto text-black">
-                    <table className="table table-zebra">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Group Name</th>
-                                <th>Address</th>
-                                <th>Invited Date</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {groupApplications.length > 0 ? (
-                                groupApplications.map((application, index) => (
-                                    <tr key={application.id}>
-                                        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                                        <td>{application.group?.group_name}</td>
-                                        <td>{application.group?.group_address}</td>
-                                        <td>{moment(application.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss")}</td>
-                                        <td>
-                                            <div className="dropdown dropdown-left">
-                                                <button className="btn btn-ghost btn-sm">
-                                                    <FaEllipsisV className="text-lg" />
-                                                </button>
-                                                <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
-                                                    <li>
-                                                        <button onClick={() => handleOpenModal(application.id ?? 0, "accept")}>
-                                                            Accept
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button onClick={() => handleOpenModal(application.id ?? 0, "reject")}>
-                                                            Reject
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                {groupApplicationState.isLoading ? <SpinnerCircle size="large" /> :
+                    <div className="overflow-x-auto text-black">
+                        <table className="table table-zebra">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Group Name</th>
+                                    <th>Address</th>
+                                    <th>Invited Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {groupApplications.length > 0 ? (
+                                    groupApplications.map((application, index) => (
+                                        <tr key={application.id}>
+                                            <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
+                                            <td>{application.group?.group_name}</td>
+                                            <td>{application.group?.group_address}</td>
+                                            <td>{moment(application.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss")}</td>
+                                            <td>
+                                                <div className="dropdown dropdown-left">
+                                                    <button className="btn btn-ghost btn-sm">
+                                                        <FaEllipsisV className="text-lg" />
+                                                    </button>
+                                                    <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
+                                                        <li>
+                                                            <button onClick={() => handleOpenModal(application.id ?? 0, "accept")}>
+                                                                Accept
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button onClick={() => handleOpenModal(application.id ?? 0, "reject")}>
+                                                                Reject
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={5} className="text-center py-4 text-gray-500">
+                                            No data available.
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan={5} className="text-center py-4 text-gray-500">
-                                        No data available.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                )}
+                            </tbody>
+                        </table>
 
-                    {/* Pagination Controls */}
-                    <div className="join mt-4 flex justify-center">
-                        <button
-                            className={`join-item btn ${currentPage === 1 ? "btn-disabled" : ""}`}
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
+                        {/* Pagination Controls */}
+                        <div className="join mt-4 flex justify-center">
+                            <button
+                                className={`join-item btn ${currentPage === 1 ? "btn-disabled" : ""}`}
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                            >
+                                «
+                            </button>
+                            <button className="join-item btn">
+                                Page {currentPage} of {totalPages}
+                            </button>
+                            <button
+                                className={`join-item btn ${currentPage === totalPages ? "btn-disabled" : ""}`}
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                            >
+                                »
+                            </button>
+                        </div>
+
+                        <HandleInvitationModal
+                            isOpen={isModalOpen}
+                            title={modalConfig.title}
+                            onClose={closeModal}
+                            onConfirm={modalConfig.onConfirm}
+                            isAccept={modalConfig.isAccept}
                         >
-                            «
-                        </button>
-                        <button className="join-item btn">
-                            Page {currentPage} of {totalPages}
-                        </button>
-                        <button
-                            className={`join-item btn ${currentPage === totalPages ? "btn-disabled" : ""}`}
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                        >
-                            »
-                        </button>
+                            {modalConfig.content}
+                        </HandleInvitationModal>
                     </div>
-
-                    <HandleInvitationModal
-                        isOpen={isModalOpen}
-                        title={modalConfig.title}
-                        onClose={closeModal}
-                        onConfirm={modalConfig.onConfirm}
-                        isAccept={modalConfig.isAccept}
-                    >
-                        {modalConfig.content}
-                    </HandleInvitationModal>
-                </div>
+                }
             </div>
         </>
     )

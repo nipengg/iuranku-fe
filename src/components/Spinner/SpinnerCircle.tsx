@@ -7,7 +7,10 @@ interface Props {
 const SpinnerCircle: React.FunctionComponent<Props> = ({ size }) => {
     return (
         <>
-            <Spin size={size} />
+            <div className="flex items-center justify-center h-64">
+                <Spin size={size} />
+            </div>
+
         </>
     );
 };

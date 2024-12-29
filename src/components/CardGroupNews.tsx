@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import Link from "next/link";
 import { GroupNews } from "@/model/Master/GroupNews";
+import moment from "moment";
 
 interface Props {
   groupId: string;
@@ -19,13 +20,21 @@ const CardGroupNews: React.FC<Props> = ({ groupId, groupNews, onDelete }) => {
   return (
     <div>
       <div className="flex justify-between items-start">
-        <h2 className="font-bold text-2xl mb-2">
-          <Link href={`/group/${groupId}/news/${groupNews.id}`}>
-            {groupNews.news_title}
-          </Link>
-        </h2>
+        <div className="flex flex-col">
+          <div className="flex">
+            <h2 className="font-bold text-2xl mb-2">
+              <Link href={`/group/${groupId}/news/${groupNews.id}`}>
+                {groupNews.news_title}
+              </Link>
+            </h2>
+          </div>
+          <p className="text-sm text-gray-600 mt-2">
+            Author: <strong>{groupNews.author.name}</strong>, {moment(groupNews.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}
+          </p>
+        </div>
+
         {/* Three-Dot Dropdown */}
-        <div className="relative">
+        <div className="relative mt-4">
           <button
             onClick={toggleDropdown}
             className="p-2 rounded-full hover:bg-gray-100"

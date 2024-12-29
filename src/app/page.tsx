@@ -60,7 +60,7 @@ export default function Home() {
                     {/* Image section */}
                     <div className="md:w-1/2 pt-10 md:pt-20">
                         <Image
-                            src="/arcane1.jpg"
+                            src="/perumahan.jpg"
                             alt="Service Image"
                             height={350}
                             width={900}
@@ -82,18 +82,18 @@ export default function Home() {
                                 {/* Founder 1 */}
                                 <div className="flex flex-col items-center">
                                     <Image
-                                        src="/cait2.jpeg"
+                                        src="/photo/neville-profile.jpg"
                                         alt="Nevil"
                                         width={225}
                                         height={400}
                                         className="rounded-md border reverse"
                                     />
-                                    <p className="mt-2">Nevile</p>
+                                    <p className="mt-2">Neville</p>
                                 </div>
                                 {/* Founder 2 */}
                                 <div className="flex flex-col items-center">
                                     <Image
-                                        src="/cait2.jpeg"
+                                        src="/photo/damar-profile.jpg"
                                         alt="Damar"
                                         width={225}
                                         height={400}
@@ -159,53 +159,6 @@ export default function Home() {
                                     yang benar.
                                 </p>
                             </div>
-                        </div>
-                        {/* Carousel */}
-                        <div className="carousel w-7/12">
-                            <div id="item1" className="carousel-item w-full">
-                                <img
-                                    src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
-                                    className="w-full h-64 object-cover rounded-md"
-                                    alt="Carousel Image 1"
-                                />
-                            </div>
-                            <div id="item2" className="carousel-item w-full">
-                                <img
-                                    src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-                                    className="w-full h-64 object-cover rounded-md"
-                                    alt="Carousel Image 2"
-                                />
-                            </div>
-                            <div id="item3" className="carousel-item w-full">
-                                <img
-                                    src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-                                    className="w-full h-64 object-cover rounded-md"
-                                    alt="Carousel Image 3"
-                                />
-                            </div>
-                            <div id="item4" className="carousel-item w-full">
-                                <img
-                                    src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
-                                    className="w-full h-64 object-cover rounded-md"
-                                    alt="Carousel Image 4"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Dots */}
-                        <div className="flex justify-center gap-2 mt-4">
-                            <a href="#item1" className="btn btn-xs">
-                                1
-                            </a>
-                            <a href="#item2" className="btn btn-xs">
-                                2
-                            </a>
-                            <a href="#item3" className="btn btn-xs">
-                                3
-                            </a>
-                            <a href="#item4" className="btn btn-xs">
-                                4
-                            </a>
                         </div>
                     </div>
                 </div>

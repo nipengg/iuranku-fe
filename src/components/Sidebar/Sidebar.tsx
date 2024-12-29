@@ -1,25 +1,19 @@
+import { RootState } from "@/lib/store";
+import { AuthState } from "@/model/redux/Auth";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 interface SidebarProps {
     links: { href: string; label: string }[];
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ links }) => {
-    const sidebarOldLinks = [
-        { href: "/about", label: "About" },
-        { href: "/profile", label: "Profile" },
-        { href: "/housing", label: "Housing" },
-        { href: "/pengelola/addHousing", label: "Add Housing" },
-        { href: "/pengelola/groupNews", label: "Housing News" },
-        { href: "/pengelola/member", label: "Member" },
-        { href: "/pengelola/payment", label: "Payment" },
-        { href: "/profile", label: "Profile" },
-    ];
+    const authState: AuthState = useSelector((state: RootState) => state.auth);
 
     return (
         <aside className="h-full min-h-screen w-64 bg-white text-gray-800 border-r">
             <nav className="p-4">
-                <h1 className="text-xs mb-2">Role: XXXX</h1>
+                <h1 className="text-xs mb-2">Role: {authState.groupMemberActive.member_type?.member_type_name}</h1>
                 <span className="text-xs font-bold">Main</span>
                 <ul className="space-y-4 mt-4">
                     {links.map((link, index) => (

@@ -52,12 +52,12 @@ export default function News({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         fetchGroupNews(dispatch, decryptData(decodeURIComponent(params.id)), currentPage, itemsPerPage).then((res) => {
-                if (res.error) throw res;
-                if (res.meta.code === StatusCodes.OK) {
-                    setGroupNews(res.result.data || []);
-                    setTotalPages(res.result.total_page || 1);
-                }
-            })
+            if (res.error) throw res;
+            if (res.meta.code === StatusCodes.OK) {
+                setGroupNews(res.result.data || []);
+                setTotalPages(res.result.total_page || 1);
+            }
+        })
             .catch((err) => {
                 toast.error(`Get Data Failed. ${err.payload.result?.message}`);
             });
@@ -68,7 +68,7 @@ export default function News({ params }: { params: { id: string } }) {
             if (!newsId) return;
             await dispatch(deleteGroupNews({ group_news_id: newsId }));
             setIsModalOpen(false);
-            
+
             fetchGroupNews(dispatch, decryptData(decodeURIComponent(params.id)), currentPage, itemsPerPage).then((res) => {
                 if (res.error) throw res;
                 if (res.meta.code === StatusCodes.OK) {
@@ -76,10 +76,10 @@ export default function News({ params }: { params: { id: string } }) {
                     setTotalPages(res.result.total_page || 1);
                 }
             })
-            .catch((err) => {
-                toast.error(`Get Data Failed. ${err.payload.result?.message}`);
-            });
-            
+                .catch((err) => {
+                    toast.error(`Get Data Failed. ${err.payload.result?.message}`);
+                });
+
             toast.success("Group News deleted successfully");
         } catch (err) {
             toast.error("Failed to delete Group News");
@@ -116,14 +116,17 @@ export default function News({ params }: { params: { id: string } }) {
                 </div>
             ) : (
                 <>
-                    {groupNews.map((item: GroupNews, index) => (
-                        <CardGroupNews
-                            key={index}
-                            groupNews={item}
-                            groupId={params.id}
-                            onDelete={openDeleteModal} // Pass delete handler with both id and title
-                        />
-                    ))}
+                    {groupNews.length > 0 ?
+                        groupNews.map((item: GroupNews, index) => (
+                            <CardGroupNews
+                                key={index}
+                                groupNews={item}
+                                groupId={params.id}
+                                onDelete={openDeleteModal}
+                            />
+                        )) :
+                        <>No Data Available.</>
+                    }
                     <div className="flex justify-between items-center mt-4">
                         <button
                             disabled={currentPage === 1}
