@@ -60,59 +60,64 @@ const Navbar = () => {
                             );
                         })
                     }
-                    <div className="text-white">
-                        | &nbsp; &nbsp;
-                    </div>
-                    {user.id && (
-                        <div className="relative inline-block text-left">
-                            <div>
-                                <button
-                                    type="button"
-                                    className="block mt-4 lg:inline-block lg:mt-0 text-custom-yellow-primary hover:text-white mr-4"
-                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                >
-                                    <div className="flex flex-row">
-                                        <div className="flex">
-                                            {user.name}
-                                        </div>
-                                        <FaChevronDown className={`ml-2 mt-1 transition-transform ${isDropdownOpen ? "rotate-180" : ""
-                                            }`} />
-                                    </div>
 
-
-                                </button>
-                            </div>
-
-                            {/* Dropdown Menu */}
-                            {isDropdownOpen && (
-                                <div
-                                    className="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                    role="menu"
-                                    aria-orientation="vertical"
-                                    aria-labelledby="menu-button"
-                                >
-                                    <div className="py-1" role="none">
-                                        {/* Edit Profile */}
-                                        <Link
-                                            href="/profile"
-                                            className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                            role="menuitem"
-                                        >
-                                            Edit Profile
-                                        </Link>
-                                        {/* Logout */}
+                    {user.id > 0 ?
+                        (
+                            <>
+                                <div className="text-white">
+                                    | &nbsp; &nbsp;
+                                </div>
+                                <div className="relative inline-block text-left">
+                                    <div>
                                         <button
-                                            onClick={() => handleLogout()}
-                                            className="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                                            role="menuitem"
+                                            type="button"
+                                            className="block mt-4 lg:inline-block lg:mt-0 text-custom-yellow-primary hover:text-white mr-4"
+                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                         >
-                                            Logout
+                                            <div className="flex flex-row">
+                                                <div className="flex">
+                                                    {user.name}
+                                                </div>
+                                                <FaChevronDown className={`ml-2 mt-1 transition-transform ${isDropdownOpen ? "rotate-180" : ""
+                                                    }`} />
+                                            </div>
+
+
                                         </button>
                                     </div>
+
+                                    {/* Dropdown Menu */}
+                                    {isDropdownOpen && (
+                                        <div
+                                            className="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                            role="menu"
+                                            aria-orientation="vertical"
+                                            aria-labelledby="menu-button"
+                                        >
+                                            <div className="py-1" role="none">
+                                                {/* Edit Profile */}
+                                                <Link
+                                                    href="/profile"
+                                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                                    role="menuitem"
+                                                >
+                                                    Edit Profile
+                                                </Link>
+                                                {/* Logout */}
+                                                <button
+                                                    onClick={() => handleLogout()}
+                                                    className="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                                                    role="menuitem"
+                                                >
+                                                    Logout
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                    )}
+                            </>
+                        )
+                    : null}
                 </div>
             </div>
         </nav>
