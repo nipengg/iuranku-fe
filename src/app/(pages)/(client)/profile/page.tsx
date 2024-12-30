@@ -23,7 +23,7 @@ async function fetchUser(
 }
 
 
-export default function profilePage() {
+export default function Profile() {
 
     const dispatch = useDispatch<AppDispatch>();
     const [userFetch, setUserFetch] = useState<User>({ ...UserInitial });

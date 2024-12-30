@@ -11,6 +11,7 @@ export interface User extends BaseModel {
     address: string | null;
     phone: string | null;
     role: string;
+    email_verified_at: Date | null;
 }
 
 export interface UserRegister {
@@ -53,6 +54,7 @@ export const UserInitial: User = {
     address: "",
     phone: "",
     gender: "",
+    email_verified_at: null,
     created_at: null,
     updated_at: null,
     deleted_at: null,
