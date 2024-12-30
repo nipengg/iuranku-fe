@@ -22,6 +22,14 @@ export interface UserRegister {
     password: string;
 }
 
+export interface EditProfile {
+    id: number;
+    name: string;
+    gender: string;
+    address: string;
+    phone: string;
+}
+
 export interface UserResponseLogin extends BaseResponse {
     result: {
         access_token: string;
@@ -57,6 +65,14 @@ export const UserRegisterInitial: UserRegister = {
     address: "",
     phone: "",
     password: "",
+}
+
+export const EditProfileInitial: EditProfile = {
+    id: 0,
+    name: "",
+    gender: "",
+    address: "",
+    phone: "",
 }
 
 export const UserResponseLoginInitial: UserResponseLogin = {

@@ -61,11 +61,9 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                 throw new Error(res.payload.result.message);
             }
         }).catch(function (err: any) {
-            toast.error(`Get Data Failed. ${err.payload?.result?.message || err.message}`);
+            toast.error(`Insert Data Failed. ${err.payload?.result?.message || err.message}`);
         });
     };
-
-
 
     return (
         <>
