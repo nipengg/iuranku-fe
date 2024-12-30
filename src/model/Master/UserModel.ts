@@ -11,6 +11,7 @@ export interface User extends BaseModel {
     address: string | null;
     phone: string | null;
     role: string;
+    email_verified_at: Date | null;
 }
 
 export interface UserRegister {
@@ -20,6 +21,14 @@ export interface UserRegister {
     address: string;
     phone: string;
     password: string;
+}
+
+export interface EditProfile {
+    id: number;
+    name: string;
+    gender: string;
+    address: string;
+    phone: string;
 }
 
 export interface UserResponseLogin extends BaseResponse {
@@ -45,6 +54,7 @@ export const UserInitial: User = {
     address: "",
     phone: "",
     gender: "",
+    email_verified_at: null,
     created_at: null,
     updated_at: null,
     deleted_at: null,
@@ -57,6 +67,14 @@ export const UserRegisterInitial: UserRegister = {
     address: "",
     phone: "",
     password: "",
+}
+
+export const EditProfileInitial: EditProfile = {
+    id: 0,
+    name: "",
+    gender: "",
+    address: "",
+    phone: "",
 }
 
 export const UserResponseLoginInitial: UserResponseLogin = {

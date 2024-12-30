@@ -1,4 +1,4 @@
-import { MappingUserGoogleToRequestObject, MappingUserToFormData, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
+import { EditProfile, MappingUserGoogleToRequestObject, MappingUserToFormData, UserInitial, UserLoginForm, UserRegister, UserResponseLogin } from "@/model/Master/UserModel";
 import { AuthState, AuthStateInitial } from "@/model/redux/Auth";
 import { API_URL, GOOGLE_USER_INFO_API, STATUS_SIGNIN } from "@/constant";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -92,6 +92,24 @@ export const register = createAsyncThunk(
     }
 )
 
+export const editProfile = createAsyncThunk(
+    "auth/edit/profile",
+    async (data: EditProfile, thunkAPI) => {
+        try {
+            
+            const response = await post(`${API_URL}/user/edit-profile`, data);
+            checkResponse(response);
+
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
+
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
 export const logout = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
@@ -109,6 +127,24 @@ export const logout = createAsyncThunk(
 
             await removeToken();
             await removeTokenGoogle();
+
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
+
+export const sendEmailVerification = createAsyncThunk(
+    "auth/send-email-verification",
+    async (_, thunkAPI) => {
+        try {
+            
+            const response = await post(`${API_URL}/email/verification-notification`);
+            checkResponse(response);
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
 
             return response;
         } catch (err: any) {
@@ -212,6 +248,32 @@ const authSlice = createSlice({
             state.isError = false;
         });
         builder.addCase(fetch.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        // Edit Profile
+        builder.addCase(editProfile.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(editProfile.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+        });
+        builder.addCase(editProfile.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        // Send Email Verification
+        builder.addCase(sendEmailVerification.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(sendEmailVerification.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+        });
+        builder.addCase(sendEmailVerification.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });
