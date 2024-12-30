@@ -1,5 +1,5 @@
 'use client';
-import { editProfile, fetch } from "@/lib/features/authSlice";
+import { editProfile, fetch, sendEmailVerification } from "@/lib/features/authSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { EditProfile, EditProfileInitial, User, UserInitial } from "@/model/Master/UserModel";
 import { StatusCodes } from "http-status-codes";
@@ -28,7 +28,7 @@ export default function profilePage() {
     const dispatch = useDispatch<AppDispatch>();
     const [userFetch, setUserFetch] = useState<User>({ ...UserInitial });
     const [editForm, setEditForm] = useState<EditProfile>({ ...EditProfileInitial });
-    
+
     const authState = useSelector((state: RootState) => state.auth);
 
     const handleChange = (e: any) => {
@@ -52,6 +52,19 @@ export default function profilePage() {
         });
     };
 
+    const handleSendEmailVerification = (e: any) => {
+        e.preventDefault();
+
+        dispatch(sendEmailVerification()).then((res: any) => {
+            if (res.payload.meta.code == StatusCodes.OK) {
+                toast.success(`Email Verification Sent!`);
+            } else {
+                throw new Error(res.payload.result.message);
+            }
+        }).catch(function (err: any) {
+            toast.error(`Sent Email Verification Failed. ${err.payload?.result?.message || err.message}`);
+        });
+    };
 
     useEffect(() => {
         fetchUser(dispatch).then((res) => {
@@ -69,7 +82,11 @@ export default function profilePage() {
     return (
         <div className="text-black">
             <div className="flex justify-between">
-                <h1 className="text-2xl font-bold">Profile</h1>
+                <h1 className="flex text-2xl font-bold">Profile</h1>
+                {
+                    userFetch.email_verified_at == null ?
+                        <button onClick={handleSendEmailVerification} className="btn bg-custom-green-primary text-white" disabled={authState.isLoading}>Send Email Verification</button> : null
+                }
             </div>
 
             <div className="divider" />

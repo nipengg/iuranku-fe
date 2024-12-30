@@ -110,7 +110,6 @@ export const editProfile = createAsyncThunk(
     }
 )
 
-
 export const logout = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
@@ -128,6 +127,24 @@ export const logout = createAsyncThunk(
 
             await removeToken();
             await removeTokenGoogle();
+
+            return response;
+        } catch (err: any) {
+            throw thunkAPI.rejectWithValue(err);
+        }
+    }
+)
+
+
+export const sendEmailVerification = createAsyncThunk(
+    "auth/send-email-verification",
+    async (_, thunkAPI) => {
+        try {
+            
+            const response = await post(`${API_URL}/email/verification-notification`);
+            checkResponse(response);
+            if (response.meta.code !== StatusCodes.OK)
+                throw response;
 
             return response;
         } catch (err: any) {
@@ -244,6 +261,19 @@ const authSlice = createSlice({
             state.isError = false;
         });
         builder.addCase(editProfile.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+        // Send Email Verification
+        builder.addCase(sendEmailVerification.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(sendEmailVerification.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+        });
+        builder.addCase(sendEmailVerification.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });
