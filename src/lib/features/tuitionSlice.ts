@@ -1,5 +1,5 @@
 import { API_URL } from "@/constant";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { get, post } from "@/utils/request";
 import { checkResponse } from "./sliceHelper";
 import { StatusCodes } from "http-status-codes";
@@ -90,7 +90,9 @@ const tuitionSlice = createSlice({
     name: 'tuition',
     initialState: initialState,
     reducers: {
-
+        setLoadingInsertTuition: (state, action: PayloadAction<boolean>) => {
+            state.isLoadingInsertTuition = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getTuitionByMemberId.pending, (state, action) => {
@@ -138,17 +140,17 @@ const tuitionSlice = createSlice({
         });
 
         builder.addCase(insertTuition.pending, (state, action) => {
-            state.isLoading = true;
+            state.isLoadingInsertTuition = true;
         });
         builder.addCase(insertTuition.fulfilled, (state, action) => {
-            state.isLoading = false;
+            state.isLoadingInsertTuition = false;
         });
         builder.addCase(insertTuition.rejected, (state, action) => {
-            state.isLoading = false;
+            state.isLoadingInsertTuition = false;
             state.isError = true;
         });
     }
 });
 
-export const { } = tuitionSlice.actions;
+export const { setLoadingInsertTuition } = tuitionSlice.actions;
 export default tuitionSlice.reducer;

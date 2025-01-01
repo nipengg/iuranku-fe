@@ -19,7 +19,7 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
             <div className="modal-box">
                 <h2 className="text-xl font-bold mb-4">File Preview</h2>
                 <img
-                    src={BACKEND_STORAGE + url}
+                    src={`/api/proxyImage?url=${encodeURIComponent(BACKEND_STORAGE + url)}`}
                     alt="Image Preview"
                     className="max-w-full h-auto rounded-md mt-4"
                 />

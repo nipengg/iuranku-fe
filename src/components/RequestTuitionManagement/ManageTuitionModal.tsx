@@ -1,16 +1,16 @@
 import { getTuitionRequestById } from "@/lib/features/tuitionRequestSlice";
-import { AppDispatch } from "@/lib/store";
+import { AppDispatch, RootState } from "@/lib/store";
 import { RequestTuition, RequestTuitionInitial } from "@/model/Master/RequestTuition";
 import { StatusCodes } from "http-status-codes";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Tabs from "../Tabs";
 import { formatRupiah, getFirstDayOfMonth, getFirstDayOfMonthDate } from "@/utils/format";
 import { getGroupTuitionSetting } from "@/lib/features/groupTuitionSettingSlice";
 import { decryptData } from "@/utils/crypt";
 import SpinnerCircle from "../Spinner/SpinnerCircle";
-import { getTuitionByMemberId, insertTuition } from "@/lib/features/tuitionSlice";
+import { getTuitionByMemberId, insertTuition, setLoadingInsertTuition } from "@/lib/features/tuitionSlice";
 import { InsertTuitionForm } from "@/model/Master/Tuition";
 
 async function fetchGroupTuitionSetting(
@@ -80,6 +80,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
     refreshTable,
 }) => {
     const dispatch = useDispatch<AppDispatch>();
+    const tuitionState = useSelector((state: RootState) => state.tuition);
     const [activeTab, setActiveTab] = useState("Keamanan");
     const tabs = ["Keamanan", "Kebersihan", "Kematian"];
 
@@ -202,6 +203,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
     // Fetch the data for the tuition request
     const fetchDataRequest = async () => {
         try {
+            dispatch(setLoadingInsertTuition(true));
             const res = await fetchTuitionRequestById(dispatch, requestId);
             if (res.meta.code === StatusCodes.OK) {
                 setRequestTuition(res.result.data || RequestTuitionInitial);
@@ -292,6 +294,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
             setUnpaidAmounts(fetchedUnpaidAmounts);
             setCheckedAmountMonth(fetchedCheckedAmountMonth);
             setLoading(false); // Set loading to false when fetching is done
+            dispatch(setLoadingInsertTuition(false));
         } catch (err: any) {
             toast.error(`Failed to fetch group tuition settings. ${err.message}`);
             setLoading(false); // Set loading to false even if there's an error
@@ -301,6 +304,8 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
     const insertTuitionHandle = () => {
 
         if (requestTuition.id != 0 && requestTuition.id != null && requestTuition.member.id != 0 && requestTuition.member.id != null) {
+
+            dispatch(setLoadingInsertTuition(true));
 
             const payloads: InsertTuitionForm[] = [];
 
@@ -316,8 +321,10 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
                             member_id: requestTuition.member.id || 0,
                             type_tuition: tabs[typeIndex],
                             nominal: amount,
-                            period: getFirstDayOfMonthDate(2024, month),
+                            period: getFirstDayOfMonthDate(period, month),
                         };
+
+                        console.log(payload);
         
                         payloads.push(payload);
                     }
@@ -335,6 +342,8 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
                 } else {
                     toast.error(`Something went wrong...`);
                 }
+            }).finally(function () {
+                dispatch(setLoadingInsertTuition(false));
             });
         }
     };
@@ -415,10 +424,10 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
                 </div>
 
                 <div className="modal-action">
-                    <button className="btn btn-ghost" onClick={onClose}>
+                    <button className="btn btn-ghost" onClick={onClose} disabled={tuitionState.isLoadingInsertTuition}>
                         Close
                     </button>
-                    <button className="btn bg-custom-green-primary text-white" onClick={insertTuitionHandle}>
+                    <button className="btn bg-custom-green-primary text-white" onClick={insertTuitionHandle} disabled={tuitionState.isLoadingInsertTuition}>
                         Save
                     </button>
                 </div>
