@@ -1,19 +1,24 @@
-'use client';
-import { editProfile, fetch, sendEmailVerification } from "@/lib/features/authSlice";
+"use client";
+import {
+    editProfile,
+    fetch,
+    sendEmailVerification,
+} from "@/lib/features/authSlice";
 import { AppDispatch, RootState } from "@/lib/store";
-import { EditProfile, EditProfileInitial, User, UserInitial } from "@/model/Master/UserModel";
+import {
+    EditProfile,
+    EditProfileInitial,
+    User,
+    UserInitial,
+} from "@/model/Master/UserModel";
 import { StatusCodes } from "http-status-codes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-async function fetchUser(
-    dispatch: AppDispatch,
-): Promise<any> {
+async function fetchUser(dispatch: AppDispatch): Promise<any> {
     try {
-        const response: any = await dispatch(
-            fetch()
-        );
+        const response: any = await dispatch(fetch());
         if (response.error) throw response;
 
         return response.payload;
@@ -22,58 +27,71 @@ async function fetchUser(
     }
 }
 
-
 export default function Profile() {
-
     const dispatch = useDispatch<AppDispatch>();
     const [userFetch, setUserFetch] = useState<User>({ ...UserInitial });
-    const [editForm, setEditForm] = useState<EditProfile>({ ...EditProfileInitial });
+    const [editForm, setEditForm] = useState<EditProfile>({
+        ...EditProfileInitial,
+    });
 
     const authState = useSelector((state: RootState) => state.auth);
 
     const handleChange = (e: any) => {
         setEditForm((prevState) => ({
             ...prevState,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         }));
-    }
+    };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        dispatch(editProfile(editForm)).then((res: any) => {
-            if (res.payload.meta.code == StatusCodes.OK) {
-                toast.success(`Profile Updated`);
-            } else {
-                throw new Error(res.payload.result.message);
-            }
-        }).catch(function (err: any) {
-            toast.error(`Update Data Failed. ${err.payload?.result?.message || err.message}`);
-        });
+        dispatch(editProfile(editForm))
+            .then((res: any) => {
+                if (res.payload.meta.code == StatusCodes.OK) {
+                    toast.success(`Profile Updated`);
+                } else {
+                    throw new Error(res.payload.result.message);
+                }
+            })
+            .catch(function (err: any) {
+                toast.error(
+                    `Update Data Failed. ${
+                        err.payload?.result?.message || err.message
+                    }`
+                );
+            });
     };
 
     const handleSendEmailVerification = (e: any) => {
         e.preventDefault();
 
-        dispatch(sendEmailVerification()).then((res: any) => {
-            if (res.payload.meta.code == StatusCodes.OK) {
-                toast.success(`Email Verification Sent!`);
-            } else {
-                throw new Error(res.payload.result.message);
-            }
-        }).catch(function (err: any) {
-            toast.error(`Sent Email Verification Failed. ${err.payload?.result?.message || err.message}`);
-        });
+        dispatch(sendEmailVerification())
+            .then((res: any) => {
+                if (res.payload.meta.code == StatusCodes.OK) {
+                    toast.success(`Email Verification Sent!`);
+                } else {
+                    throw new Error(res.payload.result.message);
+                }
+            })
+            .catch(function (err: any) {
+                toast.error(
+                    `Sent Email Verification Failed. ${
+                        err.payload?.result?.message || err.message
+                    }`
+                );
+            });
     };
 
     useEffect(() => {
-        fetchUser(dispatch).then((res) => {
-            if (res.error) throw res;
-            if (res.meta.code === StatusCodes.OK) {
-                setUserFetch(res.result.user);
-                setEditForm(res.result.user);
-            }
-        })
+        fetchUser(dispatch)
+            .then((res) => {
+                if (res.error) throw res;
+                if (res.meta.code === StatusCodes.OK) {
+                    setUserFetch(res.result.user);
+                    setEditForm(res.result.user);
+                }
+            })
             .catch((err) => {
                 toast.error(`Get Data Failed. ${err.payload.result?.message}`);
             });
@@ -83,18 +101,22 @@ export default function Profile() {
         <div className="text-black">
             <div className="flex justify-between">
                 <h1 className="flex text-2xl font-bold">Profile</h1>
-                {
-                    userFetch.email_verified_at == null ?
-                        <button onClick={handleSendEmailVerification} className="btn bg-custom-green-primary text-white" disabled={authState.isLoading}>Send Email Verification</button> : null
-                }
+                {userFetch.email_verified_at == null ? (
+                    <button
+                        onClick={handleSendEmailVerification}
+                        className="btn bg-custom-green-primary text-white"
+                        disabled={authState.isLoading}
+                    >
+                        Send Email Verification
+                    </button>
+                ) : null}
             </div>
 
             <div className="divider" />
 
             {/* Form Profile */}
-            <div className="w-full">
+            <div className="md:w-5/12">
                 <form className="flex flex-col">
-
                     <div className="flex flex-col md:flex-row justify-between mb-4">
                         <div className="w-full md:w-1/2 pr-0 md:pr-2 mb-4 md:mb-0">
                             <label
@@ -133,7 +155,6 @@ export default function Profile() {
                                 required
                             />
                         </div>
-
                     </div>
 
                     <div className="mb-4">
@@ -210,7 +231,7 @@ export default function Profile() {
                     </div>
 
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 self-start"
+                        className="bg-custom-green-primary hover:bg-custom-green-dark text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline self-start"
                         type="submit"
                         onClick={handleSubmit}
                         disabled={authState.isLoading}

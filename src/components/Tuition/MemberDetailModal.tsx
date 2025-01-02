@@ -14,9 +14,8 @@ const MemberDetailModal: React.FC<MemberDetailModalProps> = ({
     isModalOpen,
     onClose,
     groupId,
-    member
+    member,
 }) => {
-
     const [activeTab, setActiveTab] = useState("Keamanan");
     const tabs = ["Keamanan", "Kebersihan", "Kematian"];
 
@@ -31,20 +30,29 @@ const MemberDetailModal: React.FC<MemberDetailModalProps> = ({
                         <h1 className="text-2xl font-bold">
                             {member.user?.name}
                         </h1>
-                        <p className="text-sm text-gray-500">{member.user?.role} | {member.member_type?.member_type_name}</p>
+                        <p className="text-sm text-gray-500">
+                            {member.user?.role} |{" "}
+                            {member.member_type?.member_type_name}
+                        </p>
                         <div className="text-sm text-gray-600 space-y-1">
                             <p className="flex">
-                                <span className="font-medium w-32">📞 Mobile Number</span>
+                                <span className="font-medium w-32">
+                                    📞 Mobile Number
+                                </span>
                                 <span className="ml-2 mr-2">:</span>
                                 <strong>{member.user?.phone}</strong>
                             </p>
                             <p className="flex">
-                                <span className="font-medium w-32">✉️ Email</span>
+                                <span className="font-medium w-32">
+                                    ✉️ Email
+                                </span>
                                 <span className="ml-2 mr-2">:</span>
                                 <strong>{member.user?.email}</strong>
                             </p>
                             <p className="flex">
-                                <span className="font-medium w-32">📍 Address</span>
+                                <span className="font-medium w-32">
+                                    📍 Address
+                                </span>
                                 <span className="ml-2 mr-2">:</span>
                                 <strong>{member.user?.address}</strong>
                             </p>
@@ -57,11 +65,19 @@ const MemberDetailModal: React.FC<MemberDetailModalProps> = ({
                         onTabChange={setActiveTab}
                     />
                     <div className="overflow-x-auto">
-                        <MemberPaymentDetail key={activeTab} groupId={groupId} member={member} typeTuition={activeTab} />
+                        <MemberPaymentDetail
+                            key={activeTab}
+                            groupId={groupId}
+                            member={member}
+                            typeTuition={activeTab}
+                        />
                     </div>
                 </div>
                 <div className="modal-action">
-                    <button className="btn btn-ghost" onClick={onClose}>
+                    <button
+                        className="btn bg-custom-green-light text-white"
+                        onClick={onClose}
+                    >
                         Close
                     </button>
                 </div>

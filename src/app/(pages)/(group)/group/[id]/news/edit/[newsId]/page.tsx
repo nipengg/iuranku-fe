@@ -1,7 +1,10 @@
 "use client";
 
 import Editor from "@/components/Editor";
-import { getGroupNewsDetail, updateGroupNews } from "@/lib/features/groupNewsSlice";
+import {
+    getGroupNewsDetail,
+    updateGroupNews,
+} from "@/lib/features/groupNewsSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { UpdateGroupNewsForm } from "@/model/Master/GroupNews";
 import { GroupNewsState } from "@/model/redux/GroupNews";
@@ -11,7 +14,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function EditNews({ params }: { params: { id: string; newsId: string } }) {
+export default function EditNews({
+    params,
+}: {
+    params: { id: string; newsId: string };
+}) {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const [form, setForm] = useState<UpdateGroupNewsForm | null>(null);
@@ -39,18 +46,18 @@ export default function EditNews({ params }: { params: { id: string; newsId: str
             setForm((prevState) =>
                 prevState
                     ? {
-                        ...prevState,
-                        image: e.target.files ? e.target.files[0] : null,
-                    }
+                          ...prevState,
+                          image: e.target.files ? e.target.files[0] : null,
+                      }
                     : null
             );
         } else {
             setForm((prevState) =>
                 prevState
                     ? {
-                        ...prevState,
-                        [e.target.name]: e.target.value,
-                    }
+                          ...prevState,
+                          [e.target.name]: e.target.value,
+                      }
                     : null
             );
         }
@@ -62,9 +69,9 @@ export default function EditNews({ params }: { params: { id: string; newsId: str
         setForm((prevState) =>
             prevState
                 ? {
-                    ...prevState,
-                    content: value,
-                }
+                      ...prevState,
+                      content: value,
+                  }
                 : null
         );
     };
@@ -101,7 +108,7 @@ export default function EditNews({ params }: { params: { id: string; newsId: str
 
     return (
         <>
-            <div className="text-black p-6 bg-white">
+            <div className="text-black bg-white">
                 <div className="flex mb-6">
                     <h1 className="text-4xl font-bold">Edit Group News</h1>
                 </div>
@@ -159,7 +166,7 @@ export default function EditNews({ params }: { params: { id: string; newsId: str
                     {/* Submit Button */}
                     <div className="form-control">
                         <button
-                            className="btn bg-custom-green-primary w-full text-lg mt-10 text-white hover:text-black"
+                            className="btn bg-custom-green-primary w-1/12 text-lg mt-10 text-white hover:text-black"
                             onClick={handleSubmit}
                             disabled={groupNewsState.isLoading ? true : false}
                         >

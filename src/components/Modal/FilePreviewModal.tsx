@@ -27,14 +27,18 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                             BACKEND_STORAGE + url
                         )}`}
                         alt="Image Preview"
-                        className={`max-w-full h-auto rounded-md mt-4 ${isLoading ? "hidden" : "block"
-                            }`}
+                        className={`max-w-full h-auto rounded-md mt-4 ${
+                            isLoading ? "hidden" : "block"
+                        }`}
                         onLoad={() => setIsLoading(false)}
                         onError={() => setIsLoading(false)}
                     />
                 </div>
                 <div className="modal-action">
-                    <button className="btn btn-ghost" onClick={onClose}>
+                    <button
+                        className="btn bg-custom-green-light text-white"
+                        onClick={onClose}
+                    >
                         Close
                     </button>
                 </div>

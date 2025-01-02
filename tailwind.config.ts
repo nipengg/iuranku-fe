@@ -11,6 +11,7 @@ const config: Config = {
             colors: {
                 "custom-green-primary": "#3A4D39",
                 "custom-green-dark": "#2C3C2C",
+                "custom-green-light": "#4F6F52",
                 "custom-yellow-primary": "#ECE3CE",
             },
             backgroundImage: {
@@ -20,10 +21,7 @@ const config: Config = {
             },
         },
     },
-    plugins: [
-        require("daisyui"),
-        require('@tailwindcss/typography'),
-    ],
+    plugins: [require("daisyui"), require("@tailwindcss/typography")],
     daisyui: {
         darkTheme: "light",
     },

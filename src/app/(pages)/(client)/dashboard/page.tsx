@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import CompCaSlide from "@/components/CompCaSlide/CompCaSlide";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
+import Link from "next/link";
 
 async function fetchGroupMember(
     dispatch: AppDispatch,
@@ -57,7 +58,6 @@ export default function Dashboard() {
 
     return (
         <>
-
             <h1 className="font-bold text-2xl mb-5">Your Groups</h1>
             {groupState.isLoading ? (
                 <PageSkeleton />
@@ -77,14 +77,21 @@ export default function Dashboard() {
                         </>
                     ) : (
                         <>
+                            <p>You haven&apos;t joined a group yet.</p>
                             <p>
-                                You&apos;re not joined to any group right now...
+                                Try visiting the Group Invitation page to view
+                                any invitations.
                             </p>
+                            <Link
+                                href={`/invitation`}
+                                className="btn bg-custom-green-primary text-white mt-6"
+                            >
+                                Group Invitation
+                            </Link>
                         </>
                     )}
                 </>
             )}
-
         </>
     );
 }

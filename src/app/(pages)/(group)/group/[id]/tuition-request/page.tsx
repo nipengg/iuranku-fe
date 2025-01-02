@@ -30,7 +30,13 @@ async function fetchTuitionRequest(
 ): Promise<any> {
     try {
         const response: any = await dispatch(
-            getTuitionRequest({ user_id: userId, group_id: groupId, period: year, page, take })
+            getTuitionRequest({
+                user_id: userId,
+                group_id: groupId,
+                period: year,
+                page,
+                take,
+            })
         );
         if (response.error) throw response;
 
@@ -57,7 +63,10 @@ export default function GroupTuitionRequest({
     const startYear = 2023;
     const futureYears = 1;
     const [selectedYear, setSelectedYear] = useState(currentYear);
-    const years = Array.from({ length: currentYear + futureYears - startYear + 1 }, (_, index) => startYear + index);
+    const years = Array.from(
+        { length: currentYear + futureYears - startYear + 1 },
+        (_, index) => startYear + index
+    );
 
     const [requestTuition, setRequestTuition] = useState<RequestTuition[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -73,7 +82,7 @@ export default function GroupTuitionRequest({
 
     // Cancel Modal
     const [isModalCancelOpen, setIsModalCancelOpen] = useState(false);
-    const [cancelId, setCancelId] = useState<number>(0)
+    const [cancelId, setCancelId] = useState<number>(0);
 
     // Tuition Detail Modal
     const [isModalTuitionDetailOpen, setIsModalTuitionDetail] = useState(false);
@@ -97,7 +106,11 @@ export default function GroupTuitionRequest({
                 throw new Error(res.result.message);
             }
         } catch (err: any) {
-            toast.error(`Get Data Failed. ${err.payload?.result?.message || err.message}`);
+            toast.error(
+                `Get Data Failed. ${
+                    err.payload?.result?.message || err.message
+                }`
+            );
         }
     };
 
@@ -155,12 +168,15 @@ export default function GroupTuitionRequest({
         <>
             <div className="text-black">
                 <div className="flex justify-between mb-4">
-                    <h1 className="text-4xl font-bold">
-                        My Tuition Request
-                    </h1>
+                    <h1 className="text-4xl font-bold">My Tuition Request</h1>
 
                     <div>
-                        <select className="select select-bordered w-28 mr-3" name="tuition_period" value={selectedYear} onChange={handleChangePeriod}>
+                        <select
+                            className="select select-bordered w-28 mr-3"
+                            name="tuition_period"
+                            value={selectedYear}
+                            onChange={handleChangePeriod}
+                        >
                             {years.map((yr) => (
                                 <option key={yr} value={yr}>
                                     {yr}
@@ -169,7 +185,7 @@ export default function GroupTuitionRequest({
                         </select>
                         <button
                             onClick={() => openRequestModal()}
-                            className="btn btn-success text-white btn-sm"
+                            className="btn bg-custom-green-primary text-white btn-sm"
                         >
                             + Send Request
                         </button>
@@ -185,7 +201,9 @@ export default function GroupTuitionRequest({
                 </div>
                 <div className="divider m-0" />
 
-                {tuitionRequestState.isLoading ? <SpinnerCircle size="large" /> :
+                {tuitionRequestState.isLoading ? (
+                    <SpinnerCircle size="large" />
+                ) : (
                     <>
                         <div className="container mx-auto pb-6">
                             <div className="text-black">
@@ -202,48 +220,100 @@ export default function GroupTuitionRequest({
                                     </thead>
                                     <tbody>
                                         {requestTuition.length > 0 ? (
-                                            requestTuition.map((requestTuition, index) => (
-                                                <tr key={requestTuition.id}>
-                                                    <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                                                    <td>{formatRupiah(requestTuition.nominal)}</td>
-                                                    <td>{requestTuition.remark}</td>
-                                                    <td>{requestTuition.status}</td>
-                                                    <td>{moment(requestTuition.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}</td>
-                                                    <td>
-
-                                                        <div className="dropdown dropdown-left">
-                                                            <button className="btn btn-ghost btn-sm">
-                                                                <span className="material-icons"><FaEllipsisV className="text-lg" /></span>
-                                                            </button>
-                                                            <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
-                                                                <li>
-                                                                    <button onClick={() => openImagePreview(requestTuition.file)}>
-                                                                        File Preview
-                                                                    </button>
-                                                                </li>
-                                                                {requestTuition.status == "Fully Approved" &&
+                                            requestTuition.map(
+                                                (requestTuition, index) => (
+                                                    <tr key={requestTuition.id}>
+                                                        <td>
+                                                            {index +
+                                                                1 +
+                                                                (currentPage -
+                                                                    1) *
+                                                                    itemsPerPage}
+                                                        </td>
+                                                        <td>
+                                                            {formatRupiah(
+                                                                requestTuition.nominal
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                requestTuition.remark
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                requestTuition.status
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {moment(
+                                                                requestTuition.created_at?.toString()
+                                                            ).format(
+                                                                "MMMM Do YYYY, h:mm:ss a"
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            <div className="dropdown dropdown-left">
+                                                                <button className="btn btn-ghost btn-sm">
+                                                                    <span className="material-icons">
+                                                                        <FaEllipsisV className="text-lg" />
+                                                                    </span>
+                                                                </button>
+                                                                <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
                                                                     <li>
-                                                                        <button onClick={() => openModalTuitionDetail(requestTuition.tuition)}>
-                                                                            Detail
+                                                                        <button
+                                                                            onClick={() =>
+                                                                                openImagePreview(
+                                                                                    requestTuition.file
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            File
+                                                                            Preview
                                                                         </button>
                                                                     </li>
-                                                                }
+                                                                    {requestTuition.status ==
+                                                                        "Fully Approved" && (
+                                                                        <li>
+                                                                            <button
+                                                                                onClick={() =>
+                                                                                    openModalTuitionDetail(
+                                                                                        requestTuition.tuition
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                Detail
+                                                                            </button>
+                                                                        </li>
+                                                                    )}
 
-                                                                {requestTuition.status == "Waiting Approval" &&
-                                                                    <li>
-                                                                        <button onClick={() => openCancelModal(requestTuition.id ?? 0)}>
-                                                                            Cancel
-                                                                        </button>
-                                                                    </li>
-                                                                }
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))
+                                                                    {requestTuition.status ==
+                                                                        "Waiting Approval" && (
+                                                                        <li>
+                                                                            <button
+                                                                                onClick={() =>
+                                                                                    openCancelModal(
+                                                                                        requestTuition.id ??
+                                                                                            0
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                Cancel
+                                                                            </button>
+                                                                        </li>
+                                                                    )}
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
                                         ) : (
                                             <tr>
-                                                <td colSpan={6} className="text-center py-4 text-gray-500">
+                                                <td
+                                                    colSpan={6}
+                                                    className="text-center py-4 text-gray-500"
+                                                >
                                                     No data available.
                                                 </td>
                                             </tr>
@@ -255,8 +325,12 @@ export default function GroupTuitionRequest({
                             {/* Pagination Controls */}
                             <div className="join mt-4 flex justify-center">
                                 <button
-                                    className={`join-item btn ${currentPage === 1 ? "btn-disabled" : ""}`}
-                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    className={`join-item btn ${
+                                        currentPage === 1 ? "btn-disabled" : ""
+                                    }`}
+                                    onClick={() =>
+                                        handlePageChange(currentPage - 1)
+                                    }
                                     disabled={currentPage === 1}
                                 >
                                     «
@@ -265,14 +339,19 @@ export default function GroupTuitionRequest({
                                     Page {currentPage} of {totalPages}
                                 </button>
                                 <button
-                                    className={`join-item btn ${currentPage === totalPages ? "btn-disabled" : ""}`}
-                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    className={`join-item btn ${
+                                        currentPage === totalPages
+                                            ? "btn-disabled"
+                                            : ""
+                                    }`}
+                                    onClick={() =>
+                                        handlePageChange(currentPage + 1)
+                                    }
                                     disabled={currentPage === totalPages}
                                 >
                                     »
                                 </button>
                             </div>
-
 
                             <CancelRequestTuitionModal
                                 isModalOpen={isModalCancelOpen}
@@ -287,10 +366,14 @@ export default function GroupTuitionRequest({
                                 url={imagePreviewUrl}
                             />
 
-                            <TuitionDetailModal isModalOpen={isModalTuitionDetailOpen} onClose={closeModalTuitionDetail} tuitions={modalTuitionDetail} />
+                            <TuitionDetailModal
+                                isModalOpen={isModalTuitionDetailOpen}
+                                onClose={closeModalTuitionDetail}
+                                tuitions={modalTuitionDetail}
+                            />
                         </div>
                     </>
-                }
+                )}
             </div>
         </>
     );

@@ -14,7 +14,10 @@ export default function GroupTuition({ params }: { params: { id: string } }) {
     const startYear = 2023;
     const futureYears = 1;
     const [selectedYear, setSelectedYear] = useState(currentYear);
-    const years = Array.from({ length: currentYear + futureYears - startYear + 1 }, (_, index) => startYear + index);
+    const years = Array.from(
+        { length: currentYear + futureYears - startYear + 1 },
+        (_, index) => startYear + index
+    );
 
     const handleChangePeriod = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedYear(Number(e.target.value));
@@ -26,7 +29,12 @@ export default function GroupTuition({ params }: { params: { id: string } }) {
                 <div className="flex justify-between mb-4">
                     <h1 className="text-4xl font-bold">Payment</h1>
                     <div>
-                        <select className="select select-bordered w-28 mr-3" name="tuition_period" value={selectedYear} onChange={handleChangePeriod}>
+                        <select
+                            className="select select-bordered w-28 mr-3"
+                            name="tuition_period"
+                            value={selectedYear}
+                            onChange={handleChangePeriod}
+                        >
                             {years.map((yr) => (
                                 <option key={yr} value={yr}>
                                     {yr}
@@ -36,16 +44,18 @@ export default function GroupTuition({ params }: { params: { id: string } }) {
                     </div>
                 </div>
                 <div className="container mx-auto pb-6">
-                    {/* Tabs Component */}
                     <Tabs
                         tabs={tabs}
                         activeTab={activeTab}
                         onTabChange={(tab) => setActiveTab(tab)}
                     />
-
-                    {/* Render Table Based on Active Tab */}
                     <div className="mt-6">
-                       <TuitionPayment key={activeTab} groupId={params.id} typeTuition={activeTab} year={selectedYear} />
+                        <TuitionPayment
+                            key={activeTab}
+                            groupId={params.id}
+                            typeTuition={activeTab}
+                            year={selectedYear}
+                        />
                     </div>
                 </div>
             </div>

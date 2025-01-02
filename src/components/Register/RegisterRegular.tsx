@@ -1,58 +1,63 @@
-'use client';
-import { AppDispatch, RootState } from '@/lib/store'
-import { UserRegister, UserRegisterInitial } from '@/model/Master/UserModel';
-import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { register } from '@/lib/features/authSlice';
-import { StatusCodes } from 'http-status-codes';
-import { toast } from 'react-toastify';
+"use client";
+import { AppDispatch, RootState } from "@/lib/store";
+import { UserRegister, UserRegisterInitial } from "@/model/Master/UserModel";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "@/lib/features/authSlice";
+import { StatusCodes } from "http-status-codes";
+import { toast } from "react-toastify";
 
 const RegisterRegular = () => {
-
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const auth = useSelector((state: RootState) => state.auth);
 
-    const [registerForm, setRegisterForm] = useState<UserRegister>({ ...UserRegisterInitial });
+    const [registerForm, setRegisterForm] = useState<UserRegister>({
+        ...UserRegisterInitial,
+    });
 
     const handleChange = (e: any) => {
         setRegisterForm((prevState) => ({
             ...prevState,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         }));
-    }
+    };
 
     const handleRegister = (e: any) => {
         e.preventDefault();
-        dispatch(register(registerForm)).then((res: any) => {
-            if (res.error)
-                throw res;
+        dispatch(register(registerForm))
+            .then((res: any) => {
+                if (res.error) throw res;
 
-            if (res.payload.meta.code == StatusCodes.OK) {
-                router.push('/dashboard');
-                toast.success(`Welcome Back ${res.payload.result.user.name}`);
-            }
-        }).catch(function (err: any) {
-            if (err.payload !== undefined) {
-                toast.error(`Register Failed. ${err.payload.result.message}`);
-            } else {
-                toast.error(`Something went wrong...`);
-            }
-
-        });
-    }
+                if (res.payload.meta.code == StatusCodes.OK) {
+                    router.push("/dashboard");
+                    toast.success(
+                        `Welcome Back ${res.payload.result.user.name}`
+                    );
+                }
+            })
+            .catch(function (err: any) {
+                if (err.payload !== undefined) {
+                    toast.error(
+                        `Register Failed. ${err.payload.result.message}`
+                    );
+                } else {
+                    toast.error(`Something went wrong...`);
+                }
+            });
+    };
 
     return (
         <div className="flex flex-col md:flex-row w-full min-h-screen bg-custom-green-primary">
             <div className="flex-1 flex flex-col justify-center items-center">
-                <p className="text-white text-4xl">IuranKu</p>
+                <p className="text-white text-4xl font-semibold">IuranKu</p>
                 <p className="text-white text-sm">Easier with Us!</p>
             </div>
 
-            <div className="flex flex-col items-center text-black bg-custom-yellow-primary md:w-7/12 p-8 m-8">
-                <h1 className="text-2xl mb-4">Register</h1>
-                <p className=" text-lg mb-4">Create your account</p>
+            <div className="flex flex-col items-center rounded-md text-black bg-custom-yellow-primary md:w-5/12 p-8 m-8">
+                <h1 className="text-2xl mb-2 font-semibold">Register</h1>
+                <p className=" text-md mb-4">Create your account</p>
 
                 <div className="w-full">
                     <form className="flex flex-col">
@@ -61,7 +66,7 @@ const RegisterRegular = () => {
                                 className="block text-sm font-bold mb-2"
                                 htmlFor="Fullname"
                             >
-                                Fullname
+                                Full name
                             </label>
                             <input
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -138,7 +143,9 @@ const RegisterRegular = () => {
                                         type="radio"
                                         name="gender"
                                         value="Female"
-                                        checked={registerForm.gender === "Female"}
+                                        checked={
+                                            registerForm.gender === "Female"
+                                        }
                                         onChange={handleChange}
                                         disabled={auth.isLoading ? true : false}
                                         className="mr-2"
@@ -203,18 +210,18 @@ const RegisterRegular = () => {
                         </div>
 
                         <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 self-start"
+                            className="bg-custom-green-primary hover:bg-custom-green-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline self-start"
                             type="submit"
                             onClick={handleRegister}
                             disabled={auth.isLoading ? true : false}
                         >
-                            {auth.isLoading ? 'Loading...' : 'Sign In'}
+                            {auth.isLoading ? "Loading..." : "Sign In"}
                         </button>
                     </form>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default RegisterRegular;

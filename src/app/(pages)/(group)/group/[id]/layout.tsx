@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import Sidebar from "@/components/Sidebar/Sidebar";
@@ -9,12 +9,11 @@ import { useSelector } from "react-redux";
 
 export default function GroupLayout({
     children,
-    params
+    params,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
     params: { id: string };
 }) {
-
     const baseUrl = `/group/${params.id}`;
 
     const authState: AuthState = useSelector((state: RootState) => state.auth);
@@ -44,24 +43,27 @@ export default function GroupLayout({
         { href: `${baseUrl}/tuition`, label: "Tuition" },
         { href: `${baseUrl}/tuition-payment`, label: "My Payment" },
         { href: `${baseUrl}/tuition-request`, label: "My Tuition Request" },
-        { href: `${baseUrl}/tuition-request-management`, label: "Tuition Request Management" },
+        {
+            href: `${baseUrl}/tuition-request-management`,
+            label: "Tuition Request Management",
+        },
         { href: `${baseUrl}/setting`, label: "Group Settings" },
-    ].filter(link => roleAccess[authState.groupMemberActive.member_type?.member_type_name || ""]?.includes(link.href));
+    ].filter((link) =>
+        roleAccess[
+            authState.groupMemberActive.member_type?.member_type_name || ""
+        ]?.includes(link.href)
+    );
 
     return (
-        
         <>
             <div className="flex flex-col min-h-screen">
                 <header className="sticky top-0 z-50">
                     <Navbar />
                 </header>
-
                 <div className="flex flex-1">
                     <aside className="w-64 bg-gray-100 border-r">
                         <Sidebar links={sidebarLinks} />
                     </aside>
-
-                    {/* Main Content */}
                     <main className="flex-1 container ml-6 mr-auto py-3.5">
                         {children}
                     </main>
@@ -71,5 +73,5 @@ export default function GroupLayout({
                 </footer>
             </div>
         </>
-    )
+    );
 }

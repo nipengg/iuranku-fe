@@ -51,13 +51,19 @@ export default function News({ params }: { params: { id: string } }) {
     const itemsPerPage = 5;
 
     useEffect(() => {
-        fetchGroupNews(dispatch, decryptData(decodeURIComponent(params.id)), currentPage, itemsPerPage).then((res) => {
-            if (res.error) throw res;
-            if (res.meta.code === StatusCodes.OK) {
-                setGroupNews(res.result.data || []);
-                setTotalPages(res.result.total_page || 1);
-            }
-        })
+        fetchGroupNews(
+            dispatch,
+            decryptData(decodeURIComponent(params.id)),
+            currentPage,
+            itemsPerPage
+        )
+            .then((res) => {
+                if (res.error) throw res;
+                if (res.meta.code === StatusCodes.OK) {
+                    setGroupNews(res.result.data || []);
+                    setTotalPages(res.result.total_page || 1);
+                }
+            })
             .catch((err) => {
                 toast.error(`Get Data Failed. ${err.payload.result?.message}`);
             });
@@ -69,15 +75,23 @@ export default function News({ params }: { params: { id: string } }) {
             await dispatch(deleteGroupNews({ group_news_id: newsId }));
             setIsModalOpen(false);
 
-            fetchGroupNews(dispatch, decryptData(decodeURIComponent(params.id)), currentPage, itemsPerPage).then((res) => {
-                if (res.error) throw res;
-                if (res.meta.code === StatusCodes.OK) {
-                    setGroupNews(res.result.data || []);
-                    setTotalPages(res.result.total_page || 1);
-                }
-            })
+            fetchGroupNews(
+                dispatch,
+                decryptData(decodeURIComponent(params.id)),
+                currentPage,
+                itemsPerPage
+            )
+                .then((res) => {
+                    if (res.error) throw res;
+                    if (res.meta.code === StatusCodes.OK) {
+                        setGroupNews(res.result.data || []);
+                        setTotalPages(res.result.total_page || 1);
+                    }
+                })
                 .catch((err) => {
-                    toast.error(`Get Data Failed. ${err.payload.result?.message}`);
+                    toast.error(
+                        `Get Data Failed. ${err.payload.result?.message}`
+                    );
                 });
 
             toast.success("Group News deleted successfully");
@@ -104,7 +118,10 @@ export default function News({ params }: { params: { id: string } }) {
         <div className="text-black">
             <div className="flex justify-between">
                 <h1 className="text-4xl font-bold">Group News</h1>
-                <Link href={`${baseUrl}/create`} className="btn btn-success text-white btn-sm">
+                <Link
+                    href={`${baseUrl}/create`}
+                    className="btn bg-custom-green-primary text-white btn-sm"
+                >
                     + Create News
                 </Link>
             </div>
@@ -116,7 +133,7 @@ export default function News({ params }: { params: { id: string } }) {
                 </div>
             ) : (
                 <>
-                    {groupNews.length > 0 ?
+                    {groupNews.length > 0 ? (
                         groupNews.map((item: GroupNews, index) => (
                             <CardGroupNews
                                 key={index}
@@ -124,9 +141,10 @@ export default function News({ params }: { params: { id: string } }) {
                                 groupId={params.id}
                                 onDelete={openDeleteModal}
                             />
-                        )) :
+                        ))
+                    ) : (
                         <>No Data Available.</>
-                    }
+                    )}
                     <div className="flex justify-between items-center mt-4">
                         <button
                             disabled={currentPage === 1}
@@ -148,8 +166,6 @@ export default function News({ params }: { params: { id: string } }) {
                     </div>
                 </>
             )}
-
-            {/* Modal Component */}
             <DeleteNewsModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
