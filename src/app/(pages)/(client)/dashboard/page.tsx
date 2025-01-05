@@ -65,14 +65,15 @@ export default function Dashboard() {
                 <>
                     {groupMember.length !== 0 ? (
                         <>
-                            <div className="grid grid-cols-3 gap-4">
-                                {groupMember.map((item: GroupMember, index) => {
-                                    return (
-                                        <div className="col-span-1" key={index}>
-                                            <GroupCard groupMember={item} />
-                                        </div>
-                                    );
-                                })}
+                            <div className="flex flex-wrap gap-4">
+                                {groupMember.map((item: GroupMember, index) => (
+                                    <div
+                                        className="w-full md:w-1/5"
+                                        key={index}
+                                    >
+                                        <GroupCard groupMember={item} />
+                                    </div>
+                                ))}
                             </div>
                         </>
                     ) : (

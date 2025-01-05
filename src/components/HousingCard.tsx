@@ -1,37 +1,35 @@
 "use client";
 
 interface HousingCardProps {
-    image: string; // Path to the image
-    title: string; // Title of the housing
-    notification: number; // Number of notifications
-    onViewClick: () => void; // Function to handle the view button click
+    image: string;
+    title: string;
+    address: string;
+    notification: number;
+    onViewClick: () => void;
 }
 
 const HousingCard: React.FC<HousingCardProps> = ({
     image,
     title,
+    address,
     notification,
     onViewClick,
 }) => {
     return (
         <div className="card w-64 bg-white shadow-md border flex flex-col">
-            {/* Image */}
             <figure>
                 <img src={image} alt={title} className="rounded-t-md" />
             </figure>
-
-            {/* Card Body */}
             <div className="card-body p-4 flex flex-col justify-between flex-grow">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <h2 className="card-title text-lg font-bold">{title}</h2>
-
-                    {/* Notification */}
                     {notification > 0 && (
-                        <div className="badge badge-error text-white">
+                        <div className="badge badge-error text-white ml-2">
                             {notification}
                         </div>
                     )}
                 </div>
+                <p className="text-sm text-gray-600">{address}</p>
 
                 <button
                     onClick={onViewClick}
