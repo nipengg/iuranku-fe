@@ -26,6 +26,12 @@ const RegisterRegular = () => {
 
     const handleRegister = (e: any) => {
         e.preventDefault();
+
+        if (registerForm.password !== registerForm.confirmPassword) {
+            toast.error("Password does not match");
+            return;
+        }
+
         dispatch(register(registerForm))
             .then((res: any) => {
                 if (res.error) throw res;
@@ -187,6 +193,7 @@ const RegisterRegular = () => {
                                     id="confirmPassword"
                                     type="password"
                                     placeholder="Confirm your password"
+                                    onChange={handleChange}
                                     disabled={auth.isLoading ? true : false}
                                     required
                                 />

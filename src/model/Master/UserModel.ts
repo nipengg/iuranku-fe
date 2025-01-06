@@ -21,6 +21,7 @@ export interface UserRegister {
     address: string;
     phone: string;
     password: string;
+    confirmPassword: string;
 }
 
 export interface EditProfile {
@@ -67,6 +68,7 @@ export const UserRegisterInitial: UserRegister = {
     address: "",
     phone: "",
     password: "",
+    confirmPassword: "",
 }
 
 export const EditProfileInitial: EditProfile = {

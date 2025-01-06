@@ -1,9 +1,6 @@
 "use client";
 import GroupCard from "@/components/Card/GroupCard";
 import PageSkeleton from "@/components/Skeleton/PageSkeleton";
-import TabBerita from "@/components/TabBerita/TabBerita";
-import TabPengunguman from "@/components/TabPengunguman/TabPengunguman";
-import compCaSlide from "@/components/CompCaSlide/CompCaSlide";
 import { getGroupMember } from "@/lib/features/groupSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { GroupMember } from "@/model/Master/GroupModel";
@@ -13,10 +10,8 @@ import { StatusCodes } from "http-status-codes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import CompCaSlide from "@/components/CompCaSlide/CompCaSlide";
-import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 async function fetchGroupMember(
     dispatch: AppDispatch,
@@ -35,6 +30,7 @@ async function fetchGroupMember(
 }
 
 export default function Dashboard() {
+    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const userState: User = useSelector((state: RootState) => state.auth.user);
     const groupState: GroupState = useSelector(
@@ -43,6 +39,11 @@ export default function Dashboard() {
     const [groupMember, setGroupMember] = useState<GroupMember[]>([]);
 
     useEffect(() => {
+
+        if (userState.email_verified_at === null) {
+            router.push("/unverified");
+        }
+
         fetchGroupMember(dispatch, userState.id)
             .then((res) => {
                 if (res.error) throw res;
