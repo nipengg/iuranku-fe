@@ -37,7 +37,7 @@ const Login = () => {
                 if (res.payload.meta.code == StatusCodes.OK) {
                     router.push("/dashboard");
                     toast.success(
-                        `Welcome Back ${res.payload.result.user.name}`
+                        `Welcome Back, ${res.payload.result.user.name}`
                     );
                 }
             })
@@ -167,7 +167,7 @@ const Login = () => {
                                 }
                             />
                             <div className="text-sm mt-6 text-center">
-                                Do not have an account?{" "}
+                                {"Don't have an account?"}{" "}
                                 <a
                                     href="/register"
                                     className="text-blue-500 underline hover:text-blue-800 hover:underline"

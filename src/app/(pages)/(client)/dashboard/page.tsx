@@ -1,9 +1,6 @@
 "use client";
 import GroupCard from "@/components/Card/GroupCard";
 import PageSkeleton from "@/components/Skeleton/PageSkeleton";
-import TabBerita from "@/components/TabBerita/TabBerita";
-import TabPengunguman from "@/components/TabPengunguman/TabPengunguman";
-import compCaSlide from "@/components/CompCaSlide/CompCaSlide";
 import { getGroupMember } from "@/lib/features/groupSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { GroupMember } from "@/model/Master/GroupModel";
@@ -13,9 +10,8 @@ import { StatusCodes } from "http-status-codes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import CompCaSlide from "@/components/CompCaSlide/CompCaSlide";
-import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 async function fetchGroupMember(
     dispatch: AppDispatch,
@@ -34,6 +30,7 @@ async function fetchGroupMember(
 }
 
 export default function Dashboard() {
+    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const userState: User = useSelector((state: RootState) => state.auth.user);
     const groupState: GroupState = useSelector(
@@ -42,6 +39,11 @@ export default function Dashboard() {
     const [groupMember, setGroupMember] = useState<GroupMember[]>([]);
 
     useEffect(() => {
+
+        if (userState.email_verified_at === null) {
+            router.push("/unverified");
+        }
+
         fetchGroupMember(dispatch, userState.id)
             .then((res) => {
                 if (res.error) throw res;
@@ -57,7 +59,6 @@ export default function Dashboard() {
 
     return (
         <>
-
             <h1 className="font-bold text-2xl mb-5">Your Groups</h1>
             {groupState.isLoading ? (
                 <PageSkeleton />
@@ -65,26 +66,34 @@ export default function Dashboard() {
                 <>
                     {groupMember.length !== 0 ? (
                         <>
-                            <div className="grid grid-cols-3 gap-4">
-                                {groupMember.map((item: GroupMember, index) => {
-                                    return (
-                                        <div className="col-span-1" key={index}>
-                                            <GroupCard groupMember={item} />
-                                        </div>
-                                    );
-                                })}
+                            <div className="flex flex-wrap gap-4">
+                                {groupMember.map((item: GroupMember, index) => (
+                                    <div
+                                        className="w-full md:w-1/5"
+                                        key={index}
+                                    >
+                                        <GroupCard groupMember={item} />
+                                    </div>
+                                ))}
                             </div>
                         </>
                     ) : (
                         <>
+                            <p>You haven&apos;t joined a group yet.</p>
                             <p>
-                                You&apos;re not joined to any group right now...
+                                Try visiting the Group Invitation page to view
+                                any invitations.
                             </p>
+                            <Link
+                                href={`/invitation`}
+                                className="btn bg-custom-green-primary text-white mt-6"
+                            >
+                                Group Invitation
+                            </Link>
                         </>
                     )}
                 </>
             )}
-
         </>
     );
 }

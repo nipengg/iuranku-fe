@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import InviteMemberModal from "@/components/Member/InviteMemberModal";
 import SectionHeadingWithTabs from "@/components/Member/SectionHeadingWithTabs";
@@ -24,24 +24,27 @@ export default function GroupMember({ params }: { params: { id: string } }) {
     };
 
     const handleInviteMember = (selectedMember: any) => {
-    
         const inviteForm: GroupApplicationInvite = {
             user_id: selectedMember.value,
-            group_id: Number.parseInt(decryptData(decodeURIComponent(params.id)))
+            group_id: Number.parseInt(
+                decryptData(decodeURIComponent(params.id))
+            ),
         };
-    
-        dispatch(inviteGroupApplication(inviteForm)).then((res: any) => {    
-            if (res.payload.meta.code == StatusCodes.OK) {
-                toast.success(`User Invited`);
-                setInviteSuccess(true);
-            }
-        }).catch(function (err: any) {
-            if (err.payload !== undefined) {
-                toast.error(`Invite Failed. ${err.payload.result.error}`);
-            } else {
-                toast.error(`Something went wrong...`);
-            }
-        });
+
+        dispatch(inviteGroupApplication(inviteForm))
+            .then((res: any) => {
+                if (res.payload.meta.code == StatusCodes.OK) {
+                    toast.success(`User Invited`);
+                    setInviteSuccess(true);
+                }
+            })
+            .catch(function (err: any) {
+                if (err.payload !== undefined) {
+                    toast.error(`Invite Failed. ${err.payload.result.error}`);
+                } else {
+                    toast.error(`Something went wrong...`);
+                }
+            });
     };
 
     return (
@@ -50,13 +53,16 @@ export default function GroupMember({ params }: { params: { id: string } }) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-4xl font-bold">Group Member</h1>
                     <button
-                        className="btn btn-success text-white btn-sm"
+                        className="btn bg-custom-green-primary text-white btn-sm"
                         onClick={handleOpenModal}
                     >
                         + Invite Member
                     </button>
                 </div>
-                <SectionHeadingWithTabs id={params.id} key={inviteSuccess ? "refreshed" : "initial"} />
+                <SectionHeadingWithTabs
+                    id={params.id}
+                    key={inviteSuccess ? "refreshed" : "initial"}
+                />
             </div>
             <InviteMemberModal
                 groupId={params.id}

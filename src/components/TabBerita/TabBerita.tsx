@@ -36,7 +36,6 @@ interface Props {
 }
 
 const TabBerita: React.FC<Props> = ({ groupId }) => {
-
     const dispatch = useDispatch<AppDispatch>();
 
     const [groupNews, setGroupNews] = useState<GroupNews[]>([]);
@@ -57,13 +56,19 @@ const TabBerita: React.FC<Props> = ({ groupId }) => {
     };
 
     useEffect(() => {
-        fetchGroupNews(dispatch, decryptData(decodeURIComponent(groupId)), currentPage, itemsPerPage).then((res) => {
-            if (res.error) throw res;
-            if (res.meta.code === StatusCodes.OK) {
-                setGroupNews(res.result.data || []);
-                setTotalPages(res.result.total_page || 1);
-            }
-        })
+        fetchGroupNews(
+            dispatch,
+            decryptData(decodeURIComponent(groupId)),
+            currentPage,
+            itemsPerPage
+        )
+            .then((res) => {
+                if (res.error) throw res;
+                if (res.meta.code === StatusCodes.OK) {
+                    setGroupNews(res.result.data || []);
+                    setTotalPages(res.result.total_page || 1);
+                }
+            })
             .catch((err) => {
                 toast.error(`Get Data Failed. ${err.payload.result?.message}`);
             });
@@ -75,47 +80,58 @@ const TabBerita: React.FC<Props> = ({ groupId }) => {
                 <h2 className="font-bold text-lg">Tab Berita</h2>
             </div>
             <div className="space-y-4">
-
-                {
-                    groupNewsState.isLoading ? <SpinnerCircle size="large" /> :
-                        groupNews.length > 0 ? groupNews.map((item, index) => (
-                            <>
-                                <div key={index} className="flex items-center space-x-4">
-                                    <div>
-                                        <div className="flex">
-                                            <p className="font-semibold mr-3">
-                                                <Link href={`/group/${groupId}/news/${item.id}`}>
-                                                    {item.news_title}
-                                                </Link>
-                                            </p>
-                                        </div>
-                                        <p className="text-sm text-gray-600 mt-2">
-                                            Author: <strong>{item.author.name}</strong>, {moment(item.created_at?.toString()).format("MMMM Do YYYY, h:mm:ss a")}
+                {groupNewsState.isLoading ? (
+                    <SpinnerCircle size="large" />
+                ) : groupNews.length > 0 ? (
+                    groupNews.map((item, index) => (
+                        <>
+                            <div
+                                key={index}
+                                className="flex items-center space-x-4"
+                            >
+                                <div>
+                                    <div className="flex">
+                                        <p className="font-semibold mr-3">
+                                            <Link
+                                                href={`/group/${groupId}/news/${item.id}`}
+                                            >
+                                                {item.news_title}
+                                            </Link>
                                         </p>
                                     </div>
+                                    <p className="text-sm text-gray-600 mt-2">
+                                        Author:{" "}
+                                        <strong>{item.author.name}</strong>,{" "}
+                                        {moment(
+                                            item.created_at?.toString()
+                                        ).format("MMMM Do YYYY, h:mm:ss a")}
+                                    </p>
                                 </div>
-                                <div className="flex justify-between items-center mt-4">
-                                    <button
-                                        disabled={currentPage === 1}
-                                        onClick={handlePreviousPage}
-                                        className="btn btn-outline btn-sm"
-                                    >
-                                        Previous
-                                    </button>
-                                    <span>
-                                        Page {currentPage} of {totalPages}
-                                    </span>
-                                    <button
-                                        disabled={currentPage === totalPages}
-                                        onClick={handleNextPage}
-                                        className="btn btn-outline btn-sm"
-                                    >
-                                        Next
-                                    </button>
-                                </div>
-                            </>
-                        )) : <>No Data Available.</>
-                }
+                            </div>
+                            <div className="flex justify-between items-center mt-4">
+                                <button
+                                    disabled={currentPage === 1}
+                                    onClick={handlePreviousPage}
+                                    className="btn btn-outline btn-sm"
+                                >
+                                    Previous
+                                </button>
+                                <span className="text-sm">
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <button
+                                    disabled={currentPage === totalPages}
+                                    onClick={handleNextPage}
+                                    className="btn btn-outline btn-sm"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </>
+                    ))
+                ) : (
+                    <>No Data Available.</>
+                )}
             </div>
         </div>
     );

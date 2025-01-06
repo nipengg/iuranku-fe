@@ -6,7 +6,7 @@ import InvitedMember from "./InvitedMember";
 import LeaveMember from "./LeaveMember";
 
 interface Props {
-    id: string
+    id: string;
 }
 
 const SectionHeadingWithTabs: React.FunctionComponent<Props> = ({ id }) => {
@@ -24,8 +24,8 @@ const SectionHeadingWithTabs: React.FunctionComponent<Props> = ({ id }) => {
                             onClick={() => setActiveTab(tab)}
                             className={`py-2 px-4 text-lg ${
                                 activeTab === tab
-                                    ? "border-b-2 border-blue-600 text-blue-600"
-                                    : "text-gray-600 hover:text-gray-800"
+                                    ? "border-b-2 border-custom-green-primary text-custom-green-primary"
+                                    : "text-custom-green-dark hover:text-custom-green-dark"
                             }`}
                         >
                             {tab}
@@ -41,6 +41,6 @@ const SectionHeadingWithTabs: React.FunctionComponent<Props> = ({ id }) => {
             </div>
         </div>
     );
-}
+};
 
 export default SectionHeadingWithTabs;

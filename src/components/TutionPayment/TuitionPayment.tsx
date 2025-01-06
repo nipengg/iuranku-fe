@@ -11,7 +11,12 @@ import SpinnerCircle from "../Spinner/SpinnerCircle";
 import { GroupMember, GroupMemberInitial } from "@/model/Master/GroupModel";
 import { getTuitionMemberPayment } from "@/lib/features/tuitionSlice";
 import { User } from "@/model/Master/UserModel";
-import { MonthlyStatus, Tuition, TuitionInitial, TuitionMemberPayment } from "@/model/Master/Tuition";
+import {
+    MonthlyStatus,
+    Tuition,
+    TuitionInitial,
+    TuitionMemberPayment,
+} from "@/model/Master/Tuition";
 import { formatRupiah } from "@/utils/format";
 import TuitionPaymentDetailModal from "./TuitionPaymentDetailModal";
 import { FaEllipsisV } from "react-icons/fa";
@@ -21,11 +26,16 @@ async function fetchTuitionMemberPayment(
     userId: number,
     groupId: string,
     year: number,
-    typeTuition: string,
+    typeTuition: string
 ): Promise<any> {
     try {
         const response: any = await dispatch(
-            getTuitionMemberPayment({ user_id: userId, group_id: groupId, period: year, type_tuition: typeTuition })
+            getTuitionMemberPayment({
+                user_id: userId,
+                group_id: groupId,
+                period: year,
+                type_tuition: typeTuition,
+            })
         );
         if (response.error) throw response;
 
@@ -46,10 +56,10 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
     typeTuition,
     year,
 }) => {
-
     const dispatch = useDispatch<AppDispatch>();
 
-    const [tuitionPayment, setTuitionPayment] = useState<TuitionMemberPayment>();
+    const [tuitionPayment, setTuitionPayment] =
+        useState<TuitionMemberPayment>();
 
     const [isModalPaymentDetailOpen, setIsModalPaymentDetail] = useState(false);
     const [modalPaymentDetail, setModalPaymentDetail] = useState<Tuition[]>([]);
@@ -63,7 +73,6 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
         setIsModalPaymentDetail(false);
     };
 
-
     const tuitionState: TuitionState = useSelector(
         (state: RootState) => state.tuition
     );
@@ -76,7 +85,7 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
                 user.id,
                 decryptData(decodeURIComponent(groupId)),
                 year,
-                typeTuition,
+                typeTuition
             );
 
             if (res.meta.code === StatusCodes.OK) {
@@ -86,7 +95,11 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
                 throw new Error(res.result.message);
             }
         } catch (err: any) {
-            toast.error(`Get Data Failed. ${err.payload?.result?.message || err.message}`);
+            toast.error(
+                `Get Data Failed. ${
+                    err.payload?.result?.message || err.message
+                }`
+            );
         }
     };
 
@@ -95,9 +108,10 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
     }, [year]);
 
     return (
-        <div className="overflow-x-auto p-6">
-
-            {tuitionState.isLoading ? <SpinnerCircle size="large" /> :
+        <div className="overflow-x-auto">
+            {tuitionState.isLoading ? (
+                <SpinnerCircle size="large" />
+            ) : (
                 <>
                     {/* Table */}
                     <table className="table w-full">
@@ -111,59 +125,109 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
                             </tr>
                         </thead>
                         <tbody>
-                            {tuitionPayment?.monthlyStatus.map((item: MonthlyStatus, index) => {
-                                return (
-                                    <tr key={index} className={(item.paidAmount >= item.tuitionAmount) && item.tuitionAmount != 0 ? "bg-green-100" : "bg-yellow-50"}>
-                                        <td>{MONTHS_CONSTAN[item.month - 1]}</td>
-                                        <td>{formatRupiah(item.tuitionAmount)}</td>
-                                        <td>{formatRupiah(item.paidAmount)}</td>
-                                        <td>{item.tuition.length} Transaction</td>
-                                        <td>
-                                            <div className="dropdown dropdown-left">
-                                                <button className="btn btn-ghost btn-sm">
-                                                    <span className="material-icons"><FaEllipsisV className="text-lg" /></span>
-                                                </button>
-                                                <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
-                                                    <li>
-                                                        <button onClick={() => openModalPaymentDetail(item.tuition)}>
-                                                            Detail
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
+                            {tuitionPayment?.monthlyStatus.map(
+                                (item: MonthlyStatus, index) => {
+                                    return (
+                                        <tr
+                                            key={index}
+                                            className={
+                                                item.paidAmount >=
+                                                    item.tuitionAmount &&
+                                                item.tuitionAmount != 0
+                                                    ? "bg-green-100"
+                                                    : "bg-yellow-50"
+                                            }
+                                        >
+                                            <td>
+                                                {MONTHS_CONSTAN[item.month - 1]}
+                                            </td>
+                                            <td>
+                                                {formatRupiah(
+                                                    item.tuitionAmount
+                                                )}
+                                            </td>
+                                            <td>
+                                                {formatRupiah(item.paidAmount)}
+                                            </td>
+                                            <td>
+                                                {item.tuition.length}{" "}
+                                                Transaction
+                                            </td>
+                                            <td>
+                                                <div className="dropdown dropdown-left">
+                                                    <button className="btn btn-ghost btn-sm">
+                                                        <span className="material-icons">
+                                                            <FaEllipsisV className="text-lg" />
+                                                        </span>
+                                                    </button>
+                                                    <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
+                                                        <li>
+                                                            <button
+                                                                onClick={() =>
+                                                                    openModalPaymentDetail(
+                                                                        item.tuition
+                                                                    )
+                                                                }
+                                                            >
+                                                                Detail
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                }
+                            )}
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td></td>
                                 <td>
-                                    {
-                                        tuitionPayment !== undefined ?
-                                            formatRupiah(Object.values(tuitionPayment?.monthlyStatus).reduce((a, b) => a + b.tuitionAmount, 0)) : 0
-                                    }
+                                    {tuitionPayment !== undefined
+                                        ? formatRupiah(
+                                              Object.values(
+                                                  tuitionPayment?.monthlyStatus
+                                              ).reduce(
+                                                  (a, b) => a + b.tuitionAmount,
+                                                  0
+                                              )
+                                          )
+                                        : 0}
                                 </td>
                                 <td>
-                                    {
-                                        tuitionPayment !== undefined ?
-                                            formatRupiah(Object.values(tuitionPayment?.monthlyStatus).reduce((a, b) => a + b.paidAmount, 0)) : 0
-                                    }
+                                    {tuitionPayment !== undefined
+                                        ? formatRupiah(
+                                              Object.values(
+                                                  tuitionPayment?.monthlyStatus
+                                              ).reduce(
+                                                  (a, b) => a + b.paidAmount,
+                                                  0
+                                              )
+                                          )
+                                        : 0}
                                 </td>
                                 <td>
-                                    {
-                                        tuitionPayment !== undefined ?
-                                            Object.values(tuitionPayment?.monthlyStatus).reduce((a, b) => a + b.tuition.length, 0) + " Transaction" : 0 + "Transaction"
-                                    }
+                                    {tuitionPayment !== undefined
+                                        ? Object.values(
+                                              tuitionPayment?.monthlyStatus
+                                          ).reduce(
+                                              (a, b) => a + b.tuition.length,
+                                              0
+                                          ) + " Transaction"
+                                        : 0 + "Transaction"}
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
 
-                    <TuitionPaymentDetailModal isModalOpen={isModalPaymentDetailOpen} onClose={closeModalPaymentDetail} tuitions={modalPaymentDetail} />
+                    <TuitionPaymentDetailModal
+                        isModalOpen={isModalPaymentDetailOpen}
+                        onClose={closeModalPaymentDetail}
+                        tuitions={modalPaymentDetail}
+                    />
                 </>
-            }
+            )}
         </div>
     );
 };

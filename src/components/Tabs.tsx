@@ -12,9 +12,9 @@ export default function Tabs({ tabs, onTabChange, activeTab }: TabsProps) {
                     key={tab}
                     onClick={() => onTabChange(tab)}
                     className={`py-2 px-4 text-sm ${
-                        activeTab === tab 
-                            ? "border-b-2 border-blue-600 text-blue-600" 
-                            : "text-gray-600 hover:text-gray-800"
+                        activeTab === tab
+                            ? "border-b-2 border-custom-green-primary text-custom-green-primary"
+                            : "text-custom-green-dark hover:text-custom-green-dark"
                     }`}
                 >
                     {tab}

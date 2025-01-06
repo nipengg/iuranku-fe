@@ -246,6 +246,7 @@ const authSlice = createSlice({
         builder.addCase(fetch.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isError = false;
+            state.user = action.payload.result.user;
         });
         builder.addCase(fetch.rejected, (state, action) => {
             state.isLoading = false;

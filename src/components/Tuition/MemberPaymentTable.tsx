@@ -24,7 +24,13 @@ async function fetchTuitionMemberRequest(
 ): Promise<any> {
     try {
         const response: any = await dispatch(
-            getTuitionMember({ group_id: groupId, period: year, type_tuition: typeTuition, page, take })
+            getTuitionMember({
+                group_id: groupId,
+                period: year,
+                type_tuition: typeTuition,
+                page,
+                take,
+            })
         );
         if (response.error) throw response;
 
@@ -45,7 +51,6 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
     typeTuition,
     year,
 }) => {
-
     const dispatch = useDispatch<AppDispatch>();
 
     const tuitionState: TuitionState = useSelector(
@@ -64,7 +69,9 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
     };
 
     const [isModalMemberOpen, setIsModalMemberOpen] = useState(false);
-    const [modalMemberDetail, setModalMemberDetail] = useState<GroupMember>({ ...GroupMemberInitial });
+    const [modalMemberDetail, setModalMemberDetail] = useState<GroupMember>({
+        ...GroupMemberInitial,
+    });
 
     const openModalMember = (member: GroupMember) => {
         setModalMemberDetail(member);
@@ -93,7 +100,11 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
                 throw new Error(res.result.message);
             }
         } catch (err: any) {
-            toast.error(`Get Data Failed. ${err.payload?.result?.message || err.message}`);
+            toast.error(
+                `Get Data Failed. ${
+                    err.payload?.result?.message || err.message
+                }`
+            );
         }
     };
 
@@ -102,9 +113,10 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
     }, [currentPage, year]);
 
     return (
-        <div className="overflow-x-auto p-6">
-
-            {tuitionState.isLoading ? <SpinnerCircle size="large" /> :
+        <div className="overflow-x-auto">
+            {tuitionState.isLoading ? (
+                <SpinnerCircle size="large" />
+            ) : (
                 <>
                     {/* Table */}
                     <table className="table w-full">
@@ -122,14 +134,31 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
                             {tuitionMember.map((item, index) => (
                                 <tr key={index}>
                                     <td>
-                                        <a href="#" onClick={() => openModalMember(item.member)}  className="text-gray-500 hover:text-blue-500 underline">{item.member.user?.name}</a>
+                                        <a
+                                            href="#"
+                                            onClick={() =>
+                                                openModalMember(item.member)
+                                            }
+                                            className="text-gray-500 hover:text-blue-500 underline"
+                                        >
+                                            {item.member.user?.name}
+                                        </a>
                                     </td>
                                     {MONTHS_CONSTAN.map((_, monthIndex) => (
-                                        <td key={monthIndex} className="text-center">
-                                            {item.monthlyStatus[monthIndex + 1] ? (
-                                                <span className="text-green-500">✔</span>
+                                        <td
+                                            key={monthIndex}
+                                            className="text-center"
+                                        >
+                                            {item.monthlyStatus[
+                                                monthIndex + 1
+                                            ] ? (
+                                                <span className="text-green-500">
+                                                    ✔
+                                                </span>
                                             ) : (
-                                                <span className="text-red-500">✘</span>
+                                                <span className="text-red-500">
+                                                    ✘
+                                                </span>
                                             )}
                                         </td>
                                     ))}
@@ -138,10 +167,11 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
                         </tbody>
                     </table>
 
-                    {/* Pagination Controls */}
                     <div className="join mt-4 flex justify-center">
                         <button
-                            className={`join-item btn ${currentPage === 1 ? "btn-disabled" : ""}`}
+                            className={`join-item btn ${
+                                currentPage === 1 ? "btn-disabled" : ""
+                            }`}
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
                         >
@@ -151,7 +181,9 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
                             Page {currentPage} of {totalPages}
                         </button>
                         <button
-                            className={`join-item btn ${currentPage === totalPages ? "btn-disabled" : ""}`}
+                            className={`join-item btn ${
+                                currentPage === totalPages ? "btn-disabled" : ""
+                            }`}
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
                         >
@@ -159,9 +191,14 @@ const MemberPaymentTable: React.FC<TuitionMemberProps> = ({
                         </button>
                     </div>
 
-                    <MemberDetailModal isModalOpen={isModalMemberOpen} groupId={groupId} onClose={closeModalMember} member={modalMemberDetail} />
+                    <MemberDetailModal
+                        isModalOpen={isModalMemberOpen}
+                        groupId={groupId}
+                        onClose={closeModalMember}
+                        member={modalMemberDetail}
+                    />
                 </>
-            }
+            )}
         </div>
     );
 };

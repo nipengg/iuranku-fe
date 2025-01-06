@@ -17,12 +17,16 @@ const GroupCard: React.FunctionComponent<IGroupCardProps> = (props) => {
 
     const handleClick = () => {
         dispatch(setGroupMemberActive(groupMember));
-        router.push(`/group/${encodeURIComponent(encryptData(String(groupMember.group?.id)))}`)
-    }
+        router.push(
+            `/group/${encodeURIComponent(
+                encryptData(String(groupMember.group?.id))
+            )}`
+        );
+    };
 
     return (
         <>
-            <div className="card card-compact w-96 bg-base-100 shadow-xl">
+            <div className="card w-64 bg-white shadow-md border flex flex-col">
                 <figure>
                     <img
                         className="object-scale-down max-h-full drop-shadow-md rounded-md m-auto"
@@ -30,25 +34,27 @@ const GroupCard: React.FunctionComponent<IGroupCardProps> = (props) => {
                         alt="logo"
                     />
                 </figure>
-                <div className="card-body">
-                    <h2 className="card-title">
-                        {groupMember.group?.group_name}
-                    </h2>
-                    <p>{groupMember.group?.group_description}</p>
+                <div className="card-body p-4 flex flex-col justify-between flex-grow">
+                    <div className="flex items-center justify-between">
+                        <h2 className="card-title text-lg font-bold">
+                            {groupMember.group?.group_name}
+                        </h2>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                        {groupMember.group?.group_description}
+                    </p>
                     <p>
                         Role:{" "}
                         <span className="font-bold">
                             {groupMember.member_type?.member_type_name}
                         </span>
                     </p>
-                    <div className="card-actions justify-end mb-3">
-                        <button
-                            onClick={() => handleClick()}
-                            className="btn btn-primary"
-                        >
-                            View Group
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => handleClick()}
+                        className="btn bg-custom-green-light btn-block mt-4 text-white"
+                    >
+                        View
+                    </button>
                 </div>
             </div>
         </>

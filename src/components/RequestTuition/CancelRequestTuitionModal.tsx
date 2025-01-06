@@ -17,32 +17,33 @@ const CancelRequestTuitionModal: React.FC<CancelRequestTuitionModalProps> = ({
     isModalOpen,
     onClose,
     requestId,
-    refreshTable
+    refreshTable,
 }) => {
-
     const dispatch = useDispatch<AppDispatch>();
 
     const handleCancelSubmit = () => {
         const cancelForm: HandleRequestTuitionForm = {
             status: "Canceled",
-            request_tuition_id: requestId
+            request_tuition_id: requestId,
         };
 
-        dispatch(handleRequestTuition(cancelForm)).then((res: any) => {
-            if (res.error) throw res;
-            if (res.payload.meta.code == StatusCodes.OK) {
-                toast.success(`Request Canceled`);
-                refreshTable();
-                onClose();
-            }
-        }).catch(function (err: any) {
-            console.log(err);
-            if (err.payload !== undefined) {
-                toast.error(`Canceled Failed. ${err.payload.result.error}`);
-            } else {
-                toast.error(`Something went wrong...`);
-            }
-        });
+        dispatch(handleRequestTuition(cancelForm))
+            .then((res: any) => {
+                if (res.error) throw res;
+                if (res.payload.meta.code == StatusCodes.OK) {
+                    toast.success(`Request Canceled`);
+                    refreshTable();
+                    onClose();
+                }
+            })
+            .catch(function (err: any) {
+                console.log(err);
+                if (err.payload !== undefined) {
+                    toast.error(`Canceled Failed. ${err.payload.result.error}`);
+                } else {
+                    toast.error(`Something went wrong...`);
+                }
+            });
     };
 
     if (!isModalOpen) return null;
