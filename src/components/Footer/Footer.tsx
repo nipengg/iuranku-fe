@@ -5,7 +5,7 @@ const Footer = () => {
                 <p>
                     IuranKu
                     <br />
-                    "Easier with Us" since 2024.
+                    &quot;Easier with Us&quot; since 2024.
                 </p>
             </aside>
         </footer>
