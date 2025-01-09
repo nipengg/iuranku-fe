@@ -41,7 +41,7 @@ const TabBerita: React.FC<Props> = ({ groupId }) => {
     const [groupNews, setGroupNews] = useState<GroupNews[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 2;
 
     const groupNewsState: GroupNewsState = useSelector(
         (state: RootState) => state.groupNews
@@ -83,52 +83,58 @@ const TabBerita: React.FC<Props> = ({ groupId }) => {
                 {groupNewsState.isLoading ? (
                     <SpinnerCircle size="large" />
                 ) : groupNews.length > 0 ? (
-                    groupNews.map((item, index) => (
-                        <>
-                            <div
-                                key={index}
-                                className="flex items-center space-x-4"
-                            >
-                                <div>
-                                    <div className="flex">
-                                        <p className="font-semibold mr-3">
-                                            <Link
-                                                href={`/group/${groupId}/news/${item.id}`}
-                                            >
-                                                {item.news_title}
-                                            </Link>
-                                        </p>
+                    <>
+                        {
+                            groupNews.map((item, index) => (
+                                <>
+                                    <div
+                                        key={index}
+                                        className="flex items-center space-x-4"
+                                    >
+                                        <div>
+                                            <div className="flex">
+                                                <p className="font-semibold mr-3">
+                                                    <Link
+                                                        href={`/group/${groupId}/news/${item.id}`}
+                                                    >
+                                                        {item.news_title}
+                                                    </Link>
+                                                </p>
+                                            </div>
+                                            <p className="text-sm text-gray-600 mt-2">
+                                                Author:{" "}
+                                                <strong>{item.author.name}</strong>,{" "}
+                                                {moment(
+                                                    item.created_at?.toString()
+                                                ).format("MMMM Do YYYY, h:mm:ss a")}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <p className="text-sm text-gray-600 mt-2">
-                                        Author:{" "}
-                                        <strong>{item.author.name}</strong>,{" "}
-                                        {moment(
-                                            item.created_at?.toString()
-                                        ).format("MMMM Do YYYY, h:mm:ss a")}
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-center mt-4">
-                                <button
-                                    disabled={currentPage === 1}
-                                    onClick={handlePreviousPage}
-                                    className="btn btn-outline btn-sm"
-                                >
-                                    Previous
-                                </button>
-                                <span className="text-sm">
-                                    Page {currentPage} of {totalPages}
-                                </span>
-                                <button
-                                    disabled={currentPage === totalPages}
-                                    onClick={handleNextPage}
-                                    className="btn btn-outline btn-sm"
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        </>
-                    ))
+
+                                </>
+                            ))
+                        }
+                        <div className="flex justify-between items-center mt-4">
+                            <button
+                                disabled={currentPage === 1}
+                                onClick={handlePreviousPage}
+                                className="btn btn-outline btn-sm"
+                            >
+                                Previous
+                            </button>
+                            <span className="text-sm">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            <button
+                                disabled={currentPage === totalPages}
+                                onClick={handleNextPage}
+                                className="btn btn-outline btn-sm"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </>
+
                 ) : (
                     <>No Data Available.</>
                 )}
