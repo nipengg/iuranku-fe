@@ -134,14 +134,24 @@ const TuitionSettings: React.FC<SettingsProps> = ({ tuitionTypeKey, groupId }) =
                         <div className="relative w-full max-w-xs">
                             <label className="input input-bordered flex items-center gap-2">
                                 Rp.
-                                <input type="text" value={tuitionSetting.tuition_value} onChange={handleChange} name="tuition_value" className="grow" placeholder="Amount" />
+                                <input type="text" value={tuitionSetting.tuition_value} onChange={handleChange} name="tuition_value" className="grow" placeholder="Amount" readOnly={tuitionSetting.type_tuition?.tuition_for_period_count > 0} />
                             </label>
                         </div>
                     </div>
+                    <div className="flex items-center space-x-4">
+                        <div
+                            className={`mt-3 ${tuitionSetting.type_tuition?.tuition_for_period_count > 0 ? "tooltip text-left" : ""}`}
+                            data-tip={tuitionSetting.type_tuition?.tuition_for_period_count > 0 ? "Tuition already exists for this period." : ""}>
+                            <button
+                                onClick={handleInsertUpdateGroupTuitionSetting}
+                                className="btn bg-custom-green-primary text-white btn-sm btn-wide"
+                                disabled={tuitionSetting.type_tuition?.tuition_for_period_count > 0}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </div>
 
-                    <button onClick={handleInsertUpdateGroupTuitionSetting} className="btn bg-custom-green-primary text-white btn-sm mt-12 btn-wide">
-                        Save
-                    </button>
                 </>
             }
         </div>
