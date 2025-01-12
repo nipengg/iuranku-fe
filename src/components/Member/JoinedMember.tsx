@@ -125,9 +125,7 @@ const JoinedMember: React.FunctionComponent<Props> = ({ id }) => {
                                         <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
                                             {member.user?.id == userState.id ?
                                                 <li>
-                                                    <button onClick={() => handleHandleLeaveModal(member ?? 0)}>
-                                                        Leave
-                                                    </button>
+                                                    <p className="dropdown-item">No Action.</p>
                                                 </li>
                                                 :
                                                 <li>

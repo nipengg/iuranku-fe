@@ -40,7 +40,7 @@ const HandleRequestTuitionModal: React.FC<HandleRequestTuitionModalProps> = ({
         }).catch(function (err: any) {
             console.log(err);
             if (err.payload !== undefined) {
-                toast.error(`Approved Failed. ${err.payload.result.error}`);
+                toast.error(`Handle approval Failed. ${err.payload.result.error}`);
             } else {
                 toast.error(`Something went wrong...`);
             }
@@ -51,8 +51,8 @@ const HandleRequestTuitionModal: React.FC<HandleRequestTuitionModalProps> = ({
     return (
         <div className="modal modal-open">
             <div className="modal-box">
-                <h2 className="text-xl font-bold mb-4">Are you sure?</h2>
-                <p className="mb-4">This action cannot be undone.</p>
+                <h2 className="text-xl font-bold mb-4">Approval Confirmation</h2>
+                <p className="mb-4">Are you sure want to {status == 'Rejected' ? 'reject' : 'approve'} this data. This action cannot be undone.</p>
                 <div className="modal-action">
                     <button className="btn btn-ghost" onClick={onClose}>
                         Cancel

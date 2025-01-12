@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import type { PluginAPI } from "tailwindcss/types/config";
 
 const config: Config = {
     content: [
@@ -21,9 +22,23 @@ const config: Config = {
             },
         },
     },
-    plugins: [require("daisyui"), require("@tailwindcss/typography")],
+    plugins: [
+        require("daisyui"),
+        require("@tailwindcss/typography"),
+        function (api: PluginAPI) {
+            const { addUtilities } = api;
+            addUtilities({
+                '.required::after': {
+                    content: "'*'",
+                    color: '#ef4444', // Tailwind's red-500
+                    marginLeft: '0.25rem', // Tailwind's ml-1
+                },
+            });
+        },
+    ],
     daisyui: {
         darkTheme: "light",
     },
 };
+
 export default config;

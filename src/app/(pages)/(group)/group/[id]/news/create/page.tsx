@@ -89,7 +89,7 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                     {/* Title Input */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text text-xl font-bold">
+                            <span className="label-text text-xl font-bold required">
                                 Judul Berita
                             </span>
                         </label>
@@ -100,6 +100,7 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                             className="input input-bordered input-md w-full"
                             onChange={handleChange}
                             disabled={groupNewsState.isLoading ? true : false}
+                            required
                         />
                     </div>
 
@@ -122,7 +123,7 @@ export default function CreateNews({ params }: { params: { id: string } }) {
                     {/* Text Editor */}
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text text-xl font-bold">
+                            <span className="label-text text-xl font-bold required">
                                 Konten Berita
                             </span>
                         </label>
