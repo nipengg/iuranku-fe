@@ -124,7 +124,7 @@ const RequestTuitionModal: React.FC<RequestTuitionModalProps> = ({
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text text-sm font-bold">
+                            <span className="label-text text-sm font-bold required">
                                 Nominal
                             </span>
                         </label>
@@ -141,7 +141,7 @@ const RequestTuitionModal: React.FC<RequestTuitionModalProps> = ({
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text text-sm font-bold">
+                            <span className="label-text text-sm font-bold required">
                                 Remark
                             </span>
                         </label>

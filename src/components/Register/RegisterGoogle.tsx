@@ -82,7 +82,7 @@ const RegisterGoogle = () => {
                     <form className="flex flex-col">
                         <div className="mb-4">
                             <label
-                                className="block text-sm font-bold mb-2"
+                                className="block text-sm font-bold mb-2 required"
                                 htmlFor="Fullname"
                             >
                                 Fullname
@@ -101,7 +101,7 @@ const RegisterGoogle = () => {
                         <div className="flex flex-col md:flex-row justify-between mb-4">
                             <div className="w-full md:w-1/2 pr-0 md:pr-2 mb-4 md:mb-0">
                                 <label
-                                    className="block  text-sm font-bold mb-2"
+                                    className="block  text-sm font-bold mb-2 required"
                                     htmlFor="email"
                                 >
                                     Email
@@ -118,7 +118,7 @@ const RegisterGoogle = () => {
                             </div>
                             <div className="w-full md:w-1/2 pl-0 md:pl-2">
                                 <label
-                                    className="block text-sm font-bold mb-2"
+                                    className="block text-sm font-bold mb-2 required"
                                     htmlFor="phone"
                                 >
                                     Phone Number
@@ -138,7 +138,7 @@ const RegisterGoogle = () => {
 
                         {/* Gender */}
                         <div className="mb-4">
-                            <label className="block  text-sm font-bold mb-2">
+                            <label className="block  text-sm font-bold mb-2 required">
                                 Gender
                             </label>
                             <div className="flex flex-row">
@@ -174,7 +174,7 @@ const RegisterGoogle = () => {
                         <div className="flex flex-col md:flex-row justify-between mb-4">
                             <div className="w-full md:w-1/2 pr-0 md:pr-2 mb-4 md:mb-0">
                                 <label
-                                    className="block  text-sm font-bold mb-2"
+                                    className="block  text-sm font-bold mb-2 required"
                                     htmlFor="password"
                                 >
                                     Password
@@ -192,7 +192,7 @@ const RegisterGoogle = () => {
                             </div>
                             <div className="w-full md:w-1/2 pl-0 md:pl-2">
                                 <label
-                                    className="block  text-sm font-bold mb-2"
+                                    className="block  text-sm font-bold mb-2 required"
                                     htmlFor="confirmPassword"
                                 >
                                     Confirm Password
@@ -210,7 +210,7 @@ const RegisterGoogle = () => {
                             </div>
                         </div>
                         <div className="mb-4">
-                            <label className="block  text-sm font-bold mb-2">
+                            <label className="block  text-sm font-bold mb-2 required">
                                 Address
                             </label>
                             <div className="mb-4">
@@ -227,12 +227,12 @@ const RegisterGoogle = () => {
                         </div>
 
                         <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 self-start"
+                            className="bg-custom-green-primary hover:bg-custom-green-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline self-start"
                             type="submit"
                             onClick={handleRegister}
                             disabled={auth.isLoading ? true : false}
                         >
-                            {auth.isLoading ? 'Loading...' : 'Sign In'}
+                            {auth.isLoading ? 'Loading...' : 'Sign Up'}
                         </button>
                     </form>
                 </div>
