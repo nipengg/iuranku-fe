@@ -26,7 +26,7 @@ export default function GroupTuition({ params }: { params: { id: string } }) {
         <>
             <div className="text-black">
                 <div className="flex justify-between mb-4">
-                    <h1 className="text-4xl font-bold">Group Tuition</h1>
+                    <h1 className="text-4xl font-bold">Iuran Report</h1>
                     <div>
                         <select
                             className="select select-bordered w-28 mr-3"

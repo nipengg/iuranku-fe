@@ -21,17 +21,17 @@ const TuitionPaymentDetailModal: React.FC<TuitionPaymentDetailModalProps> = ({
         <div className="modal modal-open">
             <div className="modal-box w-[1100px] max-w-none overflow-visible">
                 <h2 className="text-xl font-bold mb-4">
-                    Detail Tuition Payment
+                    Detail Iuran Payment
                 </h2>
                 <div className="w-full max-w-screen-xl mx-auto p-4">
                     <table className="table w-full">
                         <thead>
                             <tr>
-                                <th className="text-left">ID Tuition</th>
+                                <th className="text-left">ID Iuran</th>
                                 <th className="text-left">Amount</th>
                                 <th className="text-left">Payment Date</th>
                                 <th className="text-left">
-                                    Request Tuition Date
+                                    Request Iuran Date
                                 </th>
                                 <th className="text-left">
                                     Request Description

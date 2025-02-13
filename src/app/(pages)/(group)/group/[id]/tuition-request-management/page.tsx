@@ -30,7 +30,7 @@ export default function TuitionRequestApproval({
         <>
             <div className="flex justify-between mb-4">
                 <h1 className="text-4xl font-bold">
-                    Tuition Request Management
+                    Iuran Request Management
                 </h1>
                 <select
                     className="select select-bordered w-28 mr-3"

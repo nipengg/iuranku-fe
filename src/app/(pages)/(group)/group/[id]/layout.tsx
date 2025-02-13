@@ -40,12 +40,12 @@ export default function GroupLayout({
         { href: `${baseUrl}`, label: "Group Dashboard" },
         { href: `${baseUrl}/member`, label: "Members" },
         { href: `${baseUrl}/news`, label: "News" },
-        { href: `${baseUrl}/tuition`, label: "Tuition" },
+        { href: `${baseUrl}/tuition`, label: "Iuran Report" },
         { href: `${baseUrl}/tuition-payment`, label: "My Payment" },
-        { href: `${baseUrl}/tuition-request`, label: "My Tuition Request" },
+        { href: `${baseUrl}/tuition-request`, label: "My Iuran Request" },
         {
             href: `${baseUrl}/tuition-request-management`,
-            label: "Tuition Request Management",
+            label: "Iuran Request Management",
         },
         { href: `${baseUrl}/setting`, label: "Group Settings" },
     ].filter((link) =>
