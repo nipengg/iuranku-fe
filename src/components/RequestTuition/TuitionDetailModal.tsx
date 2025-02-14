@@ -19,14 +19,14 @@ const TuitionDetailModal: React.FC<TuitionDetailModalProps> = ({
     return (
         <div className="modal modal-open">
             <div className="modal-box w-[1100px] max-w-none overflow-visible">
-                <h2 className="text-xl font-bold mb-4">Detail Tuition Payment</h2>
+                <h2 className="text-xl font-bold mb-4">Detail Contribution Payment</h2>
                 <div className="w-full max-w-screen-xl mx-auto p-4">
                     <table className="table w-full">
                         <thead>
                             <tr>
-                                <th className="text-left">ID Tuition</th>
+                                <th className="text-left">ID</th>
                                 <th className="text-left">Periode</th>
-                                <th className="text-left">Type Tuition</th>
+                                <th className="text-left">Contribution Type</th>
                                 <th className="text-left">Payment Date</th>
                                 <th className="text-left">Amount</th>
                             </tr>

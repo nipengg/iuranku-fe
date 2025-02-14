@@ -118,7 +118,7 @@ const TuitionPayment: React.FC<TuitionPaymentProps> = ({
                         <thead>
                             <tr>
                                 <th className="text-left">Month</th>
-                                <th className="text-left">Tuition Amount</th>
+                                <th className="text-left">Contribution Amount</th>
                                 <th className="text-left">Paid</th>
                                 <th className="text-left">Transaction Count</th>
                                 <th></th>

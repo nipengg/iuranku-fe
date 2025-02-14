@@ -129,7 +129,7 @@ const TuitionSettings: React.FC<SettingsProps> = ({ tuitionTypeKey, groupId }) =
                 <>
                     <div className="flex items-center space-x-4">
                         <label className="text-sm font-medium w-52">
-                            Tuition Value
+                            Contribution Value
                         </label>
                         <div className="relative w-full max-w-xs">
                             <label className="input input-bordered flex items-center gap-2">
