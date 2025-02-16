@@ -21,7 +21,7 @@ const TuitionPaymentDetailModal: React.FC<TuitionPaymentDetailModalProps> = ({
         <div className="modal modal-open">
             <div className="modal-box w-[1100px] max-w-none overflow-visible">
                 <h2 className="text-xl font-bold mb-4">
-                    Detail Contribution Payment
+                    Detail Fee Payment
                 </h2>
                 <div className="w-full max-w-screen-xl mx-auto p-4">
                     <table className="table w-full">
@@ -31,7 +31,7 @@ const TuitionPaymentDetailModal: React.FC<TuitionPaymentDetailModalProps> = ({
                                 <th className="text-left">Amount</th>
                                 <th className="text-left">Payment Date</th>
                                 <th className="text-left">
-                                    Request Contribution Date
+                                    Request Fee Date
                                 </th>
                                 <th className="text-left">
                                     Request Description
