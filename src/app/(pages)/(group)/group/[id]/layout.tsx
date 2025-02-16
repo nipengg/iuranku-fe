@@ -40,12 +40,12 @@ export default function GroupLayout({
         { href: `${baseUrl}`, label: "Group Dashboard" },
         { href: `${baseUrl}/member`, label: "Members" },
         { href: `${baseUrl}/news`, label: "News" },
-        { href: `${baseUrl}/tuition`, label: "Contribution Report" },
+        { href: `${baseUrl}/tuition`, label: "Fee Report" },
         { href: `${baseUrl}/tuition-payment`, label: "My Payment" },
-        { href: `${baseUrl}/tuition-request`, label: "My Contribution Request" },
+        { href: `${baseUrl}/tuition-request`, label: "My Fee Request" },
         {
             href: `${baseUrl}/tuition-request-management`,
-            label: "Contribution Request Management",
+            label: "Fee Request Management",
         },
         { href: `${baseUrl}/setting`, label: "Group Settings" },
     ].filter((link) =>

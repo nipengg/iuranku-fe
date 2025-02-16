@@ -168,7 +168,7 @@ export default function GroupTuitionRequest({
         <>
             <div className="text-black">
                 <div className="flex justify-between mb-4">
-                    <h1 className="text-4xl font-bold">My Contribution Request</h1>
+                    <h1 className="text-4xl font-bold">My Fee Request</h1>
 
                     <div>
                         <select

@@ -296,7 +296,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
             setLoading(false); // Set loading to false when fetching is done
             dispatch(setLoadingInsertTuition(false));
         } catch (err: any) {
-            toast.error(`Failed to fetch Contribution settings. ${err.message}`);
+            toast.error(`Failed to fetch Fee settings. ${err.message}`);
             setLoading(false); // Set loading to false even if there's an error
         }
     };
@@ -334,7 +334,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
             dispatch(insertTuition(payloads)).then((res: any) => {
                 if (res.payload.meta.code == StatusCodes.OK) {
                     onClose();
-                    toast.success(`Contribution Saved`);
+                    toast.success(`Fee Saved`);
                 }
             }).catch(function (err: any) {
                 if (err.payload !== undefined) {
@@ -361,7 +361,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
     return (
         <div className="modal modal-open">
             <div className="modal-box w-[1000px] max-w-none overflow-auto hide-scrollbar">
-                <h2 className="text-xl font-bold mb-4">Manage Contribution</h2>
+                <h2 className="text-xl font-bold mb-4">Manage Fee</h2>
                 <div>Nominal Amount: {formatRupiah(requestTuition.nominal)}</div>
                 <div>Nominal Amount Checked: {formatRupiah(getTotal())}</div>
                 <div>Remaining Balance: {formatRupiah(remainingBalance)}</div>
@@ -384,7 +384,7 @@ const ManageTuitionModal: React.FC<ManageTuitionModalProps> = ({
                                                 <thead>
                                                     <tr>
                                                         <th>Month</th>
-                                                        <th>Contribution Amount</th>
+                                                        <th>Fee Amount</th>
                                                         <th>Amount to be Paid</th>
                                                         <th>Selected</th>
                                                         <th>Unpaid</th>
